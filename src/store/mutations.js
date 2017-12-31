@@ -10,5 +10,11 @@ export default {
   },
   SET_TOKEN (state, token) {
     state.token = token
+  },
+  SET_BTK_MENU (state, btkmenu) {
+    state.btk_menu = btkmenu
+  },
+  GET_TOKEN (token, state) {
+    token = state.token
   }
 }

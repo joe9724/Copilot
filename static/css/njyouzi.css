@@ -1,0 +1,8 @@
+i.ico { line-height: 32px; height:32px; margin-right:3px; position: relative; top: 3px; font-size:28px; font-style:normal;}
+i.ico-red2 { color:#e74c3c; }
+i.ico-red { color:#e74c3c; -webkit-animation: rglow .3s ease infinite; }
+i.ico-green { color:#2ecc71; }
+i.ico-blue { color:#3498db; }
+i.ico-yellow { color:#f1c40f; }
+i.ico-gray { color:#bac4c5; }
+i.ico-nolineheight { line-height:20px; height:20px; }

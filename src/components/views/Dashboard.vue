@@ -74,7 +74,7 @@
           <div class="box-body">
             <div class="col-sm-6 col-xs-12">
               <p class="text-center">
-                <strong>Web Traffic Overview</strong>
+                <strong>Web Traffic Overview test</strong>
               </p>
               <canvas id="trafficBar" ></canvas>
             </div>
@@ -189,10 +189,10 @@ export default {
   },
   computed: {
     coPilotNumbers () {
-      return this.generateRandomNumbers(12, 1000000, 10000)
+      return this.generateRandomNumbers(31, 1000000, 10000)
     },
     personalNumbers () {
-      return this.generateRandomNumbers(12, 1000000, 10000)
+      return this.generateRandomNumbers(31, 1000000, 10000)
     },
     isMobile () {
       return (window.innerWidth <= 800 && window.innerHeight <= 600)
@@ -204,10 +204,10 @@ export default {
       var config = {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
           datasets: [{
             label: 'CoPilot',
-            fill: false,
+            fill: true,
             borderColor: '#284184',
             pointBackgroundColor: '#284184',
             backgroundColor: 'rgba(0, 0, 0, 0)',

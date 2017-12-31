@@ -9,14 +9,14 @@
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input class="form-control" name="username" placeholder="Username" type="text" v-model="username">
+                <input class="form-control" value="root" name="username" placeholder="Username" type="text" v-model="user_name">
               </div>
 
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input class="form-control" name="password" placeholder="Password" type="password" v-model="password">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input class="form-control" value="root123" name="password" placeholder="Password" type="password" v-model="password">
               </div>
-              <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading">Submit</button>
+              <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading"> 登 录 </button>
             </form>
 
             <!-- errors -->
@@ -42,55 +42,57 @@ export default {
     }
   },
   methods: {
-    checkCreds () {
+    checkCreds: function () {
       const {username, password} = this
-
+//      console.log(username)
+      // this.$router.push('myDevice')
       this.toggleLoading()
       this.resetResponse()
       this.$store.commit('TOGGLE_LOADING')
-
+      // console.log(username)
       /* Making API call to authenticate a user */
-      api.request('post', '/login', {username, password})
-      .then(response => {
-        this.toggleLoading()
+      // console.log('serverURI is ' + this.serverUrl)
+      api.request('get', '/user/login', {username, password})
+        .then(response => {
+          this.toggleLoading()
 
-        var data = response.data
-        /* Checking if error object was returned from the server */
-        if (data.error) {
-          var errorName = data.error.name
-          if (errorName) {
-            this.response = errorName === 'InvalidCredentialsError'
-            ? 'Username/Password incorrect. Please try again.'
-            : errorName
-          } else {
-            this.response = data.error
+          var data = response.data.body
+          console.log(JSON.stringify(data))
+          if (data.status.code !== 201) {
+            console.log('2')
+            return
           }
+          console.log('3')
+          /* Setting user in the state and caching record to the localStorage */
+          if (data.data) {
+            console.log('4')
+            var token = data.data.id
 
-          return
-        }
+            this.$store.commit('SET_USER', data.data.name)
+            this.$store.commit('SET_TOKEN', token)
+            this.$store.commit('SET_BTK_MENU', data.data.paths)
+            this.$store.commit('SET_USERID', data.data.user_id)
 
-        /* Setting user in the state and caching record to the localStorage */
-        if (data.user) {
-          var token = 'Bearer ' + data.token
-
-          this.$store.commit('SET_USER', data.user)
-          this.$store.commit('SET_TOKEN', token)
-
-          if (window.localStorage) {
-            window.localStorage.setItem('user', JSON.stringify(data.user))
-            window.localStorage.setItem('token', token)
+            if (window.localStorage) {
+              window.localStorage.setItem('user', JSON.stringify(data.data.name))
+              window.localStorage.setItem('token', token)
+              window.localStorage.setItem('btk_menu', JSON.stringify(data.routers))
+              window.localStorage.setItem('userid', data.data.id)
+            }
+            this.$router.push(data.routers[0].routerUrl)
+            // this.$router.push(data.data.paths[0].children[0].resource)
+            // this.$router.push('/userList')
+            // console.log('path is' + JSON.stringify(data.data.paths[0].children[0].path))
           }
+        })
+        .catch(error => {
+          console.log('5')
+          this.$store.commit('TOGGLE_LOADING')
+          console.log(error)
 
-          this.$router.push(data.redirect ? data.redirect : '/')
-        }
-      })
-      .catch(error => {
-        this.$store.commit('TOGGLE_LOADING')
-        console.log(error)
-
-        this.response = 'Server appears to be offline'
-        this.toggleLoading()
-      })
+          this.response = 'Server appears to be offline'
+          this.toggleLoading()
+        })
     },
     toggleLoading () {
       this.loading = (this.loading === '') ? 'loading' : ''

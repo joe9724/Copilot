@@ -5,6 +5,7 @@
     <section class="sidebar">
 
       <!-- Sidebar user panel (optional) -->
+      <!--
       <div class="user-panel">
         <div class="pull-left image">
           <img :src="pictureUrl" />
@@ -18,8 +19,10 @@
           </a>
         </div>
       </div>
+      -->
 
       <!-- search form (Optional) -->
+      <!--
       <form v-on:submit.prevent class="sidebar-form">
         <div class="input-group">
           <input type="text"
@@ -36,6 +39,7 @@
           </span>
         </div>
       </form>
+      -->
       <!-- /.search form -->
 
       <!-- Sidebar Menu -->

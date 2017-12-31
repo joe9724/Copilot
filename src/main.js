@@ -57,6 +57,29 @@ if (window.localStorage) {
     store.commit('SET_TOKEN', window.localStorage.getItem('token'))
   }
 }
+import AMap from 'vue-amap'
+Vue.use(AMap)
+
+// 初始化vue-amap
+AMap.initAMapApiLoader({
+  // 申请的高德key
+  key: 'df538b16231815d860eb30862932de7d',
+  // 插件集合
+  plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType']
+})
+
+//
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+import DataTables from 'vue-data-tables'
+
+Vue.use(ElementUI)
+Vue.use(DataTables)
+
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+
+locale.use(lang)
 
 // Start out app!
 // eslint-disable-next-line no-new

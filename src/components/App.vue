@@ -5,7 +5,9 @@
 </template>
 
 <script>
+  const serverUrl = 'http://106.14.2.153:9090/'
   export default {
+    serverUrl,
     name: 'App',
     data () {
       return {
