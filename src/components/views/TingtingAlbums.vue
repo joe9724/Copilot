@@ -47,8 +47,8 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td class="sorting_1">
-            <el-button type="text" @click="editLink(item.id)">书本管理</el-button>
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
+            <el-button type="text" @click="editRelation(item.id)">书本管理</el-button>
+            <el-button type="text" @click="editAlbum(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
@@ -163,13 +163,13 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editUser (userId) {
+      editAlbum (albumId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
+        this.$router.push({path: '/album/edit?albumId=' + albumId})
       },
-      editLink (userId) {
+      editRelation (albumId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/album/edit?userid=' + userId})
+        this.$router.push({path: '/album/book/relation?albumId=' + albumId})
       }
     },
     created () {

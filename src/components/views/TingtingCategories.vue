@@ -46,6 +46,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td class="sorting_1">
+            <el-button type="text" @click="editChildren(item.id)">子类</el-button>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -109,7 +110,9 @@
         // 分页数据
         arrayData: [],
         // 删除确认框
-        dialogVisible: false
+        dialogVisible: false,
+        // 默认父id
+        parentId: -1
       }
     },
     methods: {
@@ -164,11 +167,15 @@
       editUser (userId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
         this.$router.push({path: '/user/edit?userid=' + userId})
+      },
+      editChildren (categoryId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/user/edit?userid=' + categoryId})
       }
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1')
+      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=' + this.parentId)
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.subCategoryList

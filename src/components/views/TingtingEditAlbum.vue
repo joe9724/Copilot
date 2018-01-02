@@ -1,161 +1,136 @@
 <template>
-  <section class="content">
-
-    <div class="row center-block" style="background: #ffffff">
-      <!--
-      <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/album/add">
-          <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加专辑</el-button></span>
-
-          </a>
-        </router-link>
-
+  <div>
+    <!--<h5 class="text-center">编辑专辑</h5>-->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="标题">
+              <el-input v-model="form.title"></el-input>
+            </el-form-item>
+            <el-form-item label="副标题">
+              <el-input v-model="form.subTitle"></el-input>
+            </el-form-item>
+            <el-form-item label="简介">
+              <el-input v-model="form.summary"></el-input>
+            </el-form-item>
+            <el-form-item label="描述">
+              <el-input v-model="form.content"></el-input>
+            </el-form-item>
+            <el-form-item label="定价">
+              <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="改变价格"></el-input-number>
+            </el-form-item>
+            <el-form-item label="小图">
+              <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="大图">
+              <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="状态">
+              <el-radio-group v-model="form.status">
+                <el-radio label="正常"></el-radio>
+                <el-radio label="锁定"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">确定</el-button>
+              <!--<el-button>确定</el-button>-->
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
-      -->
-      <el-transfer
-        v-model="value3"
-        filterable
-        :left-default-checked="[2, 3]"
-        :right-default-checked="[1]"
-        :render-content="renderFunc"
-        :titles="['Source', 'Target']"
-        :button-texts="['到左边', '到右边']"
-        :format="{
-      noChecked: '${total}',
-      hasChecked: '${checked}/${total}'
-    }"
-        @change="handleChange"
-        :data="data">
-        <el-button class="transfer-footer" slot="left-footer" size="small">操作</el-button>
-        <el-button class="transfer-footer" slot="right-footer" size="small">操作</el-button>
-      </el-transfer>
-            <!-- /.box-body -->
-          </div>
-
-  </section>
+    </section>
+  </div>
 </template>
-
 <script>
-  // import $ from 'jquery'
   import api from '../../api'
-  import {formatDateBtk, formatStatus} from '../../filters/index.js'
+
   export default {
-    filters: {
-      BTKformatDate (time) {
-        var date = new Date(time)
-        return formatDateBtk(date, 'yyyy-MM-dd hh:mm')
-      },
-      FormatStatus (status) {
-        return formatStatus(status)
-      }
-    },
     data () {
-      const generateData = _ => {
-        const data = []
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `备选项 $ { i }`,
-            disabled: i % 4 === 0
-          })
-        }
-        return data
-      }
       return {
-        data: generateData(),
-        value3: [1],
-        renderFunc (h, option) {
-          return '<span>' + option.key - option.label + '</span>'
-        }
+        form: {
+          title: '',
+          subTitle: '',
+          summary: '',
+          content: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: '',
+          status: ''
+        },
+        num1: 1,
+        albumId: 0
       }
     },
     methods: {
-      handleChange (value, direction, movedKeys) {
-        console.log(value, direction, movedKeys)
+      handleChange (value) {
+        // console.log(value)
       },
-      handleSizeChange (val) {
-        console.log(`每页 ${val} 条`)
-      },
-      removeUser (userId) {
-        this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
-          .then(() => {
-            // 向请求服务端删除
-            var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
-              .then(response => {
-                console.log(response.data)
-                this.$message.info('删除成功!')
-                // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
-                  .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
-                  })
-                  .catch(error => {
-                    // this.$store.commit('TOGGLE_LOADING')
-                    console.log(error)
-                    this.response = error
-                  })
-              })
-              .catch(error => {
-                // this.$store.commit('TOGGLE_LOADING')
-                console.log(error)
-                this.response = error
-              })
-          })
-          .catch(() => {
-            this.$message.info('已取消操作!')
-          })
-      },
-      handleCurrentChange (val) {
-        console.log(`当前页: ${val}`)
+      onSubmit () {
+        // this.$router.push('/org')
+        // console.log('submit!')
+        console.log('name is' + this.form.agentName)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        var params = {
+          'operator_id': userid,
+          'agency_id': '123',
+          'agency_name': this.form.agentName,
+          'contact_name': this.form.contactName,
+          'contact_number': this.form.contactNumber,
+          'contact_addr': this.form.contactAddr,
+          'status': this.form.status === '正常' ? 200 : -1
+        }
+        api.request('post', 'agency/add', params)
           .then(response => {
-            console.log(response.data)
-            this.arrayData = response.data.body.bookList
+            var data = response.data
+            console.log(JSON.stringify(data))
+            if (data.status !== 200) {
+              console.log('2')
+              this.response = data.message
+              return
+            }
+            if (data.status === 0) {
+              console.log('4')
+              this.response = data.message
+              this.$router.push('/agencyList')
+              // console.log('path is' + JSON.stringify(data.data.paths[0].children[0].path))
+            }
           })
           .catch(error => {
-            // this.$store.commit('TOGGLE_LOADING')
             console.log(error)
-            this.response = 'Server appears to be offline'
+            this.response = error
           })
-      },
-      editUser (userId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
       }
     },
     created () {
-      // var userid = localStorage.getItem('userid')
-      api.request('get', 'album/list?userid=1&pageSize=12&pageIndex=1')
+      // alert('created!')
+      //
+      var albumId = '0'
+      if (this.$route.query.albumId) {
+        albumId = this.$route.query.albumId
+        this.albumId = this.$route.query.albumId
+      }
+      // console.log('currentUserId is' + currentUserId)
+      api.request('get', 'album/detail?userid=1&albumId=' + albumId)
         .then(response => {
-          console.log(response.data)
-          this.arrayData = response.data.body.albumList
-          for (var i = 0; i < this.arrayData.length; i++) {
-            this.arrayData.time = formatDateBtk(this.arrayData.time)
-            // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
-            console.log()
-          }
+          var data = response.data.body.data
+          // this.form.pass = '******'
+          this.form.title = data.name
+          this.form.subTitle = data.subTitle
+          this.form.num1 = data.value
         })
         .catch(error => {
           // this.$store.commit('TOGGLE_LOADING')
           console.log(error)
           this.response = 'Server appears to be offline'
         })
-    },
-    mounted () {
-      // this.showPage(this.pageCurrent, null, true)
-    },
-    computed: {}
+    }
   }
-
 </script>
 
 <style>
-  .transfer-footer {
-    margin-left: 20px;
-    padding: 6px 5px;
+  .datetime-picker input {
+    height: 4em !important;
   }
 </style>

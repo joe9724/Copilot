@@ -43,6 +43,7 @@ import CategoryListView from './components/views/TingtingCategories.vue'
 import AddAlbumView from './components/views/TingtingAddAlbum.vue'
 import AddBookView from './components/views/TingtingAddBook.vue'
 import EditAlbumView from './components/views/TingtingEditAlbum.vue'
+import EditAlbumBookRelationView from './components/views/TingtingAlbumBookRelation.vue'
 
 // Routes
 const routes = [
@@ -54,6 +55,13 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'album/book/relation',
+        alias: 'editalbumbookrelation',
+        component: EditAlbumBookRelationView,
+        name: '编辑专辑-书本对应关系',
+        meta: {description: 'EditAlbumBookRelationView'}
+      },
       {
         path: 'album/edit',
         alias: 'editalbum',
