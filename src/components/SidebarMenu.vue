@@ -88,12 +88,12 @@
 
     <!--</span>-->
     <ul v-for="item in arrayData" class="sidebar-menu" :key="item.name">
-    <!--<li class="header"><span>{{item.parent}}</span></li>
-      {{item}}-->
-    <li  class="pageLink" @click="to(item.routerUrl)" style="cursor: pointer;" >
+    <li class="header"><span>{{item.name}}</span></li>
+
+    <li  class="pageLink" @click="to(it.router_url)" style="cursor: pointer;" v-for="it in item.children">
       <a>
         <i class="fa fa-desktop"></i>
-        <span class="page">{{item.name}}</span>
+        <span class="page">{{it.name}}</span>
       </a>
     </li>
     </ul>

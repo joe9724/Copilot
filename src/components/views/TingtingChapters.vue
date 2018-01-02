@@ -5,7 +5,7 @@
       <div id="example1_length" class="dataTables_length">
         <router-link  class="pageLink" to="/user/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加用户</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加章节</el-button></span>
 
           </a>
         </router-link>

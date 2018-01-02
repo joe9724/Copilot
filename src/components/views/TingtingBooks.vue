@@ -3,9 +3,9 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/user/add">
+        <router-link  class="pageLink" to="/book/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加用户</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加书本</el-button></span>
 
           </a>
         </router-link>

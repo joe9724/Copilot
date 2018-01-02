@@ -3,9 +3,9 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/user/add">
+        <router-link  class="pageLink" to="/album/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加用户</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加专辑</el-button></span>
 
           </a>
         </router-link>
@@ -47,6 +47,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td class="sorting_1">
+            <el-button type="text" @click="editLink(item.id)">书本管理</el-button>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -165,6 +166,10 @@
       editUser (userId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
         this.$router.push({path: '/user/edit?userid=' + userId})
+      },
+      editLink (userId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/album/edit?userid=' + userId})
       }
     },
     created () {

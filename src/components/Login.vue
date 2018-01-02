@@ -76,10 +76,10 @@ export default {
             if (window.localStorage) {
               window.localStorage.setItem('user', JSON.stringify(data.data.name))
               window.localStorage.setItem('token', token)
-              window.localStorage.setItem('btk_menu', JSON.stringify(data.routers))
+              window.localStorage.setItem('btk_menu', JSON.stringify(data.dynamicRouter))
               window.localStorage.setItem('userid', data.data.id)
             }
-            this.$router.push(data.routers[0].routerUrl)
+            this.$router.push(data.dynamicRouter[0].children[0].router_url)
             // this.$router.push(data.data.paths[0].children[0].resource)
             // this.$router.push('/userList')
             // console.log('path is' + JSON.stringify(data.data.paths[0].children[0].path))

@@ -40,6 +40,10 @@ import MemberListView from './components/views/TingtingMembers.vue'
 import OrderListView from './components/views/TingtingOrders.vue'
 import SubCategoryListView from './components/views/TingtingSubCategories.vue'
 import CategoryListView from './components/views/TingtingCategories.vue'
+import AddAlbumView from './components/views/TingtingAddAlbum.vue'
+import AddBookView from './components/views/TingtingAddBook.vue'
+import EditAlbumView from './components/views/TingtingEditAlbum.vue'
+
 // Routes
 const routes = [
   {
@@ -50,6 +54,27 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'album/edit',
+        alias: 'editalbum',
+        component: EditAlbumView,
+        name: '编辑专辑',
+        meta: {description: 'EditAlbumView'}
+      },
+      {
+        path: 'book/add',
+        alias: 'addbook',
+        component: AddBookView,
+        name: '添加书本',
+        meta: {description: 'AddBookView'}
+      },
+      {
+        path: 'album/add',
+        alias: 'addalbum',
+        component: AddAlbumView,
+        name: '添加专辑',
+        meta: {description: 'AddAlbumView'}
+      },
       {
         path: 'category/list',
         alias: 'CategoryList',
