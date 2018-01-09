@@ -3,18 +3,18 @@
   <section class="content">
     <!-- Info boxes -->
     <div class="row">
-      <div class="alert alert-success alert-dismissible">
+      <!--<div class="alert alert-success alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h4><i class="icon fa fa-check"></i> CoPilot is open source!</h4>
         Click on icon to check it out on github. <a href="https://github.com/misterGF/CoPilot" target="_blank"><i class="fa fa-github fa-2x"></i></a>
-      </div>
+      </div>-->
       <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box">
           <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">CPU Traffic</span>
-            <span class="info-box-number">90<small>%</small></span>
+            <span class="info-box-text">今日新注册用户</span>
+            <span class="info-box-number">90<small></small></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -26,8 +26,8 @@
           <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Likes</span>
-            <span class="info-box-number">41,410</span>
+            <span class="info-box-text">今日购买专辑</span>
+            <span class="info-box-number">41</span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -43,7 +43,7 @@
           <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Sales</span>
+            <span class="info-box-text">今日成交额</span>
             <span class="info-box-number">760</span>
           </div>
           <!-- /.info-box-content -->
@@ -56,7 +56,7 @@
           <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">New Members</span>
+            <span class="info-box-text">今日上传录音</span>
             <span class="info-box-number">2,000</span>
           </div>
           <!-- /.info-box-content -->
@@ -74,7 +74,7 @@
           <div class="box-body">
             <div class="col-sm-6 col-xs-12">
               <p class="text-center">
-                <strong>Web Traffic Overview test</strong>
+                <strong>月内成交</strong>
               </p>
               <canvas id="trafficBar" ></canvas>
             </div>
@@ -87,7 +87,7 @@
             </div>
           </div>
         </div>
-        <small class="space"><b>Pro Tip</b> Don"t forget to star us on github!</small>
+        <!--<small class="space"><b>Pro Tip</b> Don"t forget to star us on github!</small>-->
       </div>
     </div>
     <!-- /.row -->
@@ -99,8 +99,8 @@
           <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Inventory</span>
-            <span class="info-box-number">5,200</span>
+            <span class="info-box-text">今日新增分类数</span>
+            <span class="info-box-number">5</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 50%"></div>
@@ -117,8 +117,8 @@
           <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Mentions</span>
-            <span class="info-box-number">92,050</span>
+            <span class="info-box-text">今日新增专辑数</span>
+            <span class="info-box-number">92</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 20%"></div>
@@ -135,8 +135,8 @@
           <span class="info-box-icon"><i class="ion ion-ios-cloud-download-outline"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Downloads</span>
-            <span class="info-box-number">114,381</span>
+            <span class="info-box-text">今日新增书本数</span>
+            <span class="info-box-number">114</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 70%"></div>
@@ -153,8 +153,8 @@
           <span class="info-box-icon"><i class="ion-ios-chatbubble-outline"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Direct Messages</span>
-            <span class="info-box-number">163,921</span>
+            <span class="info-box-text">今日新增章节数</span>
+            <span class="info-box-number">1639</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 40%"></div>
@@ -206,14 +206,14 @@ export default {
         data: {
           labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
           datasets: [{
-            label: 'CoPilot',
+            label: '购买专辑数',
             fill: true,
             borderColor: '#284184',
             pointBackgroundColor: '#284184',
             backgroundColor: 'rgba(0, 0, 0, 0)',
             data: this.coPilotNumbers
           }, {
-            label: 'Personal Site',
+            label: '成交额',
             borderColor: '#4BC0C0',
             pointBackgroundColor: '#4BC0C0',
             backgroundColor: 'rgba(0, 0, 0, 0)',
