@@ -58,10 +58,10 @@ export default {
 
           var data = response.data.body
           console.log(JSON.stringify(data))
-          if (data.status.code !== 201) {
+          /* if (data.status.code !== 201) {
             console.log('2')
             return
-          }
+          } */
           console.log('3')
           /* Setting user in the state and caching record to the localStorage */
           if (data.data) {
@@ -79,9 +79,9 @@ export default {
               window.localStorage.setItem('btk_menu', JSON.stringify(data.dynamicRouter))
               window.localStorage.setItem('userid', data.data.id)
             }
-            this.$router.push(data.dynamicRouter[0].children[0].router_url)
+            // this.$router.push(data.dynamicRouter[0].children[0].router_url)
             // this.$router.push(data.data.paths[0].children[0].resource)
-            // this.$router.push('/userList')
+            this.$router.push('/dashboard')
             // console.log('path is' + JSON.stringify(data.data.paths[0].children[0].path))
           }
         })
