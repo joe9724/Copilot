@@ -60,8 +60,8 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="text">向上移动</el-button>
-            <el-button type="text">向下移动</el-button>
+            <el-button type="text">上移</el-button>
+            <el-button type="text">下移</el-button>
             <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">移除</el-button>
           </td>
