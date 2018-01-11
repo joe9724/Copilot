@@ -16,6 +16,7 @@
         <tr>
           <th>序号</th>
           <th>专辑名</th>
+          <th>图标</th>
           <th>书本数</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
@@ -34,6 +35,7 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td class="sorting_1" style="vertical-align: middle">{{index+1}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.name}}</td>
+          <td class="sorting_1" style="vertical-align: middle"><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
           <td class="sorting_1" style="vertical-align: middle">{{item.booksNumber}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->

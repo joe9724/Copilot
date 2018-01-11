@@ -28,7 +28,7 @@
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td class="sorting_1" style="vertical-align: middle">{{index+1}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.avatar}}</td>
+          <td class="sorting_1" style="vertical-align: middle"><img v-bind:src=item.avatar style="width: 30px;height:30px"> </td>
           <td class="sorting_1" style="vertical-align: middle">{{item.gender}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.name}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.role}}</td>
