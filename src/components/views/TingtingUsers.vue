@@ -14,26 +14,26 @@
       <table class="table table-bordered table-responsive table-striped">
         <thead>
         <tr>
-          <th>序号</th>
-          <th>头像</th>
-          <th>性别</th>
-          <th>用户名</th>
-          <th>角色</th>
-          <th>状态</th>
-          <th>时间</th>
-          <th>操作</th>
+          <th style='text-align: center'>序号</th>
+          <th style='text-align: center'>头像</th>
+          <th style='text-align: center'>性别</th>
+          <th style='text-align: center'>用户名</th>
+          <th style='text-align: center'>角色</th>
+          <th style='text-align: center'>状态</th>
+          <th style='text-align: center'>时间</th>
+          <th style='text-align: center'>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td class="sorting_1" style="vertical-align: middle">{{index+1}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.avatar}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.gender}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.name}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.role}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>
-          <td class="sorting_1">
+          <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{item.avatar}}</td>
+          <td style='text-align: center'>{{item.gender}}</td>
+          <td style='text-align: center'>{{item.name}}</td>
+          <td style='text-align: center'>{{item.role}}</td>
+          <td style='text-align: center'>{{item.status | FormatStatus}}</td>
+          <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -41,7 +41,7 @@
         </tbody>
       </table>
       <div>
-        <div class="block">
+        <div align="center">
           <!--<span class="demonstration">调整每页显示条数</span>-->
           <el-pagination
             @size-change="handleSizeChange"

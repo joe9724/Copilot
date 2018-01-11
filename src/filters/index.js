@@ -45,9 +45,9 @@ export function formatDateBtk (date, fmt) {
 export function formatStatus (status) {
   var value = ''
   // alert(status)
-  if (status === 200) {
+  if (status === 0) {
     value = '正常'
-  } else if (status === -1) {
+  } else if (status === 1) {
     value = '锁定'
   } else if (status === -100) {
     value = '无效'

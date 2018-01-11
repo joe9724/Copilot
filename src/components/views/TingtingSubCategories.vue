@@ -14,31 +14,31 @@
       <table class="table table-bordered table-responsive table-striped">
         <thead>
         <tr>
-          <th>序号</th>
-          <th>名称</th>
-          <th>图标</th>
+          <th style='text-align: center'>序号</th>
+          <th style='text-align: center'>名称</th>
+          <th style='text-align: center'>图标</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
-          <th>专辑数</th>
+          <th style='text-align: center'>专辑数</th>
           <!--<th>播放数</th>
           <!--<th>更新提示</th>-->
           <!-- <th>播放地址</th>
            <th>顺序</th>
            <th>状态</th>
            <th>时间</th>-->
-          <th>操作</th>
+          <th style='text-align: center'>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td class="sorting_1" style="vertical-align: middle">{{index+1}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.name}}</td>
-          <td class="sorting_1" style="vertical-align: middle"><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
+          <td align="center">{{index+1}}</td>
+          <td align="center">{{item.name}}</td>
+          <td align="center"><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td class="sorting_1" style="vertical-align: middle">{{item.albums_number}}</td>
+          <td align="center">{{item.albums_number}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.clipsNumber}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
@@ -46,16 +46,16 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
-          <td class="sorting_1">
+          <td align="center">
             <el-button type="text" @click="editChildren(item.id)">子类</el-button>
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="text" @click="editCategory(item.id)">编辑</el-button>
+            <el-button type="text" @click="removeCategory(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
       </table>
       <div>
-        <div class="block">
+        <div align="center">
           <!--<span class="demonstration">调整每页显示条数</span>-->
           <el-pagination
             @size-change="handleSizeChange"
@@ -120,12 +120,12 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeCategory (id) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'user/delete?user_id=' + id + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
@@ -165,13 +165,11 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editUser (userId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
+      editCategory (id) {
+        this.$router.push({path: '/category/edit?categoryId=' + id})
       },
-      editChildren (categoryId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/subCategory/list?userid=' + categoryId})
+      editChildren (id) {
+        this.$router.push({path: '/subCategory/list?subCategoryId=' + id})
       }
     },
     created () {

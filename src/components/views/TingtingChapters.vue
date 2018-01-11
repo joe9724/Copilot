@@ -14,38 +14,38 @@
       <table class="table table-bordered table-responsive table-striped">
         <thead>
         <tr>
-          <th>序号</th>
-          <th>正标题</th>
+          <th style='text-align: center'>序号</th>
+          <th style='text-align: center'>正标题</th>
           <!--<th>icon</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
-          <th>播放量</th>
-          <th>时长</th>
+          <th style='text-align: center'>播放量</th>
+          <th style='text-align: center'>时长</th>
           <!--<th>更新提示</th>-->
           <!--<th>播放地址</th>
           <th>顺序</th>-->
-          <th>状态</th>
-          <th>时间</th>
-          <th>操作</th>
+          <th style='text-align: center'>状态</th>
+          <th style='text-align: center'>时间</th>
+          <th style='text-align: center'>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td class="sorting_1" style="vertical-align: middle">{{index+1}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.name}}</td>
+          <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{item.name}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle"><img v-bind:src="item.icon" style="width: 80px;height: 50px"/></td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td class="sorting_1" style="vertical-align: middle">{{item.playCount}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
+          <td style='text-align: center'>{{item.playCount}}</td>
+          <td style='text-align: center'>{{item.duration}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>-->
-          <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>
-          <td class="sorting_1">
+          <td style='text-align: center'>{{item.status | FormatStatus}}</td>
+          <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -53,7 +53,7 @@
         </tbody>
       </table>
       <div>
-        <div class="block">
+        <div align="center">
           <!--<span class="demonstration">调整每页显示条数</span>-->
           <el-pagination
             @size-change="handleSizeChange"

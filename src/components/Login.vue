@@ -8,12 +8,12 @@
             <form class="ui form loginForm"  @submit.prevent="checkCreds">
 
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 <input class="form-control" value="root" name="username" placeholder="Username" type="text" v-model="user_name">
               </div>
 
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <span class="input-group-addon"><i class="fa fa-key"></i></span>
                 <input class="form-control" value="root123" name="password" placeholder="Password" type="password" v-model="password">
               </div>
               <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading"> 登 录 </button>

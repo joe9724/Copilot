@@ -11,6 +11,15 @@
             <el-form-item label="图标">
               <el-input v-model="form.icon"></el-input>
             </el-form-item>
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio label="正常"></el-radio>
@@ -24,6 +33,7 @@
           </el-form>
         </div>
       </div>
+
     </section>
   </div>
 </template>
@@ -36,12 +46,31 @@
         form: {
           name: '',
           icon: '',
-          status: ''
+          status: '',
+          fileList2: [],
+          imageUrl: ''
         },
-        categoryId: 0
+        categoryId: 0,
+        fileList2: [],
+        imageUrl: ''
       }
     },
     methods: {
+      handleAvatarSuccess (res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw)
+      },
+      beforeAvatarUpload (file) {
+        const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 / 1024 < 2
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!')
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isJPG && isLt2M
+      },
       handleChange (value) {
         // console.log(value)
       },
@@ -105,6 +134,33 @@
 </script>
 
 <style>
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    display: block;
+  }
+
   .datetime-picker input {
     height: 4em !important;
   }

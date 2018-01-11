@@ -92,7 +92,7 @@
 
     <li  class="pageLink" @click="to(it.router_url)" style="cursor: pointer;" v-for="it in item.children">
       <a>
-        <i class="fa fa-desktop"></i>
+        <i class="fa fa-book"></i>
         <span class="page">{{it.name}}</span>
       </a>
     </li>
