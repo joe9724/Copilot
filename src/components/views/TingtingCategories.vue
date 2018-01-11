@@ -16,12 +16,12 @@
         <tr>
           <th>序号</th>
           <th>名称</th>
-          <th>作者</th>
+          <th>图标</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
-          <th>章节数</th>
-          <th>播放数</th>
+          <th>状态</th>
+          <!--<th>播放数</th>
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
           <th>顺序</th>
@@ -34,11 +34,12 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td class="sorting_1" style="vertical-align: middle">{{index+1}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.name}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.authorName}}</td>
+          <td class="sorting_1" style="vertical-align: middle"><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td class="sorting_1" style="vertical-align: middle">{{item.clipsNumber}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.status}}</td>
+          <!--<td class="sorting_1" style="vertical-align: middle">{{item.clipsNumber}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -47,8 +48,8 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td class="sorting_1">
             <el-button type="text" @click="editChildren(item.id)">子类</el-button>
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="text" @click="editCategory(item.id)">编辑</el-button>
+            <el-button type="text" @click="removeCategory(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -119,12 +120,12 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeCategory (id) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'user/delete?user_id=' + id + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
@@ -164,18 +165,16 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editUser (userId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
+      editCategory (id) {
+        this.$router.push({path: '/category/edit?categoryId=' + id})
       },
-      editChildren (categoryId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + categoryId})
+      editChildren (id) {
+        this.$router.push({path: '/subCategory/list?subCategoryId=' + id})
       }
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=' + this.parentId)
+      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=-1')
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.subCategoryList
