@@ -23,12 +23,13 @@
           <!--<th>大图</th>-->
           <th style='text-align: center'>会员</th>
           <th style='text-align: center'>价格</th>
+          <th style='text-align: center'>付款方式</th>
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
           <th>顺序</th>
           <th>状态</th>
           <th>时间</th>-->
-          <th style='text-align: center'>操作</th>
+          <!--<th style='text-align: center'>操作</th>-->
         </tr>
         </thead>
         <tbody>
@@ -41,16 +42,17 @@
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
           <td style='text-align: center'>{{item.memberName}}</td>
           <td style='text-align: center'>{{item.value}}</td>
+          <td style='text-align: center'><img src="/static/img/alipay.png" style="width: 20px;height:20px"></td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
-          <td style='text-align: center'>
+          <!--<td style='text-align: center'>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
-          </td>
+          </td>-->
         </tr>
         </tbody>
       </table>

@@ -166,7 +166,7 @@
       },
       editUser (userId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
+        this.$router.push({path: '/book/edit?bookId=' + userId})
       }
     },
     created () {

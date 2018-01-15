@@ -26,7 +26,7 @@
           <!--<th>播放地址</th>
           <th>顺序</th>-->
           <th style='text-align: center'>状态</th>
-          <th style='text-align: center'>时间</th>
+          <th style='text-align: center'>添加时间</th>
           <th style='text-align: center'>操作</th>
         </tr>
         </thead>
@@ -46,7 +46,8 @@
           <td style='text-align: center'>{{item.status | FormatStatus}}</td>
           <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
+            <img src="/static/img/play.png" style="width: 20px;height:20px">
+            <el-button type="text" @click="editUser(item.id)" style="margin-left: 10px">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
@@ -163,7 +164,7 @@
       },
       editUser (userId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
+        this.$router.push({path: '/chapter/edit?chapterId=' + userId})
       }
     },
     created () {

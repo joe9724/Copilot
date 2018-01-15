@@ -50,7 +50,9 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
             <el-button type="text" @click="editRelation(item.id)">书本管理</el-button>
-            <el-button type="text" @click="editAlbum(item.id)">编辑</el-button>
+            <el-button type="text" @click="sendPush(item.id,item.name)">推送</el-button>
+            <img src="/static/img/send.png" style="width: 20px;height:20px">
+            <el-button type="text" @click="editAlbum(item.id)" style="margin-left: 10px"> 编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
@@ -129,6 +131,37 @@
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
+                // reload
+                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                  .then(response => {
+                    console.log(response.data)
+                    this.arrayData = response.data.datas
+                  })
+                  .catch(error => {
+                    // this.$store.commit('TOGGLE_LOADING')
+                    console.log(error)
+                    this.response = error
+                  })
+              })
+              .catch(error => {
+                // this.$store.commit('TOGGLE_LOADING')
+                console.log(error)
+                this.response = error
+              })
+          })
+          .catch(() => {
+            this.$message.info('已取消操作!')
+          })
+      },
+      sendPush (userId, name) {
+        this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
+          .then(() => {
+            // 向请求服务端删除
+            var userid = localStorage.getItem('userid')
+            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+              .then(response => {
+                console.log(response.data)
+                this.$message.info('发送成功!')
                 // reload
                 api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
                   .then(response => {

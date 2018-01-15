@@ -45,6 +45,8 @@ import AddBookView from './components/views/TingtingAddBook.vue'
 import EditAlbumView from './components/views/TingtingEditAlbum.vue'
 import EditAlbumBookRelationView from './components/views/TingtingAlbumBookRelation.vue'
 import TingtingEditCategoryView from './components/views/TingtingEditCategory.vue'
+import EditBookView from './components/views/TingtingEditBook.vue'
+import EditChapterView from './components/views/TingtingEditChapter.vue'
 
 // Routes
 const routes = [
@@ -56,6 +58,20 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'chapter/edit',
+        alias: 'editChapter',
+        component: EditChapterView,
+        name: '编辑章节',
+        meta: {description: 'EditChapterView'}
+      },
+      {
+        path: 'book/edit',
+        alias: 'editBook',
+        component: EditBookView,
+        name: '编辑书本',
+        meta: {description: 'EditBookView'}
+      },
       {
         path: 'category/edit',
         alias: 'editCategory',

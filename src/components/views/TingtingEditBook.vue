@@ -12,14 +12,15 @@
               <el-input v-model="form.subTitle"></el-input>
             </el-form-item>
             <el-form-item label="简介">
-              <el-input v-model="form.summary"></el-input>
+              <el-input v-model="form.summary" type="textarea"
+                        :autosize="{ minRows: 10, maxRows: 30}"></el-input>
             </el-form-item>
             <!--<el-form-item label="描述">
               <el-input v-model="form.content"></el-input>
             </el-form-item>-->
-            <el-form-item label="定价">
+            <!--<el-form-item label="定价">
               <el-input-number v-model="form.price" @change="handleChange" :min="1" :max="10000" label="改变价格"></el-input-number>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item label="小图">
            <!-- <el-input v-model="form.name"></el-input>--><img v-bind:src=form.icon style="width: 60px;height:80px">
           </el-form-item>
@@ -63,7 +64,7 @@
           price: ''
         },
         num1: 1,
-        albumId: 0,
+        bookId: 0,
         icon: ''
       }
     },
@@ -110,13 +111,13 @@
     created () {
       // alert('created!')
       //
-      var albumId = '0'
-      if (this.$route.query.albumId) {
-        albumId = this.$route.query.albumId
-        this.albumId = this.$route.query.albumId
+      var bookId = '0'
+      if (this.$route.query.bookId) {
+        bookId = this.$route.query.bookId
+        this.bookId = this.$route.query.bookId
       }
       // console.log('currentUserId is' + currentUserId)
-      api.request('get', 'album/detail?userid=1&albumId=' + albumId)
+      api.request('get', 'book/detail?userid=1&bookId=' + bookId)
         .then(response => {
           var data = response.data.body.data
           // this.form.pass = '******'

@@ -11,15 +11,20 @@
             <el-form-item label="副标题">
               <el-input v-model="form.subTitle"></el-input>
             </el-form-item>
+            <el-form-item label="文件">
+              <img src="/static/img/play.png" style="width: 20px;height:20px"><el-input v-model="form.url"></el-input>
+            </el-form-item>
+
             <el-form-item label="简介">
-              <el-input v-model="form.summary"></el-input>
+              <el-input v-model="form.summary" type="textarea"
+                        :autosize="{ minRows: 10, maxRows: 30}"></el-input>
             </el-form-item>
             <!--<el-form-item label="描述">
               <el-input v-model="form.content"></el-input>
             </el-form-item>-->
-            <el-form-item label="定价">
+            <!--<el-form-item label="定价">
               <el-input-number v-model="form.price" @change="handleChange" :min="1" :max="10000" label="改变价格"></el-input-number>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item label="小图">
            <!-- <el-input v-model="form.name"></el-input>--><img v-bind:src=form.icon style="width: 60px;height:80px">
           </el-form-item>
@@ -63,7 +68,7 @@
           price: ''
         },
         num1: 1,
-        albumId: 0,
+        chapterId: 0,
         icon: ''
       }
     },
@@ -110,13 +115,13 @@
     created () {
       // alert('created!')
       //
-      var albumId = '0'
-      if (this.$route.query.albumId) {
-        albumId = this.$route.query.albumId
-        this.albumId = this.$route.query.albumId
+      var chapterId = '0'
+      if (this.$route.query.chapterId) {
+        chapterId = this.$route.query.chapterId
+        this.chapterId = this.$route.query.chapterId
       }
       // console.log('currentUserId is' + currentUserId)
-      api.request('get', 'album/detail?userid=1&albumId=' + albumId)
+      api.request('get', 'chapter/detail?userid=1&chapterId=' + chapterId)
         .then(response => {
           var data = response.data.body.data
           // this.form.pass = '******'
@@ -125,6 +130,7 @@
           this.form.price = data.value
           this.form.summary = data.summary
           this.form.icon = data.icon
+          this.form.url = data.url
           if (data.status === 0) {
             this.form.status = '正常'
           } else {
