@@ -2,43 +2,18 @@
   <section class="content">
 
     <div class="row center-block" style="background: #ffffff">
-      <div id="example1_length" class="dataTables_length">
-        <div style="clear:both">
-          <div style="display:inline-block">
-            <el-input v-model="input" placeholder="请输入书名关键字"></el-input>
-          </div>
-          <div style="display:inline-block">
-            <el-button type="primary" icon="el-icon-search" @click="dialogTableVisible = true">从书库中搜索添加</el-button>
+      <div style="float:left;width: 40%;margin-left: 10px">
+        <div style="margin-top: 15px;">
+          <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
 
-          </div>
+            <el-button slot="append" icon="el-icon-search">搜索</el-button>
+          </el-input>
         </div>
-        <el-dialog title="搜索" :visible.sync="dialogTableVisible">
-          <el-table :data="gridData">
-            <el-table-column property="date" label="日期" width="150"></el-table-column>
-            <el-table-column property="name" label="姓名" width="200"></el-table-column>
-            <el-table-column property="address" label="地址"></el-table-column>
-          </el-table>
-        </el-dialog>
-
-
-      </div>
-      <table class="table table-bordered table-responsive table-striped">
+        <table class="table table-bordered table-responsive table-striped">
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
           <th style='text-align: center'>书名</th>
-          <th style='text-align: center'>图标</th>
-          <th style='text-align: center'>作者</th>
-          <!--<th>副标题</th>-->
-          <!--<th>是否显示icon</th>-->
-          <!--<th>大图</th>-->
-          <th style='text-align: center'>章节数</th>
-          <th style='text-align: center'>播放数</th>
-          <!--<th>更新提示</th>-->
-          <!-- <th>播放地址</th>
-           <th>顺序</th>
-           <th>状态</th>
-           <th>时间</th>-->
           <th style='text-align: center'>操作</th>
         </tr>
         </thead>
@@ -46,20 +21,7 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>
-          <td style='text-align: center'>{{item.authorName}}</td>
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td style='text-align: center'>{{item.clipsNumber}}</td>
-          <td style='text-align: center'>{{item.playCount}}</td>
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
-          &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
-          <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
-          <td style='text-align: center'>
+          <td style='text-align: center;height: 50px'>
             <el-button type="text">上移</el-button>
             <el-button type="text">下移</el-button>
             <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
@@ -68,20 +30,73 @@
         </tr>
         </tbody>
       </table>
-      <div>
-        <div align="center">
-          <!--<span class="demonstration">调整每页显示条数</span>-->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
-            layout="prev, pager, next"
-            :total="totalCount">
-          </el-pagination>
+        <div>
+          <div align="center">
+            <!--<span class="demonstration">调整每页显示条数</span>-->
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="10"
+              layout="prev, pager, next"
+              :total="totalCount">
+            </el-pagination>
+          </div>
         </div>
       </div>
+      <div style="float:left;height: 700px;" id="myoutercontainer" >
+        <div   id="myinnercontainer">
+          <div style="margin-left: 10px;margin-right: 10px"><img src="/static/img/left.png" style="width: 30px;height:30px"></div>
+          <br>
+          <div style="margin-left: 10px;margin-right: 10px"><img src="/static/img/right.png" style="width: 30px;height:30px"></div>
+        </div>
+      </div>
+      <div style="float:left;width: 40%;margin-left:50px">
+        <div style="margin-top: 15px;">
+          <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+
+            <el-button slot="append" icon="el-icon-search">搜索</el-button>
+          </el-input>
+        </div>
+        <table class="table table-bordered table-responsive table-striped">
+        <thead>
+        <tr>
+          <th style='text-align: center'>序号</th>
+          <th style='text-align: center'>书名</th>
+          <th style='text-align: center'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
+          <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{item.name}}</td>
+          <td style='text-align: center;height: 50px'>
+            <el-checkbox v-model="checked"></el-checkbox>
+            <!--<el-button type="text">上移</el-button>
+            <el-button type="text">下移</el-button>
+            <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>-->
+            <!--<el-button type="text" @click="removeUser(item.id)">左移</el-button>-->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+        <div>
+          <div align="center">
+            <!--<span class="demonstration">调整每页显示条数</span>-->
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="10"
+              layout="prev, pager, next"
+              :total="totalCount">
+            </el-pagination>
+          </div>
+        </div></div>
+
       <!-- /.box-body -->
     </div>
 
@@ -254,4 +269,12 @@
   table.dataTable thead .sorting_desc:after {
     content: "\f0de";
   }
+  .el-select .el-input {
+    width: 130px;
+  }
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+  #myoutercontainer { position:relative }
+  #myinnercontainer { position:absolute; top:50%; height:10em; margin-top:-5em }
 </style>
