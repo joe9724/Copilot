@@ -3,12 +3,12 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div style="float:left;width: 40%;margin-left: 10px">
-        <div style="margin-top: 15px;">
+     <!--   <div style="margin-top: 15px;">
           <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
 
             <el-button slot="append" icon="el-icon-search">搜索</el-button>
           </el-input>
-        </div>
+        </div>-->
         <table class="table table-bordered table-responsive table-striped">
         <thead>
         <tr>
@@ -47,7 +47,7 @@
       </div>
       <div style="float:left;height: 700px;" id="myoutercontainer" >
         <div   id="myinnercontainer">
-          <div style="margin-left: 10px;margin-right: 10px"><img src="/static/img/left.png" style="width: 30px;height:30px"></div>
+          <div style="margin-left: 10px;margin-right: 10px" @onclick="moveLeft"><img src="/static/img/left.png" style="width: 30px;height:30px" ></div>
           <br>
           <div style="margin-left: 10px;margin-right: 10px"><img src="/static/img/right.png" style="width: 30px;height:30px"></div>
         </div>
@@ -55,47 +55,14 @@
       <div style="float:left;width: 40%;margin-left:50px">
         <div style="margin-top: 15px;">
           <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-
-            <el-button slot="append" icon="el-icon-search">搜索</el-button>
+            <el-button slot="append" icon="el-icon-search" @click="search">搜索111</el-button>
           </el-input>
+          <el-button type="primary" @click="moveLeft">主要按钮</el-button>
         </div>
-        <table class="table table-bordered table-responsive table-striped">
-        <thead>
-        <tr>
-          <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>书名</th>
-          <th style='text-align: center'>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td style='text-align: center'>{{index+1}}</td>
-          <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center;height: 50px'>
-            <el-checkbox v-model="checked"></el-checkbox>
-            <!--<el-button type="text">上移</el-button>
-            <el-button type="text">下移</el-button>
-            <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>-->
-            <!--<el-button type="text" @click="removeUser(item.id)">左移</el-button>-->
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-        <div>
-          <div align="center">
-            <!--<span class="demonstration">调整每页显示条数</span>-->
-            <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page.sync="currentPage"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size="10"
-              layout="prev, pager, next"
-              :total="totalCount">
-            </el-pagination>
-          </div>
-        </div></div>
+        <el-checkbox-group   v-for="item in searchData" v-model="checkList" >
+          <el-checkbox :label="item.name" ></el-checkbox>
+        </el-checkbox-group>
+      </div>
 
       <!-- /.box-body -->
     </div>
@@ -139,31 +106,41 @@
         showPageEnd: 100,
         // 分页数据
         arrayData: [],
+        searchData: [],
         // 删除确认框
         dialogVisible: false,
-        gridData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
-        dialogTableVisible: false
+        dialogTableVisible: false,
+        checkList: [],
+        input5: ''
       }
     },
     methods: {
+      search () {
+        // var userid = localStorage.getItem('userid')
+        var albumId = '0'
+        if (this.$route.query.albumId) {
+          albumId = this.$route.query.albumId
+          this.albumId = this.$route.query.albumId
+        }
+        var keyvalue = this.input5
+        if (keyvalue.length === 0) {
+          keyvalue = ' '
+        }
+        api.request('get', 'book/list?type=1&userid=1&pageSize=12&pageIndex=1&keyword=' + keyvalue + '&albumId=' + albumId)
+          .then(response => {
+            this.searchData = response.data.body.bookList
+          })
+          .catch(error => {
+            console.log(error)
+            this.response = 'Server appears to be offline'
+          })
+      },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
+      },
+      moveLeft () {
+        // alert('ok')
+        alert(this.checkList)
       },
       removeUser (userId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
@@ -216,19 +193,17 @@
       }
     },
     created () {
+      var albumId = '0'
+      if (this.$route.query.albumId) {
+        albumId = this.$route.query.albumId
+        this.albumId = this.$route.query.albumId
+      }
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=1')
+      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=1&albumId=' + albumId)
         .then(response => {
-          console.log(response.data)
           this.arrayData = response.data.body.bookList
-          for (var i = 0; i < this.arrayData.length; i++) {
-            this.arrayData.time = formatDateBtk(this.arrayData.time)
-            // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
-            console.log()
-          }
         })
         .catch(error => {
-          // this.$store.commit('TOGGLE_LOADING')
           console.log(error)
           this.response = 'Server appears to be offline'
         })
