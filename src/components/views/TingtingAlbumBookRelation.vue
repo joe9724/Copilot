@@ -3,33 +3,33 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div style="float:left;width: 40%;margin-left: 10px">
-     <!--   <div style="margin-top: 15px;">
-          <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
+        <!--   <div style="margin-top: 15px;">
+             <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
 
-            <el-button slot="append" icon="el-icon-search">搜索</el-button>
-          </el-input>
-        </div>-->
-        <table class="table table-bordered table-responsive table-striped">
-        <thead>
-        <tr>
-          <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>书名</th>
-          <th style='text-align: center'>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td style='text-align: center'>{{index+1}}</td>
-          <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center;height: 50px'>
-            <el-button type="text">上移</el-button>
-            <el-button type="text">下移</el-button>
-            <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">移除</el-button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+               <el-button slot="append" icon="el-icon-search">搜索</el-button>
+             </el-input>
+           </div>-->
+        <table class="table table-bordered table-responsive table-striped" style="margin-top: 15px">
+          <thead>
+          <tr>
+            <th style='text-align: center'>序号</th>
+            <th style='text-align: center'>书名</th>
+            <th style='text-align: center'>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
+            <td style='text-align: center'>{{index + 1}}</td>
+            <td style='text-align: center'>{{item.name}}</td>
+            <td style='text-align: center;height: 50px'>
+              <el-button type="text">上移</el-button>
+              <el-button type="text">下移</el-button>
+              <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
+              <el-button type="text" @click="removeBookFromAlbum(item.id)">移除</el-button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
         <div>
           <div align="center">
             <!--<span class="demonstration">调整每页显示条数</span>-->
@@ -45,23 +45,28 @@
           </div>
         </div>
       </div>
-      <div style="float:left;height: 700px;" id="myoutercontainer" >
-        <div   id="myinnercontainer">
-          <div style="margin-left: 10px;margin-right: 10px" @onclick="moveLeft"><img src="/static/img/left.png" style="width: 30px;height:30px" ></div>
+      <div style="float:left;height: 700px;" id="myoutercontainer">
+        <div id="myinnercontainer">
+          <!--<div style="margin-left: 10px;margin-right: 10px" @onclick="moveLeft"><img src="/static/img/left.png"
+                                                                                     style="width: 30px;height:30px">
+          </div>
           <br>
-          <div style="margin-left: 10px;margin-right: 10px"><img src="/static/img/right.png" style="width: 30px;height:30px"></div>
+          <div style="margin-left: 10px;margin-right: 10px"><img src="/static/img/right.png"
+                                                                 style="width: 30px;height:30px"></div>-->
+
         </div>
       </div>
       <div style="float:left;width: 40%;margin-left:50px">
         <div style="margin-top: 15px;">
           <el-input placeholder="请输入内容" v-model="input5" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search" @click="search">搜索111</el-button>
+            <el-button slot="append" icon="el-icon-search" @click="search">搜索</el-button>
           </el-input>
-          <el-button type="primary" @click="moveLeft">主要按钮</el-button>
+
         </div>
-        <el-checkbox-group   v-for="item in searchData" v-model="checkList" >
-          <el-checkbox :label="item.name" ></el-checkbox>
+        <el-checkbox-group v-for="item in searchData" v-model="checkList">
+          <el-checkbox :label="item.name" :value="item.id"></el-checkbox>
         </el-checkbox-group>
+        <el-button type="primary" @click="moveLeft">添加选中书本到专辑</el-button>
       </div>
 
       <!-- /.box-body -->
@@ -73,7 +78,8 @@
 <script>
   // import $ from 'jquery'
   import api from '../../api'
-  import {formatDateBtk, formatStatus} from '../../filters/index.js'
+  import { formatDateBtk, formatStatus } from '../../filters/index.js'
+
   export default {
     filters: {
       BTKformatDate (time) {
@@ -140,31 +146,67 @@
       },
       moveLeft () {
         // alert('ok')
-        alert(this.checkList)
+        var booksId = ''
+        for (var i = 0; i < this.checkList.length; i++) {
+          for (var k = 0; k < this.searchData.length; k++) {
+            if (this.checkList[i] === this.searchData[k].name) {
+              if (booksId === '') {
+                booksId = this.searchData[k].id + ''
+              } else {
+                booksId = booksId + ',' + this.searchData[k].id
+              }
+            }
+          }
+        }
+        // alert(booksId)
+        // 提交
+        var albumId = 0
+        if (this.$route.query.albumId) {
+          albumId = this.$route.query.albumId
+          this.albumId = this.$route.query.albumId
+        }
+        console.log(albumId)
+        var params = {
+          'albumId': Number(albumId),
+          'actionCode': 0,
+          'bookIds': booksId
+        }
+        api.request('post', '/relation/album/booklist/edit', params)
+          .then(response => {
+            // var data = response.data
+            // alert(JSON.stringify(data))
+            this.search()
+            this.init()
+          })
+          .catch(error => {
+            console.log(error)
+            this.response = error
+          })
       },
-      removeUser (userId) {
+      removeBookFromAlbum (bookId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
+            var albumId = 0
+            if (this.$route.query.albumId) {
+              albumId = this.$route.query.albumId
+              this.albumId = this.$route.query.albumId
+            }
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            var params = {
+              'userId': userid,
+              'albumId': Number(albumId),
+              'actionCode': 1,
+              'bookIds': bookId + ''
+            }
+            api.request('post', '/relation/album/booklist/edit', params)
               .then(response => {
-                console.log(response.data)
-                this.$message.info('删除成功!')
-                // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
-                  .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
-                  })
-                  .catch(error => {
-                    // this.$store.commit('TOGGLE_LOADING')
-                    console.log(error)
-                    this.response = error
-                  })
+                // var data = response.data
+                // alert(JSON.stringify(data))
+                this.search()
+                this.init()
               })
               .catch(error => {
-                // this.$store.commit('TOGGLE_LOADING')
                 console.log(error)
                 this.response = error
               })
@@ -176,7 +218,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
@@ -190,23 +232,27 @@
       editUser (userId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
         this.$router.push({path: '/user/edit?userid=' + userId})
+      },
+      init () {
+        // alert('init')
+        var albumId = '0'
+        if (this.$route.query.albumId) {
+          albumId = this.$route.query.albumId
+          this.albumId = this.$route.query.albumId
+        }
+        // var userid = localStorage.getItem('userid')
+        api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=1&albumId=' + albumId)
+          .then(response => {
+            this.arrayData = response.data.body.bookList
+          })
+          .catch(error => {
+            console.log(error)
+            this.response = 'Server appears to be offline'
+          })
       }
     },
     created () {
-      var albumId = '0'
-      if (this.$route.query.albumId) {
-        albumId = this.$route.query.albumId
-        this.albumId = this.$route.query.albumId
-      }
-      // var userid = localStorage.getItem('userid')
-      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=1&albumId=' + albumId)
-        .then(response => {
-          this.arrayData = response.data.body.bookList
-        })
-        .catch(error => {
-          console.log(error)
-          this.response = 'Server appears to be offline'
-        })
+      this.init()
     },
     mounted () {
       // this.showPage(this.pageCurrent, null, true)
@@ -244,12 +290,23 @@
   table.dataTable thead .sorting_desc:after {
     content: "\f0de";
   }
+
   .el-select .el-input {
     width: 130px;
   }
+
   .input-with-select .el-input-group__prepend {
     background-color: #fff;
   }
-  #myoutercontainer { position:relative }
-  #myinnercontainer { position:absolute; top:50%; height:10em; margin-top:-5em }
+
+  #myoutercontainer {
+    position: relative
+  }
+
+  #myinnercontainer {
+    position: absolute;
+    top: 50%;
+    height: 10em;
+    margin-top: -5em
+  }
 </style>

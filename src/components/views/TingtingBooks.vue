@@ -16,7 +16,7 @@
         <tr>
           <th style='text-align: center'>序号</th>
           <th style='text-align: center'>书名</th>
-          <th style='text-align: center'>图标</th>
+          <!--<th style='text-align: center'>图标</th>-->
           <th style='text-align: center'>作者</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
@@ -35,7 +35,7 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>
+          <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>-->
           <td style='text-align: center'>{{item.authorName}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
@@ -49,6 +49,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
+            <el-button type="text" @click="editRelation(item.id)">章节管理</el-button>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -116,6 +117,10 @@
       }
     },
     methods: {
+      editRelation (albumId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/album/book/relation?albumId=' + albumId})
+      },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
