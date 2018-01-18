@@ -42,7 +42,7 @@ import TingtingEditCategoryView from './components/views/TingtingEditCategory.vu
 import EditBookView from './components/views/TingtingEditBook.vue'
 import EditChapterView from './components/views/TingtingEditChapter.vue'
 import EditBookChapterRelationView from './components/views/TingtingBookChapterRelation.vue'
-
+import RechargeListView from './components/views/TingtingRechargeList.vue'
 // Routes
 const routes = [
   {
@@ -53,6 +53,13 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'recharge/list',
+        alias: 'rechargelist',
+        component: RechargeListView,
+        name: '充值列表',
+        meta: {description: 'RechargeListView'}
+      },
       {
         path: 'chapter/edit',
         alias: 'editChapter',
