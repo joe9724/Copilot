@@ -10,15 +10,9 @@ import SettingView from './components/views/Setting.vue'
 import AccessView from './components/views/Access.vue'
 import ServerView from './components/views/Server.vue'
 import ReposView from './components/views/Repos.vue'
-import MyDeviceView from './components/views/MyDevices.vue'
 import CurveView from './components/views/Curve.vue'
 import AmapView from './components/views/Amap.vue'
 import EchartView from './components/views/Echart.vue'
-import AirView from './components/views/Air.vue'
-import OrgView from './components/views/Org.vue'
-import AddOrgView from './components/views/AddOrg.vue'
-import DeviceListView from './components/views/DeviceList.vue'
-import TestTablePagingView from './components/views/TestTablePaging.vue'
 import UploadView from './components/views/Upload.vue'
 import UsersView from './components/views/TingtingUsers.vue'
 import EditUserView from './components/views/EditUser.vue'
@@ -47,6 +41,7 @@ import EditAlbumBookRelationView from './components/views/TingtingAlbumBookRelat
 import TingtingEditCategoryView from './components/views/TingtingEditCategory.vue'
 import EditBookView from './components/views/TingtingEditBook.vue'
 import EditChapterView from './components/views/TingtingEditChapter.vue'
+import EditBookChapterRelationView from './components/views/TingtingBookChapterRelation.vue'
 
 // Routes
 const routes = [
@@ -78,6 +73,13 @@ const routes = [
         component: TingtingEditCategoryView,
         name: '编辑类别信息',
         meta: {description: 'TingtingEditCategoryView'}
+      },
+      {
+        path: 'book/chapter/relation',
+        alias: 'bookchapterrelation',
+        component: EditBookChapterRelationView,
+        name: '编辑书本-章节对应关系',
+        meta: {description: 'EditBookChapterRelationView'}
       },
       {
         path: 'album/book/relation',
@@ -255,27 +257,6 @@ const routes = [
         meta: {description: 'UploadView'}
       },
       {
-        path: 'testtablepaging',
-        alias: 'testtablepaging_alias',
-        component: TestTablePagingView,
-        name: 'TestTablePagingName',
-        meta: {description: 'TestTablePagingView'}
-      },
-      {
-        path: 'deviceList',
-        alias: 'devicelist_alias',
-        component: DeviceListView,
-        name: '设备管理',
-        meta: {description: 'devicelist'}
-      },
-      {
-        path: 'air',
-        alias: 'air_alias',
-        component: AirView,
-        name: 'airView',
-        meta: {description: 'air'}
-      },
-      {
         path: 'echart',
         alias: 'echart_alias',
         component: EchartView,
@@ -295,27 +276,6 @@ const routes = [
         component: CurveView,
         name: 'CurveView',
         meta: {description: '曲线图'}
-      },
-      {
-        path: 'deviceManager',
-        alias: '我的设备',
-        component: MyDeviceView,
-        name: '我的设备',
-        meta: {description: '我的设备'}
-      },
-      {
-        path: 'agencyList',
-        alias: 'org_alias',
-        component: OrgView,
-        name: '组织机构',
-        meta: {description: '组织机构'}
-      },
-      {
-        path: 'addorg',
-        alias: 'addorg_alias',
-        component: AddOrgView,
-        name: 'AddOrgView',
-        meta: {description: '添加组织机构'}
       },
       {
         path: 'dashboard',

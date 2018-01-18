@@ -49,7 +49,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="text" @click="editRelation(item.id)">章节管理</el-button>
+            <el-button type="text" @click="editRelation(item.id)">章节管理111</el-button>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -117,9 +117,9 @@
       }
     },
     methods: {
-      editRelation (albumId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/album/book/relation?albumId=' + albumId})
+      editRelation (bookId) {
+        // alert(bookId)
+        this.$router.push({path: '/book/chapter/relation?bookId=' + bookId})
       },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)

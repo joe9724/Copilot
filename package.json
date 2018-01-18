@@ -34,6 +34,7 @@
     "vue-echarts": "^2.4.1",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.2.0",
+    "vueditor": "^0.3.1",
     "vuex": "^2.0.0",
     "vuex-router-sync": "^4.1.2",
     "zrender": "^3.6.3"

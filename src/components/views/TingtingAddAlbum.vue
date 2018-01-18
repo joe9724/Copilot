@@ -17,6 +17,7 @@
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
             </el-form-item>
+            <Vueditor></Vueditor>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">确定</el-button>
               <!--<el-button>确定</el-button>-->
