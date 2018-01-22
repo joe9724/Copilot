@@ -9,7 +9,7 @@
               <el-input v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="作者">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.author"></el-input>
             </el-form-item>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
@@ -42,40 +42,32 @@
           type: [],
           resource: '',
           desc: '',
-          status: ''
+          status: '',
+          author: ''
         }
       }
     },
     methods: {
       onSubmit () {
-        // this.$router.push('/org')
-        // console.log('submit!')
-        console.log('name is' + this.form.agentName)
         var userid = localStorage.getItem('userid')
-        var params = {
-          'operator_id': userid,
-          'agency_id': '123',
-          'agency_name': this.form.agentName,
-          'contact_name': this.form.contactName,
-          'contact_number': this.form.contactNumber,
-          'contact_addr': this.form.contactAddr,
-          'status': this.form.status === '正常' ? 200 : -1
+        console.log(userid)
+        let formData = new FormData()
+        formData.append('name', this.form.name)
+        if (this.form.status === '正常') {
+          formData.append('status', Number(0))
+        } else {
+          formData.append('status', Number(1))
         }
-        api.request('post', 'agency/add', params)
+        formData.append('subTitle', this.form.name)
+        formData.append('title', this.form.name)
+        formData.append('summary', this.form.content)
+        // formData.append('file', this.file)
+
+        api.requestForm('post', 'book/upload', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
-            if (data.status !== 200) {
-              console.log('2')
-              this.response = data.message
-              return
-            }
-            if (data.status === 0) {
-              console.log('4')
-              this.response = data.message
-              this.$router.push('/agencyList')
-              // console.log('path is' + JSON.stringify(data.data.paths[0].children[0].path))
-            }
+            alert('ok')
           })
           .catch(error => {
             console.log(error)

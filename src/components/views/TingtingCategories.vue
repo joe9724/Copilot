@@ -3,7 +3,7 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/user/add">
+        <router-link  class="pageLink" to="/category/add">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加类目</el-button></span>
 
@@ -125,12 +125,12 @@
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + id + '&operator_id=' + userid)
+            api.request('get', 'category/delete?categoryId=' + id + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=-1')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.datas

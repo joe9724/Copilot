@@ -81,7 +81,7 @@
             <hr class="visible-xs-block">
             <div class="col-sm-6 col-xs-12">
               <p class="text-center">
-                <strong>Language Overview</strong>
+                <strong>近期热门Top3</strong>
               </p>
               <canvas id="languagePie"></canvas>
             </div>
@@ -242,7 +242,7 @@ export default {
       var pieConfig = {
         type: 'pie',
         data: {
-          labels: ['HTML', 'JavaScript', 'CSS'],
+          labels: ['红楼梦', '西游记', '围城'],
           datasets: [{
             data: [56.6, 37.7, 4.1],
             backgroundColor: ['#00a65a', '#f39c12', '#00c0ef'],

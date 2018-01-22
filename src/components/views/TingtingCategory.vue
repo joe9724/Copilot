@@ -3,9 +3,9 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/chapter/add">
+        <router-link  class="pageLink" to="/album/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加章节</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加专辑</el-button></span>
 
           </a>
         </router-link>
@@ -15,18 +15,19 @@
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>正标题</th>
-          <!--<th>icon</th>
+          <th style='text-align: center'>专辑名</th>
+          <th style='text-align: center'>图标</th>
+          <th style='text-align: center'>书本数</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
-          <th style='text-align: center'>播放量</th>
-          <th style='text-align: center'>时长</th>
+          <th style='text-align: center'>播放数</th>
+          <th style='text-align: center'>价格</th>
           <!--<th>更新提示</th>-->
-          <!--<th>播放地址</th>
-          <th>顺序</th>-->
-          <th style='text-align: center'>状态</th>
-          <th style='text-align: center'>添加时间</th>
+         <!-- <th>播放地址</th>
+          <th>顺序</th>
+          <th>状态</th>
+          <th>时间</th>-->
           <th style='text-align: center'>操作</th>
         </tr>
         </thead>
@@ -34,21 +35,25 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
-          <!--<td class="sorting_1" style="vertical-align: middle"><img v-bind:src="item.icon" style="width: 80px;height: 50px"/></td>
+          <td style='text-align: center'><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
+          <td style='text-align: center'>{{item.booksNumber}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
           <td style='text-align: center'>{{item.playCount}}</td>
-          <td style='text-align: center'>{{item.duration}}</td>
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>-->
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>-->
-          <td style='text-align: center'>{{item.status | FormatStatus}}</td>
-          <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'>{{item.value}}</td>
+          <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
+          &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
+          <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <img src="/static/img/play.png" style="width: 20px;height:20px">
-            <el-button type="text" @click="editUser(item.id)" style="margin-left: 10px">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="text" @click="editRelation(item.id)">书本管理</el-button>
+            <el-button type="text" @click="sendPush(item.id,item.name)">推送</el-button>
+            <img src="/static/img/send.png" style="width: 20px;height:20px">
+            <el-button type="text" @click="editAlbum(item.id)" style="margin-left: 10px"> 编辑</el-button>
+            <el-button type="text" @click="removeCategory(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -117,15 +122,46 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeCategory (categoryId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
+          .then(() => {
+            // 向请求服务端删除
+            var userid = localStorage.getItem('userid')
+            api.request('get', 'category/delete?categoryId=' + categoryId + '&operator_id=' + userid)
+              .then(response => {
+                console.log(response.data)
+                this.$message.info('删除成功!')
+                // reload
+                api.request('get', 'category/list?operator_id=' + userid + '&page=1&size=10')
+                  .then(response => {
+                    console.log(response.data)
+                    this.arrayData = response.data.datas
+                  })
+                  .catch(error => {
+                    // this.$store.commit('TOGGLE_LOADING')
+                    console.log(error)
+                    this.response = error
+                  })
+              })
+              .catch(error => {
+                // this.$store.commit('TOGGLE_LOADING')
+                console.log(error)
+                this.response = error
+              })
+          })
+          .catch(() => {
+            this.$message.info('已取消操作!')
+          })
+      },
+      sendPush (userId, name) {
+        this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
             api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
-                this.$message.info('删除成功!')
+                this.$message.info('发送成功!')
                 // reload
                 api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
                   .then(response => {
@@ -151,10 +187,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'user/list?operator_id=' + userid + '&page=' + val + '&size=10')
+        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.datas
+            this.arrayData = response.data.body.bookList
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -162,17 +198,21 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editUser (userId) {
+      editAlbum (albumId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/chapter/edit?chapterId=' + userId})
+        this.$router.push({path: '/album/edit?albumId=' + albumId})
+      },
+      editRelation (albumId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/album/book/relation?albumId=' + albumId})
       }
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'chapter/list?userid=1&pageSize=12&pageIndex=1')
+      api.request('get', 'album/list?userid=1&pageSize=12&pageIndex=1')
         .then(response => {
           console.log(response.data)
-          this.arrayData = response.data.body.chapters
+          this.arrayData = response.data.body.albumList
           for (var i = 0; i < this.arrayData.length; i++) {
             this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)

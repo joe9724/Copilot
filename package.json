@@ -32,6 +32,7 @@
     "vue-data-tables": "^2.1.1",
     "vue-date-picker": "^1.0.2",
     "vue-echarts": "^2.4.1",
+    "vue-quill-editor": "^3.0.4",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.2.0",
     "vueditor": "^0.3.1",

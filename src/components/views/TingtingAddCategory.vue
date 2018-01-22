@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="text-center">添加专辑</h5>
+    <h5 class="text-center">添加大类</h5>
     <section class="content">
       <div class="row">
         <div class="col-md-12">
@@ -8,15 +8,14 @@
             <el-form-item label="名称">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="定价">
-              <el-input-number v-model="form.value" @change="handleChange" :min="1" :max="10000" label="改变价格"></el-input-number>
-            </el-form-item>
+
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio label="正常"></el-radio>
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
             </el-form-item>
+
             <!-- bidirectional data binding（双向数据绑定） -->
             <el-form-item label="内容">
               <quill-editor ref="myTextEditor"
@@ -79,6 +78,10 @@
         console.log('editor ready!', editor)
       },
       onSubmit () {
+        // alert(this.content)
+        // this.$router.push('/org')
+        // console.log('submit!')
+        console.log('name is' + this.form.agentName)
         var userid = localStorage.getItem('userid')
         console.log(userid)
         let formData = new FormData()
@@ -90,10 +93,9 @@
         }
         formData.append('subTitle', this.form.name)
         formData.append('title', this.form.name)
-        formData.append('summary', this.form.content)
         // formData.append('file', this.file)
 
-        api.requestForm('post', 'album/upload', formData)
+        api.requestForm('post', 'category/upload', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
