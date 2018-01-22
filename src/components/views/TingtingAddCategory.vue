@@ -47,11 +47,11 @@
 </template>
 <script>
   import api from '../../api'
-  import quillRedefine from 'vue-quill-editor-upload'
-  import quillEditor from 'vue-quill-editor'
+  import {quillRedefine} from 'vue-quill-editor-upload'
+  import {quillEditor} from 'vue-quill-editor'
 
   export default {
-    components: [quillRedefine, quillEditor], //, quillRedefine,
+    components: {quillEditor, quillRedefine},
     data () {
       return {
         editorOption: {},  // 必须初始化为对象 init  to Object
@@ -153,7 +153,7 @@
         {
           // 图片上传的设置
           uplpadConfig: {
-            action: '',  // 必填参数 图片上传地址
+            action: 'http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',  // 必填参数 图片上传地址
             // 必选参数  res是一个函数，函数接收的response为上传成功时服务器返回的数据
             // 你必须把返回的数据中所包含的图片地址 return 回去
             res: (response) => {
@@ -161,7 +161,7 @@
             },
             methods: 'POST',  // 可选参数 图片上传方式  默认为post
             token: sessionStorage.token,  // 可选参数 如果需要token验证，假设你的token有存放在sessionStorage
-            name: 'img',  // 可选参数 文件的参数名 默认为img
+            name: 'file',  // 可选参数 文件的参数名 默认为img
             size: 500,  // 可选参数   图片限制大小，单位为Kb, 1M = 1024Kb
             accept: 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon',  // 可选参数 可上传的图片格式
             // input点击事件  formData是提交的表单实体
@@ -183,7 +183,7 @@
             }  // 可选参数 接收一个函数 上传数据中断时会触发
           },
           // 以下所有设置都和vue-quill-editor本身所对应
-          placeholder: '请输入内容',  // 可选参数 富文本框内的提示语
+          placeholder: '请',  // 可选参数 富文本框内的提示语
           theme: 'snow',  // 可选参数 富文本编辑器的风格
           toolOptions: [],  // 可选参数  选择工具栏的需要哪些功能  默认是全部
           handlers: {}  // 可选参数 重定义的事件，比如link等事件
