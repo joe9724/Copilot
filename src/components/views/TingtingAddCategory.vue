@@ -15,7 +15,19 @@
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
             </el-form-item>
-
+            <el-form-item label="图片">
+              <el-upload
+                class="upload-demo"
+                action="http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
+                :on-preview="handlePreview"
+                :on-success="successUpload"
+                :on-remove="handleRemove"
+                :file-list="fileList2"
+                list-type="picture">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
+            </el-form-item>
             <!-- bidirectional data binding（双向数据绑定） -->
             <el-form-item label="内容">
               <quill-editor ref="myTextEditor"
@@ -53,10 +65,19 @@
           resource: '',
           desc: '',
           status: '',
-          content: ''
+          content: '',
+          fileList2: [{
+            name: 'food.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }]
         },
+        fileList2: [{
+          name: 'food.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }],
         name: '01-example',
-        content: ''
+        content: '',
+        imgUrl: ''
       }
     },
     computed: {
@@ -68,6 +89,18 @@
       }
     },
     methods: {
+      successUpload (response, file, fileList) {
+        console.log('response is ' + JSON.stringify(response))
+        this.imgUrl = response.body.url
+        console.log(this.imgUrl)
+      },
+      handleRemove (file, fileList) {
+        this.imgUrl = ''
+        console.log(file, fileList)
+      },
+      handlePreview (file) {
+        console.log(file)
+      },
       onEditorBlur (editor) {
         console.log('editor blur!', editor)
       },
@@ -93,6 +126,10 @@
         }
         formData.append('subTitle', this.form.name)
         formData.append('title', this.form.name)
+        formData.append('summary', this.content)
+        if (this.imgUrl !== '') {
+          formData.append('iconUrl', this.imgUrl)
+        }
         // formData.append('file', this.file)
 
         api.requestForm('post', 'category/upload', formData)

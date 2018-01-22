@@ -89,7 +89,7 @@
         formData.append('summary', this.form.content)
         // formData.append('file', this.file)
 
-        api.requestForm('post', 'album/upload', formData)
+        api.requestForm('post', 'category/edit', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
