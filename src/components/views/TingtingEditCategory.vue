@@ -8,23 +8,38 @@
             <el-form-item label="名称">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="图标">
+            <!--<el-form-item label="图标">
               <el-input v-model="form.icon"></el-input>
+            </el-form-item>-->
+            <el-form-item label="图标">
+              <el-upload
+                class="upload-demo"
+                action="http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
+                :on-preview="handlePreview"
+                :on-success="successUpload"
+                :on-remove="handleRemove"
+                :file-list="fileList2"
+                :limit = 1
+                list-type="picture-card">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
+
             </el-form-item>
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio label="正常"></el-radio>
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
+            </el-form-item>
+            <el-form-item label="简介">
+              <vue-editor id="editor"
+                          useCustomImageHandler
+                          @imageAdded="handleImageAdded" v-model="htmlForEditor">
+              </vue-editor>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -39,10 +54,20 @@
 </template>
 <script>
   import api from '../../api'
-
+  import { VueEditor } from 'vue2-editor'
   export default {
+    components: {
+      VueEditor
+    },
     data () {
       return {
+        htmlForEditor: '',
+        editorOption: {},  // 必须初始化为对象 init  to Object
+        canCrop: false,
+        /* 测试上传图片的接口，返回结构为{url:''} */
+        uploadUrl: 'http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        // uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        content: '',
         form: {
           name: '',
           icon: '',
@@ -52,29 +77,60 @@
         },
         categoryId: 0,
         fileList2: [],
-        imageUrl: ''
+        imageUrl: '',
+        name: '01-example',
+        imgUrl: '',
+        content1: ''
       }
     },
     methods: {
-      handleAvatarSuccess (res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw)
+      successUpload (response, file, fileList) {
+        console.log('response is ' + JSON.stringify(response))
+        this.imgUrl = response.body.url
+        console.log(this.imgUrl)
       },
-      beforeAvatarUpload (file) {
-        const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 < 2
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
-        }
-        return isJPG && isLt2M
+      handleRemove (file, fileList) {
+        this.imgUrl = ''
+        console.log(file, fileList)
+      },
+      handlePreview (file) {
+        console.log(file)
+      },
+      onEditorBlur (editor) {
+        console.log('editor blur!', editor)
+      },
+      onEditorFocus (editor) {
+        console.log('editor focus!', editor)
+      },
+      onEditorReady (editor) {
+        console.log('editor ready!', editor)
       },
       handleChange (value) {
         // console.log(value)
       },
+      handleImageAdded: function (file, Editor, cursorLocation) {
+        // An example of using FormData
+        // NOTE: Your key could be different such as:
+        // formData.append('file', file)
+
+        var formData = new FormData()
+        formData.append('file', file)
+        api.requestForm('post', 'file/upload', formData)
+          .then((response) => {
+            console.log('resultstr is', JSON.stringify(response.data.body))
+            let url = response.data.body.url // Get url from response
+            Editor.insertEmbed(cursorLocation, 'image', url)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      },
       onSubmit () {
+        var categoryId = '0'
+        if (this.$route.query.categoryId) {
+          categoryId = this.$route.query.categoryId
+          this.categoryId = this.$route.query.categoryId
+        }
         var userid = localStorage.getItem('userid')
         console.log(userid)
         let formData = new FormData()
@@ -86,10 +142,14 @@
         }
         formData.append('subTitle', this.form.name)
         formData.append('title', this.form.name)
-        formData.append('summary', this.form.content)
+        formData.append('summary', this.htmlForEditor)
+        formData.append('categoryId', categoryId)
+        if (this.imgUrl !== '') {
+          formData.append('iconUrl', this.imgUrl)
+        }
         // formData.append('file', this.file)
 
-        api.requestForm('post', 'category/edit', formData)
+        api.requestForm('post', 'category/upload', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
@@ -115,8 +175,9 @@
           var data = response.data.body.data
           // this.form.pass = '******'
           this.form.name = data.name
-          this.form.icon = data.icon
           this.form.status = data.status
+          this.htmlForEditor = data.summary
+          this.imageUrl = data.icon
         })
         .catch(error => {
           // this.$store.commit('TOGGLE_LOADING')

@@ -8,33 +8,48 @@
             <el-form-item label="名称">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
+            <el-form-item label="图标">
+              <img v-bind:src="imgUrl" />
+            <vue-core-image-upload
+              class="btn btn-primary"
+              :crop="false"
+              @imageuploaded="imageUploaded"
+              :data="data"
+              :max-file-size="5242880"
+              inputOfFile = "file"
+              text = "选择图片"
+              :credentials = "false"
+              url="http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload" >
 
+            </vue-core-image-upload>
+            </el-form-item>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio label="正常"></el-radio>
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="图片">
+            <!--<el-form-item label="图标">
               <el-upload
                 class="upload-demo"
-                action="http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
+                action="http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
                 :on-preview="handlePreview"
                 :on-success="successUpload"
                 :on-remove="handleRemove"
                 :file-list="fileList2"
-                list-type="picture">
+                :limit = 1
+                list-type="picture-card">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
               </el-upload>
+            </el-form-item>-->
+            <el-form-item label="简介">
+              <vue-editor id="editor"
+                          useCustomImageHandler
+                          @imageAdded="handleImageAdded" v-model="htmlForEditor">
+              </vue-editor>
             </el-form-item>
-            <el-form label="图片上传1">
 
-            </el-form>
-            <vue-editor id="editor"
-                        useCustomImageHandler
-                        @imageAdded="handleImageAdded" v-model="htmlForEditor">
-            </vue-editor>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">确定</el-button>
               <!--<el-button>确定</el-button>-->
@@ -48,19 +63,22 @@
 <script>
   import api from '../../api'
   import { VueEditor } from 'vue2-editor'
+  import VueCoreImageUpload from '../../../node_modules/vue-core-image-upload/src/vue-core-image-upload.vue'
 
   export default {
     components: {
-      VueEditor
+      VueEditor,
+      'vue-core-image-upload': VueCoreImageUpload
     },
     data () {
       return {
+        src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
         htmlForEditor: '',
         editorOption: {},  // 必须初始化为对象 init  to Object
         canCrop: false,
         /* 测试上传图片的接口，返回结构为{url:''} */
-        // uploadUrl: 'http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
-        uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        uploadUrl: 'http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        // uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
         content: '',
         form: {
           name: '',
@@ -73,15 +91,8 @@
           desc: '',
           status: '',
           content: '',
-          fileList2: [{
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }]
+          fileList2: []
         },
-        fileList2: [{
-          name: 'food.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }],
         name: '01-example',
         imgUrl: '',
         content1: ''
@@ -96,6 +107,13 @@
       }
     },
     methods: {
+      imageUploaded (response) {
+        console.log('response is', response)
+        this.src = response.body.url
+        this.imgUrl = response.body.url
+        // alert(this.imgUrl)
+        // this.imgUrl = 'https://upload.jianshu.io/users/upload_avatars/2204269/54bc6df9d4b6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240'
+      },
       successUpload (response, file, fileList) {
         console.log('response is ' + JSON.stringify(response))
         this.imgUrl = response.body.url
@@ -130,8 +148,9 @@
         } else {
           formData.append('status', Number(1))
         }
-        formData.append('subTitle', 'subTitle')
-        formData.append('title', 'title')
+        formData.append('subTitle', this.form.name)
+        formData.append('title', this.form.name)
+        formData.append('categoryId', Number(-1))
         formData.append('summary', this.htmlForEditor)
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
