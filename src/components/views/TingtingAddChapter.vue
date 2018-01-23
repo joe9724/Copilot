@@ -11,27 +11,24 @@
             <el-form-item label="副标题">
               <el-input v-model="form.subTitle"></el-input>
             </el-form-item>
-            <el-form-item label="文件">
-              <img src="/static/img/play.png" style="width: 20px;height:20px"><el-input v-model="form.url"></el-input>
+            <el-form-item label="图片">
+              <el-upload
+                class="upload-demo"
+                action="http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
+                :on-preview="handlePreview"
+                :on-success="successUpload"
+                :on-remove="handleRemove"
+                :file-list="fileList2"
+                list-type="picture">
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+              </el-upload>
             </el-form-item>
 
-            <el-form-item label="简介">
-              <el-input v-model="form.summary" type="textarea"
-                        :autosize="{ minRows: 10, maxRows: 30}"></el-input>
-            </el-form-item>
-            <!--<el-form-item label="描述">
-              <el-input v-model="form.content"></el-input>
-            </el-form-item>-->
-            <!--<el-form-item label="定价">
-              <el-input-number v-model="form.price" @change="handleChange" :min="1" :max="10000" label="改变价格"></el-input-number>
-            </el-form-item>-->
-            <el-form-item label="小图">
-           <!-- <el-input v-model="form.name"></el-input>--><img v-bind:src=form.icon style="width: 60px;height:80px">
-          </el-form-item>
-
-           <!-- <el-form-item label="大图">
-              <el-input v-model="form.name"></el-input>
-            </el-form-item>-->
+            <vue-editor id="editor"
+                        useCustomImageHandler
+                        @imageAdded="handleImageAdded" v-model="htmlForEditor">
+            </vue-editor>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio label="正常"></el-radio>
@@ -50,10 +47,16 @@
 </template>
 <script>
   import api from '../../api'
+  import { VueEditor } from 'vue2-editor'
 
   export default {
+    components: {
+      VueEditor
+    },
     data () {
       return {
+        htmlForEditor: '',
+        uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
         form: {
           title: '',
           subTitle: '',
@@ -65,7 +68,11 @@
           desc: '',
           status: '',
           icon: '',
-          price: ''
+          price: '',
+          fileList2: [{
+            name: 'food.jpeg',
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }]
         },
         num1: 1,
         chapterId: 0,
@@ -76,10 +83,31 @@
       handleChange (value) {
         // console.log(value)
       },
+      successUpload (response, file, fileList) {
+        console.log('response is ' + JSON.stringify(response))
+        this.imgUrl = response.body.url
+        console.log(this.imgUrl)
+      },
+      handleRemove (file, fileList) {
+        this.imgUrl = ''
+        console.log(file, fileList)
+      },
+      handlePreview (file) {
+        console.log(file)
+      },
+      onEditorBlur (editor) {
+        console.log('editor blur!', editor)
+      },
+      onEditorFocus (editor) {
+        console.log('editor focus!', editor)
+      },
+      onEditorReady (editor) {
+        console.log('editor ready!', editor)
+      },
       onSubmit () {
+        // alert(this.content)
         // this.$router.push('/org')
         // console.log('submit!')
-        console.log('name is' + this.form.agentName)
         var userid = localStorage.getItem('userid')
         console.log(userid)
         let formData = new FormData()
@@ -89,8 +117,13 @@
         } else {
           formData.append('status', Number(1))
         }
-        formData.append('subTitle', this.form.subTitle)
+        formData.append('subTitle', 'subTitle')
         formData.append('title', this.form.title)
+        formData.append('authorName', this.form.author)
+        formData.append('summary', this.htmlForEditor)
+        if (this.imgUrl !== '') {
+          formData.append('iconUrl', this.imgUrl)
+        }
         // formData.append('file', this.file)
 
         api.requestForm('post', 'chapter/upload', formData)
@@ -102,6 +135,23 @@
           .catch(error => {
             console.log(error)
             this.response = error
+          })
+      },
+      handleImageAdded: function (file, Editor, cursorLocation) {
+        // An example of using FormData
+        // NOTE: Your key could be different such as:
+        // formData.append('file', file)
+
+        var formData = new FormData()
+        formData.append('file', file)
+        api.requestForm('post', 'file/upload', formData)
+          .then((response) => {
+            console.log('resultstr is', JSON.stringify(response.data.body))
+            let url = response.data.body.url // Get url from response
+            Editor.insertEmbed(cursorLocation, 'image', url)
+          })
+          .catch((err) => {
+            console.log(err)
           })
       }
     },

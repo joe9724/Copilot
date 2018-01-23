@@ -18,7 +18,7 @@
             <el-form-item label="图片">
               <el-upload
                 class="upload-demo"
-                action="http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
+                action="http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
                 :on-preview="handlePreview"
                 :on-success="successUpload"
                 :on-remove="handleRemove"
@@ -59,7 +59,8 @@
         editorOption: {},  // 必须初始化为对象 init  to Object
         canCrop: false,
         /* 测试上传图片的接口，返回结构为{url:''} */
-        uploadUrl: 'http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        // uploadUrl: 'http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
         content: '',
         form: {
           name: '',
@@ -120,7 +121,6 @@
         // alert(this.content)
         // this.$router.push('/org')
         // console.log('submit!')
-        console.log('name is' + this.form.agentName)
         var userid = localStorage.getItem('userid')
         console.log(userid)
         let formData = new FormData()
@@ -132,7 +132,7 @@
         }
         formData.append('subTitle', 'subTitle')
         formData.append('title', 'title')
-        formData.append('summary', this.content)
+        formData.append('summary', this.htmlForEditor)
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }
