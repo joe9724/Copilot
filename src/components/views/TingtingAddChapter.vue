@@ -8,21 +8,23 @@
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="副标题">
+            <!--<el-form-item label="副标题">
               <el-input v-model="form.subTitle"></el-input>
-            </el-form-item>
-            <el-form-item label="图片">
-              <el-upload
-                class="upload-demo"
-                action="http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
-                :on-preview="handlePreview"
-                :on-success="successUpload"
-                :on-remove="handleRemove"
-                :file-list="fileList2"
-                list-type="picture">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-              </el-upload>
+            </el-form-item>-->
+            <el-form-item label="图标">
+              <img v-bind:src="imgUrl"/>
+              <vue-core-image-upload
+                class="btn btn-primary"
+                :crop="false"
+                @imageuploaded="imageUploaded"
+                :data="data"
+                :max-file-size="5242880"
+                inputOfFile="file"
+                text="选择图片"
+                :credentials="false"
+                :url="uploadUrl">
+
+              </vue-core-image-upload>
             </el-form-item>
 
             <vue-editor id="editor"
@@ -46,17 +48,21 @@
   </div>
 </template>
 <script>
+  import configParams from '../../config'
   import api from '../../api'
   import { VueEditor } from 'vue2-editor'
+  import VueCoreImageUpload from '../../../node_modules/vue-core-image-upload/src/vue-core-image-upload.vue'
 
   export default {
     components: {
-      VueEditor
+      VueEditor,
+      'vue-core-image-upload': VueCoreImageUpload
     },
     data () {
       return {
         htmlForEditor: '',
-        uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        uploadUrl: '',
+        imgUrl: '',
         form: {
           title: '',
           subTitle: '',
@@ -80,6 +86,13 @@
       }
     },
     methods: {
+      imageUploaded (response) {
+        console.log('response is', response)
+        this.src = response.body.url
+        this.imgUrl = response.body.url
+        // alert(this.imgUrl)
+        // this.imgUrl = 'https://upload.jianshu.io/users/upload_avatars/2204269/54bc6df9d4b6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240'
+      },
       handleChange (value) {
         // console.log(value)
       },
@@ -121,6 +134,7 @@
         formData.append('title', this.form.title)
         formData.append('authorName', this.form.author)
         formData.append('summary', this.htmlForEditor)
+        formData.append('chapterId', Number(-1))
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }
@@ -157,7 +171,7 @@
     },
     created () {
       // alert('created!')
-      //
+      this.uploadUrl = configParams.uploadURI
       var chapterId = '0'
       if (this.$route.query.chapterId) {
         chapterId = this.$route.query.chapterId

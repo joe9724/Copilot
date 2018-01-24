@@ -12,22 +12,19 @@
               <el-input v-model="form.icon"></el-input>
             </el-form-item>-->
             <el-form-item label="图标">
-              <el-upload
-                class="upload-demo"
-                action="http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload"
-                :on-preview="handlePreview"
-                :on-success="successUpload"
-                :on-remove="handleRemove"
-                :file-list="fileList2"
-                :limit = 1
-                list-type="picture-card">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <img v-bind:src="imgUrl"/>
+              <vue-core-image-upload
+                class="btn btn-primary"
+                :crop="false"
+                @imageuploaded="imageUploaded"
+                :data="data"
+                :max-file-size="5242880"
+                inputOfFile="file"
+                text="选择图片"
+                :credentials="false"
+                :url="uploadUrl">
 
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-              </el-upload>
-
+              </vue-core-image-upload>
             </el-form-item>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
@@ -54,10 +51,13 @@
 </template>
 <script>
   import api from '../../api'
+  import configParams from '../../config'
+  import VueCoreImageUpload from '../../../node_modules/vue-core-image-upload/src/vue-core-image-upload.vue'
   import { VueEditor } from 'vue2-editor'
   export default {
     components: {
-      VueEditor
+      VueEditor,
+      'vue-core-image-upload': VueCoreImageUpload
     },
     data () {
       return {
@@ -65,7 +65,7 @@
         editorOption: {},  // 必须初始化为对象 init  to Object
         canCrop: false,
         /* 测试上传图片的接口，返回结构为{url:''} */
-        uploadUrl: 'http://127.0.0.1:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        uploadUrl: '',
         // uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
         content: '',
         form: {
@@ -84,6 +84,13 @@
       }
     },
     methods: {
+      imageUploaded (response) {
+        console.log('response is', response)
+        this.src = response.body.url
+        this.imgUrl = response.body.url
+        // alert(this.imgUrl)
+        // this.imgUrl = 'https://upload.jianshu.io/users/upload_avatars/2204269/54bc6df9d4b6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240'
+      },
       successUpload (response, file, fileList) {
         console.log('response is ' + JSON.stringify(response))
         this.imgUrl = response.body.url
@@ -163,7 +170,7 @@
     },
     created () {
       // alert('created!')
-      //
+      this.uploadUrl = configParams.uploadURI
       var categoryId = '0'
       if (this.$route.query.categoryId) {
         categoryId = this.$route.query.categoryId
