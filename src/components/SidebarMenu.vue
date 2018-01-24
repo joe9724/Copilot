@@ -88,7 +88,8 @@
 
     <!--</span>-->
     <ul v-for="item in arrayData" class="sidebar-menu" :key="item.name">
-    <li class="header"><span>{{item.name}}</span></li>
+
+    <li class="header" v-if="item.router_url==='-1'"><span>{{item.name}}</span></li>
 
     <li  class="pageLink" @click="to(it.router_url)" style="cursor: pointer;" v-for="it in item.children">
       <a>
@@ -135,11 +136,11 @@
       // this.arrayData = this.$store.state.btk_menu // getItem('SET_BTK_MENU')
       console.log(localStorage.getItem('btk_menu'))
       this.arrayData = JSON.parse(localStorage.getItem('btk_menu'))
-      console.log(this.arrayData)
-      for (var i = 0; i < this.arrayData.length; i++) {
+      console.log('length is' + this.arrayData.length)
+      /* for (var i = 0; i < this.arrayData.length; i++) {
         console.log('for is:' + this.arrayData[i])
       }
-      console.log('menu1 is ' + this.arrayData)
+      console.log('menu1 is ' + this.arrayData) */
       // console.log('menu2 is ' + window.localStorage.getItem('MENU_DATA'))
     },
     computed: {}

@@ -187,10 +187,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('get', 'album/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.bookList
+            this.arrayData = response.data.body.albumList
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -209,9 +209,10 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'album/list?userid=1&pageSize=12&pageIndex=1')
+      api.request('get', 'album/list?userid=1&pageSize=12&pageIndex=0')
         .then(response => {
           console.log(response.data)
+          this.totalCount = response.data.body.status.totalCount
           this.arrayData = response.data.body.albumList
           for (var i = 0; i < this.arrayData.length; i++) {
             this.arrayData.time = formatDateBtk(this.arrayData.time)

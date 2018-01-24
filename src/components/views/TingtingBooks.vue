@@ -158,7 +158,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
@@ -176,10 +176,11 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=1')
+      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=0')
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.bookList
+          this.totalCount = response.data.body.status.totalCount
           for (var i = 0; i < this.arrayData.length; i++) {
             this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
