@@ -132,7 +132,7 @@
         if (keyvalue.length === 0) {
           keyvalue = ' '
         }
-        api.request('get', 'book/list?type=1&userid=1&pageSize=12&pageIndex=1&keyword=' + keyvalue + '&albumId=' + albumId)
+        api.request('get', 'book/list?type=1&userid=1&pageSize=12&pageIndex=0&keyword=' + keyvalue + '&albumId=' + albumId)
           .then(response => {
             this.searchData = response.data.body.bookList
           })
@@ -218,7 +218,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
@@ -241,7 +241,7 @@
           this.albumId = this.$route.query.albumId
         }
         // var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=1&albumId=' + albumId)
+        api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=0&albumId=' + albumId)
           .then(response => {
             this.arrayData = response.data.body.bookList
           })
