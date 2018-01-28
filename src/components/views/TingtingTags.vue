@@ -190,7 +190,7 @@
         api.request('get', 'tag/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.tagList
+            this.arrayData = response.data.body.albumList
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -213,9 +213,9 @@
         .then(response => {
           console.log(response.data)
           this.totalCount = response.data.body.status.totalCount
-          this.arrayData = response.data.body.tagList
+          this.arrayData = response.data.body.albumList
           for (var i = 0; i < this.arrayData.length; i++) {
-            this.arrayData.time = formatDateBtk(this.arrayData.time)
+            // this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
             console.log()
           }
