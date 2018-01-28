@@ -3,9 +3,9 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/album/add">
+        <router-link  class="pageLink" to="/tag/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加专辑</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加标签</el-button></span>
 
           </a>
         </router-link>
@@ -15,14 +15,14 @@
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>专辑名</th>
-          <th style='text-align: center'>图标</th>
+          <th style='text-align: center'>名称</th>
+          <!--<th style='text-align: center'>图标</th>
           <th style='text-align: center'>书本数</th>
-          <!--<th>副标题</th>-->
-          <!--<th>是否显示icon</th>-->
-          <!--<th>大图</th>-->
+          &lt;!&ndash;<th>副标题</th>&ndash;&gt;
+          &lt;!&ndash;<th>是否显示icon</th>&ndash;&gt;
+          &lt;!&ndash;<th>大图</th>&ndash;&gt;
           <th style='text-align: center'>播放数</th>
-          <th style='text-align: center'>价格</th>
+          <th style='text-align: center'>价格</th>-->
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
           <th>顺序</th>
@@ -35,13 +35,13 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center'><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
+          <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
           <td style='text-align: center'>{{item.booksNumber}}</td>
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
+          &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>&ndash;&gt;
+          &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>&ndash;&gt;
+          &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>&ndash;&gt;
           <td style='text-align: center'>{{item.playCount}}</td>
-          <td style='text-align: center'>{{item.value}}</td>
+          <td style='text-align: center'>{{item.value}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -49,12 +49,10 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-
-            <el-button type="text" @click="editRelation(item.id)">书本管理</el-button>
-            <el-button type="text" @click="editTags(item.id)">标签管理</el-button>
-            <el-button type="text" @click="sendPush(item.id,item.name)">推送</el-button>
-            <img src="/static/img/send.png" style="width: 20px;height:20px">
-            <el-button type="text" @click="editAlbum(item.id)" style="margin-left: 10px"> 编辑</el-button>
+            <!--<el-button type="text" @click="editRelation(item.id)">标签管理</el-button>-->
+            <!--<el-button type="text" @click="sendPush(item.id,item.name)">推送</el-button>
+            <img src="/static/img/send.png" style="width: 20px;height:20px">-->
+            <el-button type="text" @click="edittag(item.id)" style="margin-left: 10px"> 编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
@@ -189,10 +187,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'album/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
+        api.request('get', 'tag/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.albumList
+            this.arrayData = response.data.body.tagList
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -200,26 +198,22 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editAlbum (albumId) {
+      edittag (tagId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/album/edit?albumId=' + albumId})
+        this.$router.push({path: '/tag/edit?tagId=' + tagId})
       },
-      editRelation (albumId) {
+      editRelation (tagId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/album/book/relation?albumId=' + albumId})
-      },
-      editTags (albumId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/tag/album/relation?albumId=' + albumId})
+        this.$router.push({path: '/tag/book/relation?tagId=' + tagId})
       }
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'album/list?userid=1&pageSize=12&pageIndex=0')
+      api.request('get', 'tag/list?userid=1&pageSize=12&pageIndex=0')
         .then(response => {
           console.log(response.data)
           this.totalCount = response.data.body.status.totalCount
-          this.arrayData = response.data.body.albumList
+          this.arrayData = response.data.body.tagList
           for (var i = 0; i < this.arrayData.length; i++) {
             this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)

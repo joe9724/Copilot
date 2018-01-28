@@ -30,6 +30,7 @@ import UpdatePassView from './components/views/UpdatePass.vue'
 import ChaptersView from './components/views/TingtingChapters.vue'
 import BooksView from './components/views/TingtingBooks.vue'
 import AlbumListView from './components/views/TingtingAlbums.vue'
+import TagListView from './components/views/TingtingTags.vue'
 import MemberListView from './components/views/TingtingMembers.vue'
 import OrderListView from './components/views/TingtingOrders.vue'
 import SubCategoryListView from './components/views/TingtingSubCategories.vue'
@@ -160,6 +161,13 @@ const routes = [
         component: MemberListView,
         name: '会员列表',
         meta: {description: 'MemberListView'}
+      },
+      {
+        path: 'tag/list',
+        alias: 'taglist',
+        component: TagListView,
+        name: 'tag列表',
+        meta: {description: 'TagListView'}
       },
       {
         path: 'album/list',
