@@ -49,6 +49,7 @@ import TingtingAddChapterView from './components/views/TingtingAddChapter.vue'
 import AddTagView from './components/views/TingtingAddTag.vue'
 import EditTagView from './components/views/TingtingEditTag.vue'
 import AlbumTagRelationView from './components/views/TingtingAlbumTagRelation.vue'
+import BookTagRelationView from './components/views/TingtingBookTagRelation.vue'
 
 // Routes
 const routes = [
@@ -60,6 +61,13 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'tag/book/relation',
+        alias: 'tagalbumrelation',
+        component: BookTagRelationView,
+        name: 'tagbook关联',
+        meta: {description: 'BookTagRelationView'}
+      },
       {
         path: 'tag/album/relation',
         alias: 'tagalbumrelation',

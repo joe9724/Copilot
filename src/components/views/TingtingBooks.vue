@@ -170,9 +170,9 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editUser (userId) {
+      editTags (bookId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/book/edit?bookId=' + userId})
+        this.$router.push({path: '/tag/book/relation?bookId=' + bookId})
       }
     },
     created () {

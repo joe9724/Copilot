@@ -122,60 +122,69 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
+      moveLeft () {
+        // alert('ok')
+        var booksId = ''
+        for (var i = 0; i < this.checkList.length; i++) {
+          for (var k = 0; k < this.searchData.length; k++) {
+            if (this.checkList[i] === this.searchData[k].name) {
+              if (booksId === '') {
+                booksId = this.searchData[k].id + ''
+              } else {
+                booksId = booksId + ',' + this.searchData[k].id
+              }
+            }
+          }
+        }
+        // alert(booksId)
+        // 提交
+        var albumId = 0
+        if (this.$route.query.albumId) {
+          albumId = this.$route.query.albumId
+          this.albumId = this.$route.query.albumId
+        }
+        console.log(albumId)
+        var params = {
+          'albumId': Number(albumId),
+          'actionCode': 0,
+          'bookIds': booksId
+        }
+        api.request('post', '/relation/album/booklist/edit', params)
+          .then(response => {
+            // var data = response.data
+            // alert(JSON.stringify(data))
+            this.search()
+            this.init()
+          })
+          .catch(error => {
+            console.log(error)
+            this.response = error
+          })
+      },
       removeUser (tagId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
+            var albumId = 0
+            if (this.$route.query.albumId) {
+              albumId = this.$route.query.albumId
+              this.albumId = this.$route.query.albumId
+            }
             var userid = localStorage.getItem('userid')
-            api.request('get', 'tag/list?userid=1&pageSize=12&pageIndex=0')
+            var params = {
+              'userId': userid,
+              'albumId': Number(albumId),
+              'actionCode': 1,
+              'bookIds': tagId + ''
+            }
+            api.request('post', '/relation/album/booklist/edit', params)
               .then(response => {
-                console.log(response.data)
-                this.$message.info('删除成功!')
-                // reload
-                api.request('get', 'tag/list?operator_id=' + userid + '&page=1&size=10')
-                  .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
-                  })
-                  .catch(error => {
-                    // this.$store.commit('TOGGLE_LOADING')
-                    console.log(error)
-                    this.response = error
-                  })
+                // var data = response.data
+                // alert(JSON.stringify(data))
+                this.search()
+                this.init()
               })
               .catch(error => {
-                // this.$store.commit('TOGGLE_LOADING')
-                console.log(error)
-                this.response = error
-              })
-          })
-          .catch(() => {
-            this.$message.info('已取消操作!')
-          })
-      },
-      sendPush (userId, name) {
-        this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
-          .then(() => {
-            // 向请求服务端删除
-            var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
-              .then(response => {
-                console.log(response.data)
-                this.$message.info('发送成功!')
-                // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
-                  .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
-                  })
-                  .catch(error => {
-                    // this.$store.commit('TOGGLE_LOADING')
-                    console.log(error)
-                    this.response = error
-                  })
-              })
-              .catch(error => {
-                // this.$store.commit('TOGGLE_LOADING')
                 console.log(error)
                 this.response = error
               })

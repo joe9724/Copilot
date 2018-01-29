@@ -117,22 +117,23 @@
         dialogVisible: false,
         dialogTableVisible: false,
         checkList: [],
-        input5: ''
+        input5: '',
+        bookId: ''
       }
     },
     methods: {
       search () {
         // var userid = localStorage.getItem('userid')
-        var albumId = '0'
-        if (this.$route.query.albumId) {
-          albumId = this.$route.query.albumId
-          this.albumId = this.$route.query.albumId
+        var bookId = '0'
+        if (this.$route.query.bookId) {
+          bookId = this.$route.query.bookId
+          this.bookId = this.$route.query.bookId
         }
         var keyvalue = this.input5
         if (keyvalue.length === 0) {
           keyvalue = ' '
         }
-        api.request('get', 'tag/list?type=1&userid=1&pageSize=12&pageIndex=0&keyword=' + keyvalue + '&albumId=' + albumId)
+        api.request('get', 'tag/list?type=1&userid=1&pageSize=12&pageIndex=0&keyword=' + keyvalue + '&bookId=' + bookId)
           .then(response => {
             this.searchData = response.data.body.albumList
           })
@@ -146,32 +147,34 @@
       },
       moveLeft () {
         // alert('ok')
-        var tagIds = ''
+        var booksId = ''
         for (var i = 0; i < this.checkList.length; i++) {
           for (var k = 0; k < this.searchData.length; k++) {
             if (this.checkList[i] === this.searchData[k].name) {
-              if (tagIds === '') {
-                tagIds = this.searchData[k].id + ''
+              if (booksId === '') {
+                booksId = this.searchData[k].id + ''
               } else {
-                tagIds = tagIds + ',' + this.searchData[k].id
+                booksId = booksId + ',' + this.searchData[k].id
               }
             }
           }
         }
-        // alert(tagIds)
+        // alert(booksId)
         // 提交
-        var albumId = 0
-        if (this.$route.query.albumId) {
-          albumId = this.$route.query.albumId
-          this.albumId = this.$route.query.albumId
+        var bookId = 0
+        if (this.$route.query.bookId) {
+          bookId = this.$route.query.bookId
+          this.bookId = this.$route.query.bookId
         }
-        console.log(albumId)
+        console.log(bookId)
         var params = {
-          'albumId': Number(albumId),
+          'bookId': Number(bookId),
           'actionCode': 0,
-          'bookIds': tagIds
+          'bookIds': booksId,
+          'albumIds': '',
+          'subCategoryId': Number(bookId)
         }
-        api.request('post', 'relation/album/taglist/edit', params)
+        api.request('post', '/relation/book/taglist/edit', params)
           .then(response => {
             // var data = response.data
             // alert(JSON.stringify(data))
@@ -183,23 +186,25 @@
             this.response = error
           })
       },
-      removeBookFromAlbum (bookId) {
+      removeBookFromAlbum (tagId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
-            var albumId = 0
-            if (this.$route.query.albumId) {
-              albumId = this.$route.query.albumId
-              this.albumId = this.$route.query.albumId
+            var bookId = '0'
+            if (this.$route.query.bookId) {
+              bookId = this.$route.query.bookId
+              this.bookId = this.$route.query.bookId
             }
             var userid = localStorage.getItem('userid')
             var params = {
               'userId': userid,
-              'albumId': Number(albumId),
+              'bookId': Number(bookId),
               'actionCode': 1,
-              'bookIds': bookId + ''
+              'bookIds': tagId + '',
+              'albumIds': '',
+              'subCategoryId': Number(bookId)
             }
-            api.request('post', '/relation/album/taglist/edit', params)
+            api.request('post', '/relation/book/taglist/edit', params)
               .then(response => {
                 // var data = response.data
                 // alert(JSON.stringify(data))
@@ -235,13 +240,13 @@
       },
       init () {
         // alert('init')
-        var albumId = '0'
-        if (this.$route.query.albumId) {
-          albumId = this.$route.query.albumId
-          this.albumId = this.$route.query.albumId
+        var bookId = '0'
+        if (this.$route.query.bookId) {
+          bookId = this.$route.query.bookId
+          this.bookId = this.$route.query.bookId
         }
         // var userid = localStorage.getItem('userid')
-        api.request('get', 'tag/list?userid=1&pageSize=12&pageIndex=0&albumId=' + albumId)
+        api.request('get', 'tag/list?userid=1&pageSize=12&pageIndex=0&bookId=' + bookId)
           .then(response => {
             this.arrayData = response.data.body.albumList
           })
