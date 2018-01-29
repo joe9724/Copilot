@@ -50,12 +50,12 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
 
-            <el-button type="text" @click="editRelation(item.id)">书本管理</el-button>
-            <el-button type="text" @click="editTags(item.id)">标签管理</el-button>
-            <el-button type="text" @click="sendPush(item.id,item.name)">推送</el-button>
-            <img src="/static/img/send.png" style="width: 20px;height:20px">
-            <el-button type="text" @click="editAlbum(item.id)" style="margin-left: 10px"> 编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="success" round @click="editRelation(item.id)">书本管理</el-button>
+            <el-button type="primary" round @click="editTags(item.id)">标签管理</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)">推送</el-button>
+            <el-button type="info" round @click="editAlbum(item.id)">编辑</el-button>
+            <el-button type="warning" round @click="removeUser(item.id)">删除</el-button>
+
           </td>
         </tr>
         </tbody>

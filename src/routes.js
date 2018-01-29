@@ -46,6 +46,9 @@ import EditBookChapterRelationView from './components/views/TingtingBookChapterR
 import RechargeListView from './components/views/TingtingRechargeList.vue'
 import AddCategoryView from './components/views/TingtingAddCategory.vue'
 import TingtingAddChapterView from './components/views/TingtingAddChapter.vue'
+import AddTagView from './components/views/TingtingAddTag.vue'
+import EditTagView from './components/views/TingtingEditTag.vue'
+import AlbumTagRelationView from './components/views/TingtingAlbumTagRelation.vue'
 
 // Routes
 const routes = [
@@ -58,11 +61,32 @@ const routes = [
     component: DashView,
     children: [
       {
+        path: 'tag/album/relation',
+        alias: 'tagalbumrelation',
+        component: AlbumTagRelationView,
+        name: 'tagalbum关联',
+        meta: {description: 'AlbumTagRelationView'}
+      },
+      {
         path: 'chapter/add',
         alias: 'addchapter',
         component: TingtingAddChapterView,
         name: '添加章节',
         meta: {description: 'TingtingAddChapterView'}
+      },
+      {
+        path: 'tag/edit',
+        alias: 'edittag',
+        component: EditTagView,
+        name: '修改tag',
+        meta: {description: 'EditTagView'}
+      },
+      {
+        path: 'tag/add',
+        alias: 'addtag',
+        component: AddTagView,
+        name: '添加tag',
+        meta: {description: 'AddTagView'}
       },
       {
         path: 'category/add',

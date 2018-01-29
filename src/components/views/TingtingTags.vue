@@ -52,8 +52,8 @@
             <!--<el-button type="text" @click="editRelation(item.id)">标签管理</el-button>-->
             <!--<el-button type="text" @click="sendPush(item.id,item.name)">推送</el-button>
             <img src="/static/img/send.png" style="width: 20px;height:20px">-->
-            <el-button type="text" @click="edittag(item.id)" style="margin-left: 10px"> 编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="primary" @click="edittag(item.id)" style="margin-left: 10px"> 编辑</el-button>
+            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -122,17 +122,17 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeUser (tagId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'tag/list?userid=1&pageSize=12&pageIndex=0')
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('get', 'tag/list?operator_id=' + userid + '&page=1&size=10')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.datas

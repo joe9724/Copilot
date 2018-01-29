@@ -49,9 +49,10 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="text" @click="editRelation(item.id)">章节管理</el-button>
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="success" @click="editRelation(item.id)">章节管理</el-button>
+            <el-button type="info" round @click="editTags(item.id)">标签管理</el-button>
+            <el-button type="primary" @click="editUser(item.id)">编辑</el-button>
+            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>

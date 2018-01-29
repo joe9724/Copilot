@@ -46,9 +46,10 @@
           <td style='text-align: center'>{{item.status | FormatStatus}}</td>
           <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
-            <img src="/static/img/play.png" style="width: 20px;height:20px">
-            <el-button type="text" @click="editUser(item.id)" style="margin-left: 10px">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <!--<img src="/static/img/play.png" style="width: 20px;height:20px">-->
+            <el-button type="primary" @click="editUser(item.id)">播放</el-button>
+            <el-button type="success" @click="editUser(item.id)" style="margin-left: 10px">编辑</el-button>
+            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>

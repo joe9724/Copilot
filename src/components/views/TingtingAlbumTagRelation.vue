@@ -13,7 +13,7 @@
           <thead>
           <tr>
             <th style='text-align: center'>序号</th>
-            <th style='text-align: center'>章节名</th>
+            <th style='text-align: center'>书名</th>
             <th style='text-align: center'>操作</th>
           </tr>
           </thead>
@@ -21,10 +21,11 @@
           <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
             <td style='text-align: center'>{{index + 1}}</td>
             <td style='text-align: center'>{{item.name}}</td>
-            <td style='text-align: center'>
-              <div><span><el-button type="text"> 上移 </el-button></span>
-                <span><el-button type="text"> 下移 </el-button></span>
-                <span><el-button type="text" @click="removeChapterFromBook(item.id)">移除</el-button></span></div>
+            <td style='text-align: center;height: 50px'>
+              <el-button type="text">上移</el-button>
+              <el-button type="text">下移</el-button>
+              <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
+              <el-button type="text" @click="removeBookFromAlbum(item.id)">移除</el-button>
             </td>
           </tr>
           </tbody>
@@ -62,7 +63,6 @@
           </el-input>
 
         </div>
-        <div style="height:8px"></div>
         <el-checkbox-group v-for="item in searchData" v-model="checkList">
           <el-checkbox :label="item.name" :value="item.id"></el-checkbox>
         </el-checkbox-group>
@@ -117,25 +117,24 @@
         dialogVisible: false,
         dialogTableVisible: false,
         checkList: [],
-        input5: '',
-        bookId: ''
+        input5: ''
       }
     },
     methods: {
       search () {
         // var userid = localStorage.getItem('userid')
-        var bookId = '0'
-        if (this.$route.query.bookId) {
-          bookId = this.$route.query.bookId
-          this.bookId = this.$route.query.bookId
+        var albumId = '0'
+        if (this.$route.query.albumId) {
+          albumId = this.$route.query.albumId
+          this.albumId = this.$route.query.albumId
         }
         var keyvalue = this.input5
         if (keyvalue.length === 0) {
           keyvalue = ' '
         }
-        api.request('get', 'chapter/list?type=1&userid=1&pageSize=12&pageIndex=1&keyword=' + keyvalue + '&bookId=' + bookId)
+        api.request('get', 'tag/list?type=1&userid=1&pageSize=12&pageIndex=0&keyword=' + keyvalue + '&albumId=' + albumId)
           .then(response => {
-            this.searchData = response.data.body.chapters
+            this.searchData = response.data.body.albumList
           })
           .catch(error => {
             console.log(error)
@@ -147,32 +146,32 @@
       },
       moveLeft () {
         // alert('ok')
-        var chaptersId = ''
+        var booksId = ''
         for (var i = 0; i < this.checkList.length; i++) {
           for (var k = 0; k < this.searchData.length; k++) {
             if (this.checkList[i] === this.searchData[k].name) {
-              if (chaptersId === '') {
-                chaptersId = this.searchData[k].id + ''
+              if (booksId === '') {
+                booksId = this.searchData[k].id + ''
               } else {
-                chaptersId = chaptersId + ',' + this.searchData[k].id
+                booksId = booksId + ',' + this.searchData[k].id
               }
             }
           }
         }
         // alert(booksId)
         // 提交
-        var bookId = 0
-        if (this.$route.query.bookId) {
-          bookId = this.$route.query.bookId
-          this.bookId = this.$route.query.bookId
+        var albumId = 0
+        if (this.$route.query.albumId) {
+          albumId = this.$route.query.albumId
+          this.albumId = this.$route.query.albumId
         }
-        console.log(bookId)
+        console.log(albumId)
         var params = {
-          'bookId': Number(bookId),
+          'albumId': Number(albumId),
           'actionCode': 0,
-          'chapterIds': chaptersId
+          'bookIds': booksId
         }
-        api.request('post', 'relation/book/chapterList/edit', params)
+        api.request('post', '/relation/album/booklist/edit', params)
           .then(response => {
             // var data = response.data
             // alert(JSON.stringify(data))
@@ -184,23 +183,23 @@
             this.response = error
           })
       },
-      removeChapterFromBook (chapterId) {
+      removeBookFromAlbum (bookId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
-            var bookId = '0'
-            if (this.$route.query.bookId) {
-              bookId = this.$route.query.bookId
-              this.bookId = this.$route.query.bookId
+            var albumId = 0
+            if (this.$route.query.albumId) {
+              albumId = this.$route.query.albumId
+              this.albumId = this.$route.query.albumId
             }
             var userid = localStorage.getItem('userid')
             var params = {
               'userId': userid,
-              'bookId': Number(bookId),
+              'albumId': Number(albumId),
               'actionCode': 1,
-              'chapterIds': chapterId + ''
+              'bookIds': bookId + ''
             }
-            api.request('post', '/relation/book/chapterList/edit', params)
+            api.request('post', '/relation/album/booklist/edit', params)
               .then(response => {
                 // var data = response.data
                 // alert(JSON.stringify(data))
@@ -219,7 +218,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
@@ -236,15 +235,15 @@
       },
       init () {
         // alert('init')
-        var bookId = '0'
-        if (this.$route.query.bookId) {
-          bookId = this.$route.query.bookId
-          this.bookId = this.$route.query.bookId
+        var albumId = '0'
+        if (this.$route.query.albumId) {
+          albumId = this.$route.query.albumId
+          this.albumId = this.$route.query.albumId
         }
         // var userid = localStorage.getItem('userid')
-        api.request('get', 'chapter/list?userid=1&pageSize=12&pageIndex=1&bookId=' + bookId)
+        api.request('get', 'tag/list?userid=1&pageSize=12&pageIndex=0&albumId=' + albumId)
           .then(response => {
-            this.arrayData = response.data.body.chapters
+            this.arrayData = response.data.body.albumList
           })
           .catch(error => {
             console.log(error)
