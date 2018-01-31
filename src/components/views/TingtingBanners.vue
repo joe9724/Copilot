@@ -15,14 +15,14 @@
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>书名</th>
+          <th style='text-align: center'>文字</th>
           <!--<th style='text-align: center'>图标</th>-->
-          <th style='text-align: center'>作者</th>
+          <th style='text-align: center'>图片</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
-          <th style='text-align: center'>章节数</th>
-          <th style='text-align: center'>播放数</th>
+          <th style='text-align: center'>跳转类型</th>
+          <!--<th style='text-align: center'>播放数</th>-->
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
           <th>顺序</th>
@@ -36,12 +36,12 @@
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
           <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>-->
-          <td style='text-align: center'>{{item.authorName}}</td>
+          <td style='text-align: center'>{{item.cover}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td style='text-align: center'>{{item.clipsNumber}}</td>
-          <td style='text-align: center'>{{item.playCount}}</td>
+          <td style='text-align: center'>{{item.type}}</td>
+          <!--<td style='text-align: center'>{{item.playCount}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -175,16 +175,11 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=0')
+      api.request('get', 'banner/list?userid=1&pageSize=12&pageIndex=0')
         .then(response => {
           console.log(response.data)
-          this.arrayData = response.data.body.bookList
+          this.arrayData = response.data.body.banners
           this.totalCount = response.data.body.status.totalCount
-          for (var i = 0; i < this.arrayData.length; i++) {
-            this.arrayData.time = formatDateBtk(this.arrayData.time)
-            // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
-            console.log()
-          }
         })
         .catch(error => {
           // this.$store.commit('TOGGLE_LOADING')
