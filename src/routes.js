@@ -50,6 +50,8 @@ import AddTagView from './components/views/TingtingAddTag.vue'
 import EditTagView from './components/views/TingtingEditTag.vue'
 import AlbumTagRelationView from './components/views/TingtingAlbumTagRelation.vue'
 import BookTagRelationView from './components/views/TingtingBookTagRelation.vue'
+import BanndersView from './components/views/TingtingBanners.vue'
+import IconsView from './components/views/TingtingIcons.vue'
 
 // Routes
 const routes = [
@@ -61,6 +63,20 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'icon/list',
+        alias: 'icon',
+        component: IconsView,
+        name: 'icon管理',
+        meta: {description: 'IconsView'}
+      },
+      {
+        path: 'banner/list',
+        alias: 'bannerlist',
+        component: BanndersView,
+        name: 'bannder管理',
+        meta: {description: 'BanndersView'}
+      },
       {
         path: 'tag/book/relation',
         alias: 'tagalbumrelation',

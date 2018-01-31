@@ -3,9 +3,9 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/category/add">
+        <router-link  class="pageLink" to="/book/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加类目</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加书本</el-button></span>
 
           </a>
         </router-link>
@@ -15,13 +15,14 @@
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>名称</th>
-          <th style='text-align: center'>图标</th>
+          <th style='text-align: center'>书名</th>
+          <!--<th style='text-align: center'>图标</th>-->
+          <th style='text-align: center'>作者</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
-          <th style='text-align: center'>状态</th>
-          <!--<th>播放数</th>
+          <th style='text-align: center'>章节数</th>
+          <th style='text-align: center'>播放数</th>
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
           <th>顺序</th>
@@ -32,32 +33,30 @@
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td align="center">{{index+1}}</td>
-          <td align="center">{{item.name}}</td>
-          <td align="center"><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
+          <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{item.name}}</td>
+          <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>-->
+          <td style='text-align: center'>{{item.authorName}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td align="center">{{item.status | FormatStatus}}</td>
-          <!--<td class="sorting_1" style="vertical-align: middle">{{item.clipsNumber}}</td>-->
+          <td style='text-align: center'>{{item.clipsNumber}}</td>
+          <td style='text-align: center'>{{item.playCount}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
-          <td align="center">
-            <el-button type="success" @click="editChildren(item.id)">icon管理</el-button>
-            <el-button type="primary" @click="editCategory(item.id)">banner管理</el-button>
-            <el-button type="success" @click="editChildren(item.id)">子类</el-button>
-            <el-button type="primary" @click="editCategory(item.id)">编辑</el-button>
-            <el-button type="warning" @click="removeCategory(item.id)">删除</el-button>
+          <td style='text-align: center'>
+            <el-button type="primary" @click="editUser(item.id)">编辑</el-button>
+            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
       </table>
-      <div align="center">
-        <div class="block">
+      <div>
+        <div align="center">
           <!--<span class="demonstration">调整每页显示条数</span>-->
           <el-pagination
             @size-change="handleSizeChange"
@@ -113,26 +112,28 @@
         // 分页数据
         arrayData: [],
         // 删除确认框
-        dialogVisible: false,
-        // 默认父id
-        parentId: -1
+        dialogVisible: false
       }
     },
     methods: {
+      editRelation (bookId) {
+        // alert(bookId)
+        this.$router.push({path: '/book/chapter/relation?bookId=' + bookId})
+      },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeCategory (id) {
+      removeUser (userId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'category/delete?categoryId=' + id + '&operator_id=' + userid)
+            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=-1')
+                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.datas
@@ -156,10 +157,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'category/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12&parentId=-1')
+        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.subCategoryList
+            this.arrayData = response.data.body.bookList
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -167,22 +168,20 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editCategory (id) {
-        this.$router.push({path: '/category/edit?categoryId=' + id})
-      },
-      editChildren (id) {
-        this.$router.push({path: '/subCategory/list?subCategoryId=' + id})
+      editTags (bookId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/tag/book/relation?bookId=' + bookId})
       }
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=0&parentId=-1')
+      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=0')
         .then(response => {
           console.log(response.data)
-          this.arrayData = response.data.body.subCategoryList
+          this.arrayData = response.data.body.bookList
           this.totalCount = response.data.body.status.totalCount
           for (var i = 0; i < this.arrayData.length; i++) {
-            // this.arrayData.time = formatDateBtk(this.arrayData.time)
+            this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
             console.log()
           }
