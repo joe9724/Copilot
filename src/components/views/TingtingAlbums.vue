@@ -155,17 +155,17 @@
             this.$message.info('已取消操作!')
           })
       },
-      sendPush (userId, name) {
+      sendPush (albumId, name) {
         this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'push/jpush?type=2&id=' + albumId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('发送成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('get', 'album/list?userid=1&pageSize=12&pageIndex=0')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.datas
