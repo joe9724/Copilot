@@ -52,6 +52,7 @@ import AlbumTagRelationView from './components/views/TingtingAlbumTagRelation.vu
 import BookTagRelationView from './components/views/TingtingBookTagRelation.vue'
 import BanndersView from './components/views/TingtingBanners.vue'
 import IconsView from './components/views/TingtingIcons.vue'
+import MsgsView from './components/views/TingtingMsgs'
 
 // Routes
 const routes = [
@@ -63,6 +64,13 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'msg/list',
+        alias: 'msg',
+        component: MsgsView,
+        name: 'msg管理',
+        meta: {description: 'MsgsView'}
+      },
       {
         path: 'icon/list',
         alias: 'icon',
