@@ -53,6 +53,8 @@ import BookTagRelationView from './components/views/TingtingBookTagRelation.vue'
 import BanndersView from './components/views/TingtingBanners.vue'
 import IconsView from './components/views/TingtingIcons.vue'
 import MsgsView from './components/views/TingtingMsgs'
+import DefaultBooksView from './components/views/TingtingDefaultBooks.vue'
+import VersionsView from './components/views/TingtingVersions.vue'
 
 // Routes
 const routes = [
@@ -64,6 +66,20 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'version/list',
+        alias: 'defaultbooklist',
+        component: VersionsView,
+        name: '版本管理',
+        meta: {description: 'VersionsView'}
+      },
+      {
+        path: '/book/list/default',
+        alias: 'defaultbooklist',
+        component: DefaultBooksView,
+        name: '默认播放书本管理',
+        meta: {description: 'DefaultBooksView'}
+      },
       {
         path: 'msg/list',
         alias: 'msg',

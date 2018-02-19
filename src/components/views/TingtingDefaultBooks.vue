@@ -15,19 +15,19 @@
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>文字</th>
+          <th style='text-align: center'>书名</th>
           <!--<th style='text-align: center'>图标</th>-->
-          <th style='text-align: center'>图片</th>
+          <th style='text-align: center'>作者</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
-          <th style='text-align: center'>跳转类型</th>
-          <!--<th style='text-align: center'>播放数</th>-->
+          <th style='text-align: center'>章节数</th>
+          <th style='text-align: center'>播放数</th>
           <!--<th>更新提示</th>-->
-          <!-- <th>播放地址</th>
-           <th>顺序</th>
-           <th>状态</th>
-           <th>时间</th>-->
+         <!-- <th>播放地址</th>
+          <th>顺序</th>
+          <th>状态</th>
+          <th>时间</th>-->
           <th style='text-align: center'>操作</th>
         </tr>
         </thead>
@@ -36,12 +36,12 @@
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
           <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>-->
-          <td style='text-align: center'><img v-bind:src=item.cover style="width: 60px;height:60px"></td>
+          <td style='text-align: center'>{{item.authorName}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td style='text-align: center'>{{item.type}}</td>
-          <!--<td style='text-align: center'>{{item.playCount}}</td>-->
+          <td style='text-align: center'>{{item.clipsNumber}}</td>
+          <td style='text-align: center'>{{item.playCount}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -49,6 +49,8 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
+            <el-button type="success" @click="editRelation(item.id)">章节管理</el-button>
+            <el-button type="info" round @click="editTags(item.id)">标签管理</el-button>
             <el-button type="primary" @click="editUser(item.id)">编辑</el-button>
             <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -63,14 +65,14 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="20"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
         </div>
       </div>
-      <!-- /.box-body -->
-    </div>
+            <!-- /.box-body -->
+          </div>
 
   </section>
 </template>
@@ -102,7 +104,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -128,12 +130,12 @@
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'book/delete?bookId=' + userId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'icon/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
+                api.request('get', 'book/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.datas
@@ -157,7 +159,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'icon/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
+        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
@@ -175,11 +177,16 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'icon/list?userid=1&pageSize=20&pageIndex=0')
+      api.request('get', 'book/list?userid=1&pageSize=20&pageIndex=0')
         .then(response => {
           console.log(response.data)
-          this.arrayData = response.data.body.icons
+          this.arrayData = response.data.body.bookList
           this.totalCount = response.data.body.status.totalCount
+          for (var i = 0; i < this.arrayData.length; i++) {
+            this.arrayData.time = formatDateBtk(this.arrayData.time)
+            // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+            console.log()
+          }
         })
         .catch(error => {
           // this.$store.commit('TOGGLE_LOADING')
