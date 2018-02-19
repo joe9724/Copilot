@@ -50,6 +50,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
+            <el-button type="text" @click="removeUser(item.id)">推送</el-button>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -64,7 +65,7 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="20"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
@@ -103,7 +104,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -130,10 +131,10 @@
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=20')
                   .then(response => {
                     console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.body.msgList
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -154,10 +155,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.bookList
+            this.arrayData = response.data.body.msgList
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -172,7 +173,7 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'msg/send/list?userid=1&pageSize=12&pageIndex=0')
+      api.request('get', 'msg/send/list?userid=1&pageSize=20&pageIndex=0')
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.msgList

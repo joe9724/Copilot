@@ -36,7 +36,7 @@
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
           <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>-->
-          <td style='text-align: center'>{{item.cover}}</td>
+          <td style='text-align: center'><img v-bind:src=item.cover style="width: 200px;height:60px"></td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->

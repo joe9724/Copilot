@@ -64,7 +64,7 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="20"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
@@ -103,7 +103,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -132,7 +132,7 @@
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=-1')
+                api.request('get', 'category/list?userid=1&pageSize=20&pageIndex=0&parentId=-1')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.datas
@@ -156,7 +156,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'category/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12&parentId=-1')
+        api.request('get', 'category/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20&parentId=-1')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.subCategoryList
@@ -176,7 +176,7 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=0&parentId=-1')
+      api.request('get', 'category/list?userid=1&pageSize=20&pageIndex=0&parentId=-1')
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.subCategoryList

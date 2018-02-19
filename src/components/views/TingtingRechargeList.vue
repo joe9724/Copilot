@@ -66,7 +66,7 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="20"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
@@ -105,7 +105,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -132,10 +132,10 @@
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('post', 'recharge/list?operator_id=' + userid + '&page=1&size=10')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
+                    // console.log(response.data)
+                    this.arrayData = response.data.body.orders
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -156,10 +156,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('post', 'recharge/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.bookList
+            this.arrayData = response.data.body.orders
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -174,10 +174,11 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('post', 'recharge/list?userid=1&pageSize=12&pageIndex=1')
+      api.request('post', 'recharge/list?userid=1&pageSize=20&pageIndex=0')
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.orders
+          this.totalCount = response.data.body.status.totalCount
           for (var i = 0; i < this.arrayData.length; i++) {
             // this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)

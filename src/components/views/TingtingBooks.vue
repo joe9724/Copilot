@@ -65,7 +65,7 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="20"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
@@ -104,7 +104,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -130,12 +130,12 @@
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'book/delete?bookId=' + userId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('get', 'book/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.datas
@@ -159,7 +159,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
+        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
@@ -177,7 +177,7 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=0')
+      api.request('get', 'book/list?userid=1&pageSize=20&pageIndex=0')
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.bookList
