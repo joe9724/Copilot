@@ -3,9 +3,9 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/book/add">
+        <router-link  class="pageLink" to="/banner/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加书本</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加Banner</el-button></span>
 
           </a>
         </router-link>
@@ -49,7 +49,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="primary" @click="editUser(item.id)">编辑</el-button>
+            <el-button type="primary" @click="editBanner(item.id)">编辑</el-button>
             <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
           </td>
         </tr>
@@ -116,9 +116,9 @@
       }
     },
     methods: {
-      editRelation (bookId) {
+      editBanner (bannerId) {
         // alert(bookId)
-        this.$router.push({path: '/book/chapter/relation?bookId=' + bookId})
+        this.$router.push({path: '/banner/edit?bannerId=' + bannerId})
       },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)

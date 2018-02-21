@@ -55,6 +55,12 @@ import IconsView from './components/views/TingtingIcons.vue'
 import MsgsView from './components/views/TingtingMsgs'
 import DefaultBooksView from './components/views/TingtingDefaultBooks.vue'
 import VersionsView from './components/views/TingtingVersions.vue'
+import AddBannerView from './components/views/TingtingAddBanner.vue'
+import EditBannerView from './components/views/TingtingEditBanner.vue'
+import AddIconView from './components/views/TingtingAddIcon.vue'
+import EditIconView from './components/views/TingtingEditIcon.vue'
+import CategoryBannerRelationView from './components/views/TingtingCategoryBannerRelation.vue'
+import CategoryIconRelationView from './components/views/TingtingCategoryIconRelation.vue'
 
 // Routes
 const routes = [
@@ -66,6 +72,48 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'category/icon/relation',
+        alias: 'CategoryIconRelationView',
+        component: CategoryIconRelationView,
+        name: 'categoryicon关联',
+        meta: {description: 'CategoryIconRelationView'}
+      },
+      {
+        path: 'category/banner/relation',
+        alias: 'CategoryBannerRelationView',
+        component: CategoryBannerRelationView,
+        name: 'categorybanner关联',
+        meta: {description: 'CategoryBannerRelationView'}
+      },
+      {
+        path: 'icon/edit',
+        alias: 'EditIconView',
+        component: EditIconView,
+        name: '编辑Icon',
+        meta: {description: 'EditIconView'}
+      },
+      {
+        path: 'icon/add',
+        alias: 'AddIconView',
+        component: AddIconView,
+        name: '添加Icon',
+        meta: {description: 'AddIconView'}
+      },
+      {
+        path: 'banner/edit',
+        alias: 'EditBannerView',
+        component: EditBannerView,
+        name: '编辑Banner',
+        meta: {description: 'EditBannerView'}
+      },
+      {
+        path: 'banner/add',
+        alias: 'AddBannerView',
+        component: AddBannerView,
+        name: '添加banner',
+        meta: {description: 'AddBannerView'}
+      },
       {
         path: 'version/list',
         alias: 'defaultbooklist',

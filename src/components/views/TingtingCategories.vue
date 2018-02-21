@@ -47,11 +47,11 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td align="center">
-            <el-button type="success" @click="editChildren(item.id)" plain>icon管理</el-button>
-            <el-button type="primary" @click="editCategory(item.id)" plain>banner管理</el-button>
-            <el-button type="success" @click="editChildren(item.id)" plain>子类</el-button>
-            <el-button type="primary" @click="editCategory(item.id)" plain>编辑</el-button>
-            <el-button type="warning" @click="removeCategory(item.id)" plain>删除</el-button>
+            <el-button type="success" @click="editIcon(item.id)" >icon管理</el-button>
+            <el-button type="primary" @click="editBanner(item.id)" >banner管理</el-button>
+            <el-button type="success" @click="editChildren(item.id)" >子类</el-button>
+            <el-button type="primary" @click="editCategory(item.id)" >编辑</el-button>
+            <el-button type="warning" @click="removeCategory(item.id)" >删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -166,6 +166,13 @@
             console.log(error)
             this.response = 'Server appears to be offline'
           })
+      },
+      // category/banner/relation
+      editBanner (id) {
+        this.$router.push({path: '/category/banner/relation?categoryId=' + id})
+      },
+      editIcon (id) {
+        this.$router.push({path: '/category/icon/relation?categoryId=' + id})
       },
       editCategory (id) {
         this.$router.push({path: '/category/edit?categoryId=' + id})
