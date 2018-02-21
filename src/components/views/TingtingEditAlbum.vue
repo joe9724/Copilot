@@ -8,6 +8,9 @@
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
             </el-form-item>
+            <el-form-item label="年级">
+              <el-input v-model="form.grade"></el-input>
+            </el-form-item>
             <!--<el-form-item label="副标题">
               <el-input v-model="form.subTitle"></el-input>
             </el-form-item>-->
@@ -86,7 +89,8 @@
           desc: '',
           status: '',
           icon: '',
-          price: ''
+          price: '',
+          grade: ''
         },
         num1: 1,
         albumId: 0,
@@ -139,6 +143,7 @@
         }
         formData.append('subTitle', this.form.title)
         formData.append('title', this.form.title)
+        formData.append('grade', this.form.grade)
         var albumId = '0'
         if (this.$route.query.albumId) {
           albumId = this.$route.query.albumId
@@ -198,6 +203,7 @@
           this.form.price = data.value
           this.form.icon = data.icon
           this.htmlForEditor = data.summary
+          this.form.grade = data.grade
           if (data.status === 0) {
             this.form.status = '正常'
           } else {

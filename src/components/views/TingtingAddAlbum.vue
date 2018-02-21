@@ -5,8 +5,11 @@
       <div class="row">
         <div class="col-md-12">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="名称">
+            <el-form-item label="标题">
               <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="年级">
+              <el-input v-model="form.grade"></el-input>
             </el-form-item>
             <el-form-item label="定价">
               <el-input-number v-model="form.value" @change="handleChange" :min="1" :max="10000"
@@ -73,6 +76,7 @@
           type: [],
           resource: '',
           desc: '',
+          grade: '13',
           status: '',
           content: '',
           fileList2: [{
@@ -142,6 +146,7 @@
         formData.append('subTitle', this.form.name)
         formData.append('title', this.form.name)
         formData.append('albumId', Number(-1))
+        formData.append('grade', Number(this.form.grade))
         formData.append('summary', this.htmlForEditor)
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
