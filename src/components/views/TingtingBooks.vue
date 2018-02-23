@@ -18,6 +18,7 @@
           <th style='text-align: center'>书名</th>
           <!--<th style='text-align: center'>图标</th>-->
           <th style='text-align: center'>作者</th>
+          <th style='text-align: center'>图标</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
@@ -37,6 +38,7 @@
           <td style='text-align: center'>{{item.name}}</td>
           <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>-->
           <td style='text-align: center'>{{item.authorName}}</td>
+          <td style='text-align: center'><img v-bind:src=item.icon style="width: 40px;height:50px"> </td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->

@@ -36,7 +36,7 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center'><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
+          <td style='text-align: center'><img v-bind:src=item.icon style="width: 40px;height:40px"> </td>
           <td style='text-align: center'>{{item.booksNumber}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->

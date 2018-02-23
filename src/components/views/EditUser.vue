@@ -14,18 +14,18 @@
                 <el-radio :label="1">女</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="优先级">
+            <el-form-item label="角色">
               <el-radio-group v-model="form.priority">
-                <el-radio label="曲线图优先"></el-radio>
-                <el-radio label="数据优先"></el-radio>
-                <el-radio label="实时数据优先"></el-radio>
+                <el-radio label="普通用户"></el-radio>
+                <el-radio label="管理员"></el-radio>
+                <!--<el-radio label="实时数据优先"></el-radio>-->
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="组织机构">
+            <!--<el-form-item label="组织机构">
               <el-select v-model="value" placeholder="请选择所属组织" value-key="agency_id" @change="change()">
                 <el-option v-for="item in options" :label="item.agency_name" :value="item" :key="item.agency_id"/>
               </el-select>
-            </el-form-item>
+            </el-form-item>-->
             <!--{{value}}-->
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
@@ -33,16 +33,16 @@
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="设备">
+            <!--<el-form-item label="设备">
               <el-checkbox-group v-model="deviceList">
-                <!--&lt;!&ndash;<el-checkbox label="复选框 A"></el-checkbox>-->
-                <!--<el-checkbox label="复选框 B"></el-checkbox>-->
-                <!--<el-checkbox label="复选框 C"></el-checkbox>-->
-                <!--<el-checkbox label="禁用" disabled></el-checkbox>&ndash;&gt;-->
+                &lt;!&ndash;&lt;!&ndash;<el-checkbox label="复选框 A"></el-checkbox>&ndash;&gt;
+                &lt;!&ndash;<el-checkbox label="复选框 B"></el-checkbox>&ndash;&gt;
+                &lt;!&ndash;<el-checkbox label="复选框 C"></el-checkbox>&ndash;&gt;
+                &lt;!&ndash;<el-checkbox label="禁用" disabled></el-checkbox>&ndash;&gt;&ndash;&gt;
                 <el-checkbox v-for="item in chooseList" :label="item.device_name" :data-device_no="item.device_no"
                              @change="getChecked(item.device_no)"></el-checkbox>
               </el-checkbox-group>
-            </el-form-item>
+            </el-form-item>-->
             <!--<el-form-item label="活动形式">
               <el-input type="textarea" v-model="form.desc"></el-input>
             </el-form-item>-->

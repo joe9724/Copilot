@@ -36,7 +36,7 @@
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
           <!--<td style='text-align: center'><img v-bind:src=item.icon style="width: 60px;height:80px"> </td>-->
-          <td style='text-align: center'><img v-bind:src=item.cover style="width: 60px;height:60px"></td>
+          <td style='text-align: center'><img v-bind:src=item.cover style="width: 40px;height:40px"></td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
@@ -63,7 +63,7 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="20"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
@@ -102,7 +102,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -136,7 +136,7 @@
                 api.request('get', 'icon/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
                   .then(response => {
                     console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.icons
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -160,7 +160,7 @@
         api.request('get', 'icon/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.bookList
+            this.arrayData = response.data.body.icons
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')

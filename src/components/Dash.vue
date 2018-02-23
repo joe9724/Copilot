@@ -27,17 +27,17 @@
 
             <!-- User Account Menu -->
             <li class="dropdown user user-menu">
-              <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                <!-- The user image in the navbar-->
-                <!--<img v-bind:src="demo.avatar" class="user-image" alt="User Image">-->
-                <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs"><!--{{ demo.displayName }}-->BTK</span>
+              <!--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                &lt;!&ndash; The user image in the navbar&ndash;&gt;
+                &lt;!&ndash;<img v-bind:src="demo.avatar" class="user-image" alt="User Image">&ndash;&gt;
+                &lt;!&ndash; hidden-xs hides the username on small devices so only the image appears. &ndash;&gt;
+                <span class="hidden-xs">&lt;!&ndash;{{ demo.displayName }}&ndash;&gt;BTK</span>
               </a>
               <ul class="dropdown-menu" style="width: 100%">
                 <li class="header"><el-button type="primary" style="width: 100%">修改密码</el-button></li>
                 <li class="header"><el-button type="success" style="width: 100%">注销登录</el-button></li>
 
-              </ul>
+              </ul>-->
             </li>
           </ul>
         </div>
@@ -70,7 +70,7 @@
     <!-- Main Footer -->
     <footer class="main-footer">
       <strong>Copyright &copy; {{year}}
-        <a href="javascript:;">BTK</a>.</strong> All rights reserved.
+        <a href="javascript:;">听听悦读</a>.</strong> All rights reserved.
     </footer>
   </div>
   <!-- ./wrapper -->
