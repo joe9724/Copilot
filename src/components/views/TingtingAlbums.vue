@@ -24,6 +24,7 @@
           <th style='text-align: center'>播放数</th>
           <th style='text-align: center'>价格</th>
           <th style='text-align: center'>年级</th>
+          <th style='text-align: center'>添加时间</th>
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
           <th>顺序</th>
@@ -44,6 +45,7 @@
           <td style='text-align: center'>{{item.playCount}}</td>
           <td style='text-align: center'>{{item.value}}</td>
           <td style='text-align: center'>{{item.grade}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -56,7 +58,7 @@
             <el-button type="primary" round @click="editTags(item.id)">标签管理</el-button>
             <el-button type="success" round @click="sendPush(item.id,item.name)">推送</el-button>
             <el-button type="info" round @click="editAlbum(item.id)">编辑</el-button>
-            <el-button type="warning" round @click="removeUser(item.id)">删除</el-button>
+            <el-button type="warning" round @click="removeAlbum(item.id)">删除</el-button>
 
           </td>
         </tr>
@@ -126,20 +128,20 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeAlbum (albumId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'album/delete?albumId=' + albumId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'album/list?operator_id=' + userid + 'pageSize=20&pageIndex=')
+                api.request('get', 'album/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.totalCount = response.data.body.status.totalCount
+                    this.arrayData = response.data.body.albumList
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')

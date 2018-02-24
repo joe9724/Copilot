@@ -47,9 +47,9 @@
           <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
             <!--<img src="/static/img/play.png" style="width: 20px;height:20px">-->
-            <el-button type="primary" @click="editUser(item.id)">播放</el-button>
-            <el-button type="success" @click="editUser(item.id)" style="margin-left: 10px">编辑</el-button>
-            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
+            <!--<el-button type="primary" @click="editUser(item.id)">播放</el-button>-->
+            <el-button type="success" @click="editChapter(item.id)" style="margin-left: 10px">编辑</el-button>
+            <el-button type="warning" @click="removeChapter(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -118,12 +118,12 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeChapter (chapterId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'chapter/delete?chapterId=' + chapterId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
@@ -132,6 +132,12 @@
                   .then(response => {
                     // console.log(response.data)
                     this.arrayData = response.data.body.chapters
+                    this.totalCount = response.data.body.status.totalCount
+                    for (var i = 0; i < this.arrayData.length; i++) {
+                      this.arrayData.time = formatDateBtk(this.arrayData.time)
+                      // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+                      console.log()
+                    }
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -163,9 +169,9 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editUser (userId) {
+      editChapter (chapterId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/chapter/edit?chapterId=' + userId})
+        this.$router.push({path: '/chapter/edit?chapterId=' + chapterId})
       }
     },
     created () {
@@ -174,6 +180,7 @@
         .then(response => {
           // console.log(response.data)
           this.arrayData = response.data.body.chapters
+          this.totalCount = response.data.body.status.totalCount
           for (var i = 0; i < this.arrayData.length; i++) {
             this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)

@@ -22,8 +22,8 @@
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
           <th style='text-align: center'>会员</th>
-          <th style='text-align: center'>额度</th>
-          <th style='text-align: center'>付款方式</th>
+          <th style='text-align: center'>金额</th>
+          <th style='text-align: center'>方式</th>
           <th style='text-align: center'>时间</th>
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
@@ -36,15 +36,15 @@
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
-          <td style='text-align: center'>{{item.orderNo}}</td>
+          <td style='text-align: center'>{{item.order_no}}</td>
 
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td style='text-align: center'>{{item.name}}</td>
+          <td style='text-align: center'>{{item.memberName}}</td>
           <td style='text-align: center'>{{item.value}}</td>
           <td style='text-align: center'><img src="/static/img/alipay.png" style="width: 20px;height:20px"></td>
-          <td style='text-align: center'>{{item.time}}</td>
+          <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -135,7 +135,7 @@
                 api.request('post', 'recharge/list?operator_id=' + userid + '&page=1&size=10')
                   .then(response => {
                     // console.log(response.data)
-                    this.arrayData = response.data.body.orders
+                    this.arrayData = response.data.body.recharges
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -159,7 +159,7 @@
         api.request('post', 'recharge/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.orders
+            this.arrayData = response.data.body.recharges
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -177,7 +177,7 @@
       api.request('post', 'recharge/list?userid=1&pageSize=20&pageIndex=0')
         .then(response => {
           console.log(response.data)
-          this.arrayData = response.data.body.orders
+          this.arrayData = response.data.body.recharges
           this.totalCount = response.data.body.status.totalCount
           for (var i = 0; i < this.arrayData.length; i++) {
             // this.arrayData.time = formatDateBtk(this.arrayData.time)

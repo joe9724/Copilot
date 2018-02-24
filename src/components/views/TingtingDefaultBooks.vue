@@ -3,7 +3,7 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/book/add">
+        <router-link  class="pageLink" to="/book/default/add">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加</el-button></span>
 
@@ -52,7 +52,7 @@
            <!-- <el-button type="success" @click="editRelation(item.id)">章节管理</el-button>
             <el-button type="info" round @click="editTags(item.id)">标签管理</el-button>
             <el-button type="primary" @click="editUser(item.id)">编辑</el-button>-->
-            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="warning" @click="removeBook(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -125,20 +125,20 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeBook (bookId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'book/delete?bookId=' + userId + '&operator_id=' + userid)
+            api.request('get', 'book/delete?action=deleteDefault&bookId=' + bookId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'book/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
+                api.request('get', 'relation/default/book/list?userid=1&pageSize=20&pageIndex=0')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.body.books
+                    this.totalCount = response.data.body.status.totalCount
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')

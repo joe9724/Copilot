@@ -50,7 +50,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
             <el-button type="primary" @click="editIcon(item.id)">编辑</el-button>
-            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="warning" @click="removeIcon(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -123,20 +123,20 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeIcon (iconId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'icon/delete?iconId=' + iconId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
                 api.request('get', 'icon/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.icons
+                    this.arrayData = response.data.body.icons
+                    this.totalCount = response.data.body.status.totalCount
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')

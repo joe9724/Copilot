@@ -50,7 +50,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
             <el-button type="primary" @click="editBanner(item.id)">编辑</el-button>
-            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="warning" @click="removeBanner(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -123,20 +123,21 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeBanner (bannerId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            api.request('get', 'banner/delete?user_id=' + userid + '&bannerId=' + bannerId)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('get', 'banner/list?operator_id=' + userid + '&pageIndex=0&pageSize=20')
                   .then(response => {
                     console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.body.banners
+                    this.totalCount = response.data.body.status.totalCount
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -157,7 +158,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
+        api.request('get', 'banner/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
@@ -167,10 +168,6 @@
             console.log(error)
             this.response = 'Server appears to be offline'
           })
-      },
-      editTags (bookId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/tag/book/relation?bookId=' + bookId})
       }
     },
     created () {

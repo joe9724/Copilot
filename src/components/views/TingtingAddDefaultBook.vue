@@ -1,23 +1,20 @@
 <template>
   <div>
-    <h5 class="text-center">编辑Banner</h5>
+    <h5 class="text-center">添加书本</h5>
     <section class="content">
       <div class="row">
         <div class="col-md-12">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="名称">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="书本ID">
+              <el-input v-model="form.grade"></el-input>
             </el-form-item>
-            <el-form-item label="类别">
-              <el-input v-model="form.type"></el-input>
+            <el-form-item label="开始时间">
+              <el-input v-model="form.startTime"></el-input>
             </el-form-item>
-            <el-form-item label="类别ID">
-              <el-input v-model="form.jumpid"></el-input>
+            <el-form-item label="结束时间">
+              <el-input v-model="form.endTime"></el-input>
             </el-form-item>
-            <el-form-item label="链接">
-              <el-input v-model="form.jumpurl"></el-input>
-            </el-form-item>
-            <el-form-item label="图片">
+            <!--<el-form-item label="图标">
               <img v-bind:src="imgUrl"/>
               <vue-core-image-upload
                 class="btn btn-primary"
@@ -31,7 +28,7 @@
                 :url="uploadUrl">
 
               </vue-core-image-upload>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio label="正常"></el-radio>
@@ -39,10 +36,10 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item>
-              <!--<vue-editor id="editor"
+              <vue-editor id="editor"
                           useCustomImageHandler
                           @imageAdded="handleImageAdded" v-model="htmlForEditor">
-              </vue-editor>-->
+              </vue-editor>
               <el-button type="primary" @click="onSubmit">确定</el-button>
               <!--<el-button>确定</el-button>-->
             </el-form-item>
@@ -75,14 +72,12 @@
           date1: '',
           date2: '',
           delivery: false,
+          type: [],
           resource: '',
           desc: '',
           status: '',
           author: '',
           content: '',
-          type: '',
-          jumpid: '',
-          jumpurl: '',
           fileList2: [{
             name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
@@ -92,31 +87,6 @@
     },
     created () {
       this.uploadUrl = configParams.uploadURI
-      var bannerId = '0'
-      if (this.$route.query.bannerId) {
-        bannerId = this.$route.query.bannerId
-        this.bannerId = this.$route.query.bannerId
-      }
-      api.request('get', 'banner/detail?userid=1&bannerId=' + bannerId)
-        .then(response => {
-          var data = response.data.body.data
-          // this.form.pass = '******'
-          this.form.name = data.name
-          this.form.type = data.type
-          this.form.jumpid = data.jumpid
-          this.form.jumpurl = data.jumpurl
-          this.imgUrl = data.cover
-          if (data.status === 0) {
-            this.form.status = '正常'
-          } else {
-            this.form.status = '锁定'
-          }
-        })
-        .catch(error => {
-          // this.$store.commit('TOGGLE_LOADING')
-          console.log(error)
-          this.response = 'Server appears to be offline'
-        })
     },
     methods: {
       imageUploaded (response) {
@@ -146,11 +116,6 @@
         // alert(this.content)
         // this.$router.push('/org')
         // console.log('submit!')
-        var bannerId = '0'
-        if (this.$route.query.bannerId) {
-          bannerId = this.$route.query.bannerId
-          this.bannerId = this.$route.query.bannerId
-        }
         var userid = localStorage.getItem('userid')
         console.log(userid)
         let formData = new FormData()
@@ -160,16 +125,17 @@
         } else {
           formData.append('status', Number(1))
         }
-        formData.append('type', this.form.type)
-        formData.append('targetId', this.form.jumpid)
-        formData.append('webUrl', this.form.jumpurl)
-        formData.append('bannerId', Number(bannerId))
+        formData.append('subTitle', 'subTitle')
+        formData.append('title', this.form.name)
+        formData.append('authorName', this.form.author)
+        formData.append('summary', this.htmlForEditor)
+        formData.append('bookId', Number(-1))
         if (this.imgUrl !== '') {
-          formData.append('coverUrl', this.imgUrl)
+          formData.append('iconUrl', this.imgUrl)
         }
         // formData.append('file', this.file)
 
-        api.requestForm('post', 'banner/upload', formData)
+        api.requestForm('post', 'book/upload', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))

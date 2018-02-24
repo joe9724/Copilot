@@ -61,6 +61,7 @@ import AddIconView from './components/views/TingtingAddIcon.vue'
 import EditIconView from './components/views/TingtingEditIcon.vue'
 import CategoryBannerRelationView from './components/views/TingtingCategoryBannerRelation.vue'
 import CategoryIconRelationView from './components/views/TingtingCategoryIconRelation.vue'
+import AddDefaultBookView from './components/views/TingtingAddDefaultBook.vue'
 
 // Routes
 const routes = [
@@ -72,6 +73,13 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'book/default/add',
+        alias: 'AddDefaultBookView',
+        component: AddDefaultBookView,
+        name: 'categoryicon关联',
+        meta: {description: 'AddDefaultBookView'}
+      },
       {
         path: 'category/icon/relation',
         alias: 'CategoryIconRelationView',

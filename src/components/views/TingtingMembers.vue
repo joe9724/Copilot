@@ -19,7 +19,7 @@
           <th style='text-align: center'>头像</th>
           <th style='text-align: center'>性别</th>
           <th style='text-align: center'>用户名</th>
-          <th style='text-align: center'>角色</th>
+          <!--<th style='text-align: center'>角色</th>-->
           <th style='text-align: center'>状态</th>
           <th style='text-align: center'>时间</th>
           <th style='text-align: center'>操作</th>
@@ -29,11 +29,21 @@
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
           <td style='text-align: center'><img v-bind:src=item.avatar style="width: 30px;height:30px"> </td>
-          <td style='text-align: center'>{{item.gender}}</td>
+          <td style='text-align: center'><!--{{item.gender}}-->
+            <div v-if="item.gender===0">
+                     保密
+                 </div>
+                 <div v-else-if="message===1">
+                       男
+                   </div>
+                 <div v-else="message===2">
+                       女
+                   </div>
+                </td>
           <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center'>{{item.role}}</td>
+          <!--<td style='text-align: center'>{{item.role}}</td>-->
           <td style='text-align: center'>{{item.status | FormatStatus}}</td>
-          <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'>{{item.ts*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
             <el-button type="text" @click="editUser(item.id)">冻结</el-button>
             <el-button type="text" @click="removeUser(item.id)">启用</el-button>

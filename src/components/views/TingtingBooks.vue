@@ -24,6 +24,7 @@
           <!--<th>大图</th>-->
           <th style='text-align: center'>章节数</th>
           <th style='text-align: center'>播放数</th>
+          <th style='text-align: center'>添加时间</th>
           <!--<th>更新提示</th>-->
          <!-- <th>播放地址</th>
           <th>顺序</th>
@@ -44,6 +45,7 @@
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
           <td style='text-align: center'>{{item.clipsNumber}}</td>
           <td style='text-align: center'>{{item.playCount}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -52,9 +54,9 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
             <el-button type="success" @click="editRelation(item.id)">章节管理</el-button>
-            <el-button type="info" round @click="editTags(item.id)">标签管理</el-button>
-            <el-button type="primary" @click="editUser(item.id)">编辑</el-button>
-            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="info" round @click="editBookTag(item.id)">标签管理</el-button>
+            <el-button type="primary" @click="editBook(item.id)">编辑</el-button>
+            <el-button type="warning" @click="removeBook(item.id)">删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -127,20 +129,20 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      removeUser (userId) {
+      removeBook (bookId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'book/delete?bookId=' + userId + '&operator_id=' + userid)
+            api.request('get', 'book/delete?bookId=' + bookId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
                 api.request('get', 'book/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.body.bookList
+                    this.totalCount = response.data.body.status.totalCount
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -172,9 +174,13 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editTags (bookId) {
+      editBookTag (bookId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
         this.$router.push({path: '/tag/book/relation?bookId=' + bookId})
+      },
+      editBook (bookId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/book/edit?bookId=' + bookId})
       }
     },
     created () {
