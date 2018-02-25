@@ -5,16 +5,20 @@
       <div class="row">
         <div class="col-md-12">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="名称">
+            <el-form-item label="标题文字">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="类别">
-              <el-input v-model="form.type"></el-input>
+            <el-form-item label="跳转类型">
+              <el-radio-group v-model="jumptype">
+                <el-radio :label="3">专辑</el-radio>
+                <el-radio :label="2">书本</el-radio>
+                <el-radio :label="1">web链</el-radio>
+              </el-radio-group>
             </el-form-item>
-            <el-form-item label="类别ID">
+            <el-form-item label="跳转ID">
               <el-input v-model="form.targetId"></el-input>
             </el-form-item>
-            <el-form-item label="链接">
+            <el-form-item label="Web链接">
               <el-input v-model="form.webUrl"></el-input>
             </el-form-item>
             <el-form-item label="图片">
@@ -68,7 +72,8 @@
         src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
         htmlForEditor: '',
         uploadUrl: '',
-        imgUrl: '',
+        imgUrl: 3,
+        jumptype: '',
         form: {
           name: '',
           region: '',
@@ -77,12 +82,12 @@
           delivery: false,
           resource: '',
           desc: '',
-          status: '',
+          status: '正常',
           author: '',
           content: '',
           type: '',
           targetId: '',
-          webUrl: '',
+          webUrl: 'http://',
           fileList2: [{
             name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
@@ -130,7 +135,7 @@
         } else {
           formData.append('status', Number(1))
         }
-        formData.append('type', this.form.type)
+        formData.append('type', this.jumptype)
         formData.append('targetId', this.form.targetId)
         formData.append('webUrl', this.form.webUrl)
         formData.append('bannerId', Number(-1))
