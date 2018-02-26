@@ -8,9 +8,9 @@
             <el-form-item label="标题">
               <el-input v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="年级">
+            <!--<el-form-item label="年级">
               <el-input v-model="form.grade"></el-input>
-            </el-form-item>
+            </el-form-item>-->
             <!--<el-form-item label="副标题">
               <el-input v-model="form.subTitle"></el-input>
             </el-form-item>-->
@@ -46,6 +46,18 @@
                 <el-radio label="正常"></el-radio>
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
+            </el-form-item>
+            <el-form-item label="年级">
+              <!--<el-input v-model="form.grade"></el-input>-->
+              <el-tree
+                :data="data2"
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                ref="tree"
+                highlight-current
+                :props="defaultProps">
+              </el-tree>
             </el-form-item>
             <el-form-item label="简介">
             <vue-editor id="editor"
@@ -91,6 +103,81 @@
           icon: '',
           price: '',
           grade: ''
+        },
+        data2: [{
+          id: 10,
+          label: '学龄前'
+        }, {
+          id: 20,
+          label: '幼儿园'
+        }, {
+          id: 30,
+          label: '小学',
+          children: [{
+            id: 31,
+            label: '小学一年级'
+          }, {
+            id: 32,
+            label: '小学二年级'
+          }, {
+            id: 33,
+            label: '小学三年级'
+          }, {
+            id: 34,
+            label: '小学四年级'
+          }, {
+            id: 35,
+            label: '小学五年级'
+          }, {
+            id: 36,
+            label: '小学六年级'
+          }]
+        }, {
+          id: 40,
+          label: '初中',
+          children: [{
+            id: 41,
+            label: '初中一年级'
+          }, {
+            id: 42,
+            label: '初中二年级'
+          }, {
+            id: 43,
+            label: '初中三年级'
+          }]
+        }, {
+          id: 50,
+          label: '高中',
+          children: [{
+            id: 51,
+            label: '高中一年级'
+          }, {
+            id: 52,
+            label: '高中二年级'
+          }, {
+            id: 53,
+            label: '高中三年级'
+          }]
+        }, {
+          id: 60,
+          label: '大学',
+          children: [{
+            id: 61,
+            label: '大学一年级'
+          }, {
+            id: 62,
+            label: '大学二年级'
+          }, {
+            id: 63,
+            label: '大学三年级'
+          }, {
+            id: 64,
+            label: '大学四年级'
+          }]
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
         },
         num1: 1,
         albumId: 0,
@@ -151,6 +238,7 @@
         }
         formData.append('albumId', Number(albumId))
         formData.append('summary', this.htmlForEditor)
+        formData.append('gradeRange', this.$refs.tree.getCheckedKeys())
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }
@@ -203,7 +291,8 @@
           this.form.price = data.value
           this.form.icon = data.icon
           this.htmlForEditor = data.summary
-          this.form.grade = data.grade
+          this.$refs.tree.setCheckedKeys(data.gradeRange.split(','))
+          // this.form.grade = data.grade
           if (data.status === 0) {
             this.form.status = '正常'
           } else {

@@ -8,13 +8,15 @@
             <el-form-item label="标题">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="年级">
+            <!--<el-form-item label="年级">
               <el-input v-model="form.grade"></el-input>
-            </el-form-item>
+            </el-form-item>-->
+
             <el-form-item label="定价">
               <el-input-number v-model="form.value" @change="handleChange" :min="1" :max="10000"
                                label="改变价格"></el-input-number>
             </el-form-item>
+
             <el-form-item label="图标">
               <img v-bind:src="imgUrl"/>
               <vue-core-image-upload
@@ -36,13 +38,26 @@
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
             </el-form-item>
+            <el-form-item label="年级">
+              <!--<el-input v-model="form.grade"></el-input>-->
+              <el-tree
+                :data="data2"
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                ref="tree"
+                highlight-current
+                :props="defaultProps">
+              </el-tree>
+            </el-form-item>
             <!-- bidirectional data binding（双向数据绑定） -->
-            <vue-editor id="editor"
-                        useCustomImageHandler
-                        @imageAdded="handleImageAdded" v-model="htmlForEditor">
-            </vue-editor>
 
-            <el-form-item>
+
+            <el-form-item label="简介">
+              <vue-editor id="editor"
+                          useCustomImageHandler
+                          @imageAdded="handleImageAdded" v-model="htmlForEditor">
+              </vue-editor>
               <el-button type="primary" @click="onSubmit">确定</el-button>
               <!--<el-button>确定</el-button>-->
             </el-form-item>
@@ -83,6 +98,81 @@
             name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
           }]
+        },
+        data2: [{
+          id: 10,
+          label: '学龄前'
+        }, {
+          id: 20,
+          label: '幼儿园'
+        }, {
+          id: 30,
+          label: '小学',
+          children: [{
+            id: 31,
+            label: '小学一年级'
+          }, {
+            id: 32,
+            label: '小学二年级'
+          }, {
+            id: 33,
+            label: '小学三年级'
+          }, {
+            id: 34,
+            label: '小学四年级'
+          }, {
+            id: 35,
+            label: '小学五年级'
+          }, {
+            id: 36,
+            label: '小学六年级'
+          }]
+        }, {
+          id: 40,
+          label: '初中',
+          children: [{
+            id: 41,
+            label: '初中一年级'
+          }, {
+            id: 42,
+            label: '初中二年级'
+          }, {
+            id: 43,
+            label: '初中三年级'
+          }]
+        }, {
+          id: 50,
+          label: '高中',
+          children: [{
+            id: 51,
+            label: '高中一年级'
+          }, {
+            id: 52,
+            label: '高中二年级'
+          }, {
+            id: 53,
+            label: '高中三年级'
+          }]
+        }, {
+          id: 60,
+          label: '大学',
+          children: [{
+            id: 61,
+            label: '大学一年级'
+          }, {
+            id: 62,
+            label: '大学二年级'
+          }, {
+            id: 63,
+            label: '大学三年级'
+          }, {
+            id: 64,
+            label: '大学四年级'
+          }]
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
         },
         name: '01-example',
         content: '',
@@ -148,6 +238,7 @@
         formData.append('albumId', Number(-1))
         formData.append('grade', Number(this.form.grade))
         formData.append('summary', this.htmlForEditor)
+        formData.append('gradeRange', this.$refs.tree.getCheckedKeys())
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }

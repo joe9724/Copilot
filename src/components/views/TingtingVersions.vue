@@ -16,8 +16,9 @@
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>标题</th>
-          <th style='text-align: center'>时间</th>
+          <th style='text-align: center'>客户端类型</th>
+          <th style='text-align: center'>版本号</th>
+          <th style='text-align: center'>版本消息</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>
@@ -35,8 +36,9 @@
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
-          <td style='text-align: center'>{{item.title}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.creatTime*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'>{{item.client}}</td>
+          <td class="sorting_1" style="vertical-align: middle"><!--{{item.creatTime*1000 | BTKformatDate}}-->{{item.number}}</td>
+          <td style='text-align: center'>{{item.msg}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>
@@ -52,7 +54,7 @@
           <td style='text-align: center'>
             <!--<el-button type="text" @click="removeUser(item.id)">推送</el-button>-->
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <!--<el-button type="text" @click="removeUser(item.id)">删除</el-button>-->
           </td>
         </tr>
         </tbody>
@@ -173,10 +175,11 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'msg/send/list?userid=1&pageSize=20&pageIndex=0')
+      api.request('get', 'appVersion/list?userid=1&pageSize=20&pageIndex=0')
         .then(response => {
           console.log(response.data)
-          this.arrayData = response.data.body.msgList
+          this.arrayData = response.data.body.versionList
+          this.totalCount = 2
           for (var i = 0; i < this.arrayData.length; i++) {
             // this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)

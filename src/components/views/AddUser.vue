@@ -11,34 +11,34 @@
             <el-form-item label="密码">
               <el-input v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item label="性别">
+            <!--<el-form-item label="性别">
               <el-radio-group v-model="form.gender">
                 <el-radio label="男"></el-radio>
                 <el-radio label="女"></el-radio>
               </el-radio-group>
-            </el-form-item>
-            <el-form-item label="用户角色">
+            </el-form-item>-->
+            <!--<el-form-item label="用户角色">
               <el-radio-group v-model="form.role">
                 <el-radio label="root"></el-radio>
                 <el-radio label="admin"></el-radio>
-                <el-radio label="customer"></el-radio>
+                &lt;!&ndash;<el-radio label="customer"></el-radio>&ndash;&gt;
               </el-radio-group>
-            </el-form-item>
-            <el-form-item label="优先级">
+            </el-form-item>-->
+            <!--<el-form-item label="优先级">
             <el-radio-group v-model="form.priority">
               <el-radio label="曲线图优先"></el-radio>
               <el-radio label="数据优先"></el-radio>
               <el-radio label="实时数据优先"></el-radio>
             </el-radio-group>
-            </el-form-item>
-            <el-form-item label="联系电话">
+            </el-form-item>-->
+            <!--<el-form-item label="联系电话">
               <el-input v-model="form.phone"></el-input>
             </el-form-item>
             <el-form-item label="组织机构">
               <el-select v-model="value" placeholder="请选择所属组织" value-key="agency_id" @change="change()">
                 <el-option v-for="item in options" :label="item.agency_name" :value="item" :key="item.agency_id" />
               </el-select>
-            </el-form-item>
+            </el-form-item>-->
             <!--{{value}}-->
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
@@ -58,17 +58,17 @@
             <el-form-item label="即时配送">
               <el-switch v-model="form.delivery"></el-switch>
             </el-form-item>-->
-            <el-form-item label="设备">
+            <!--<el-form-item label="设备">
               <el-checkbox-group v-model="deviceList">
-                <!--&lt;!&ndash;<el-checkbox label="复选框 A"></el-checkbox>-->
-                <!--<el-checkbox label="复选框 B"></el-checkbox>-->
-                <!--<el-checkbox label="复选框 C"></el-checkbox>-->
-                <!--<el-checkbox label="禁用" disabled></el-checkbox>&ndash;&gt;-->
+                &lt;!&ndash;&lt;!&ndash;<el-checkbox label="复选框 A"></el-checkbox>&ndash;&gt;
+                &lt;!&ndash;<el-checkbox label="复选框 B"></el-checkbox>&ndash;&gt;
+                &lt;!&ndash;<el-checkbox label="复选框 C"></el-checkbox>&ndash;&gt;
+                &lt;!&ndash;<el-checkbox label="禁用" disabled></el-checkbox>&ndash;&gt;&ndash;&gt;
                 <el-checkbox v-for="item in chooseList" :label="item.device_name" :data-device_no="item.device_no" @change="getChecked(item.device_no)"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             {{deviceList}}
-            {{chooseList}}
+            {{chooseList}}-->
             <!--<el-form-item label="活动形式">
               <el-input type="textarea" v-model="form.desc"></el-input>
             </el-form-item>-->

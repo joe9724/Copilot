@@ -3,7 +3,7 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/user/add">
+        <router-link class="pageLink" to="/user/add">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加用户</el-button></span>
 
@@ -26,13 +26,13 @@
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{index + 1}}</td>
           <!--<td style='text-align: center'>{{item.avatar}}</td>-->
           <td style='text-align: center'>{{item.gender}}</td>
           <td style='text-align: center'>{{item.name}}</td>
           <td style='text-align: center'>{{item.role}}</td>
           <td style='text-align: center'>{{item.status | FormatStatus}}</td>
-          <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'>{{item.time * 1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
             <el-button type="text" @click="resetPass(item.id)">重置密码</el-button>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
@@ -49,14 +49,14 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="10"
+            :page-size="20"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
         </div>
       </div>
-            <!-- /.box-body -->
-          </div>
+      <!-- /.box-body -->
+    </div>
 
   </section>
 </template>
@@ -64,7 +64,8 @@
 <script>
   // import $ from 'jquery'
   import api from '../../api'
-  import {formatDateBtk, formatStatus} from '../../filters/index.js'
+  import { formatDateBtk, formatStatus } from '../../filters/index.js'
+
   export default {
     filters: {
       BTKformatDate (time) {
@@ -88,7 +89,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -104,6 +105,39 @@
     methods: {
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
+      },
+      resetPass (userId) {
+        this.$confirm('是否确定重置该用户登录密码 ' + ', 是否继续?', '提示', {type: 'warning'})
+          .then(() => {
+            // 向请求服务端删除
+            this.$message.info('操作成功!')
+            /*
+            var userid = localStorage.getItem('userid')
+             api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+              .then(response => {
+                console.log(response.data)
+                this.$message.info('删除成功!')
+                // reload
+                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                  .then(response => {
+                    console.log(response.data)
+                    this.arrayData = response.data.datas
+                  })
+                  .catch(error => {
+                    // this.$store.commit('TOGGLE_LOADING')
+                    console.log(error)
+                    this.response = error
+                  })
+              })
+              .catch(error => {
+                // this.$store.commit('TOGGLE_LOADING')
+                console.log(error)
+                this.response = error
+              }) */
+          })
+          .catch(() => {
+            this.$message.info('已取消操作!')
+          })
       },
       removeUser (userId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
@@ -139,10 +173,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'user/list?operator_id=' + userid + '&page=' + val + '&size=10')
+        api.request('get', 'user/list?operator_id=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=20')
           .then(response => {
-            console.log(response.data)
-            this.arrayData = response.data.datas
+            this.arrayData = response.data.body.users
+            this.totalCount = response.data.body.status.totalCount
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -161,6 +195,7 @@
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.users
+          this.totalCount = response.data.body.status.totalCount
           for (var i = 0; i < this.arrayData.length; i++) {
             this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)

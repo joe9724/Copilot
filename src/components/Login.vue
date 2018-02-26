@@ -30,7 +30,7 @@
         <div class="col-md-6 bs-reset">
           <div class="login-bg" style="background: none; position: relative; z-index: 0;">
             <!--<img class="login-logo" src="../../static/img/logo.png">-->
-            <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 100%; width: 952px; z-index: -999998; position: absolute;"><img src="../../static/img/bg2.jpg" style="position: absolute; margin: 0px; padding: 0px; border: none; width: 75%; height: 100%; max-height: none; max-width: none; z-index: -999999; left: -24.5556px; top: 0px;"></div></div>
+            <div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 100%; width: 100%; z-index: -999998; position: absolute;"><img src="../../static/img/bg2.jpg" style="position: absolute; margin: 0px; padding: 0px; border: none; width: 100%; height: 100%; max-height: none; max-width: none; z-index: -999999; left: -24.5556px; top: 0px;"></div></div>
         </div>
         <div class="col-md-6 login-container bs-reset">
           <div class="login-content">
