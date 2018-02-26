@@ -56,6 +56,7 @@
             <el-button type="success" @click="editRelation(item.id)">章节管理</el-button>
             <el-button type="info" round @click="editBookTag(item.id)">标签管理</el-button>
             <el-button type="primary" @click="editBook(item.id)">编辑</el-button>
+            <el-button type="info" @click="addDefaultBook(item.id)">添加到定时播</el-button>
             <el-button type="warning" @click="removeBook(item.id)">删除</el-button>
           </td>
         </tr>
@@ -177,6 +178,10 @@
       editBookTag (bookId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
         this.$router.push({path: '/tag/book/relation?bookId=' + bookId})
+      },
+      addDefaultBook (bookId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/book/default/add?bookId=' + bookId})
       },
       editBook (bookId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
