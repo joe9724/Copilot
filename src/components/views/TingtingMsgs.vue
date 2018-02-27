@@ -50,7 +50,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="text" @click="removeUser(item.id)">推送(已推{{item.times}}次)</el-button>
+            <el-button type="text" @click="sendPush(item.id,item.title)">推送(已推{{item.times}}次)</el-button>
             <el-button type="text" @click="editUser(item.id)">编辑</el-button>
             <el-button type="text" @click="removeUser(item.id)">删除</el-button>
           </td>
@@ -121,6 +121,26 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
+      sendPush (msgId, name) {
+        this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
+          .then(() => {
+            // 向请求服务端删除
+            var userid = localStorage.getItem('userid')
+            api.request('get', 'push/jpush?type=6&id=' + msgId + '&operator_id=' + userid)
+              .then(response => {
+                console.log(response.data)
+                this.$message.info('发送成功!')
+              })
+              .catch(error => {
+                // this.$store.commit('TOGGLE_LOADING')
+                console.log(error)
+                this.response = error
+              })
+          })
+          .catch(() => {
+            this.$message.info('已取消操作!')
+          })
+      },
       removeUser (userId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
@@ -131,7 +151,7 @@
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'msg/list?operator_id=' + userid + '&page=1&size=20')
+                api.request('get', 'msg/send/list?operator_id=' + userid + '&pageIndex=0&pageSize=20')
                   .then(response => {
                     console.log(response.data)
                     this.arrayData = response.data.body.msgList
@@ -155,7 +175,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'msg/list?userid=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=20')
+        api.request('get', 'msg/send/list?userid=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.msgList
