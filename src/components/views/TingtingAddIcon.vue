@@ -10,11 +10,12 @@
             </el-form-item>
             <el-form-item label="跳转类型">
               <el-radio-group v-model="jumptype">
-                <el-radio :label="1">子类</el-radio>
-                <el-radio :label="2">专辑</el-radio>
-                <el-radio :label="3">书本</el-radio>
-                <el-radio :label="4">章节</el-radio>
+                <el-radio :label="1">大类</el-radio>
+                <el-radio :label="2">子类</el-radio>
+                <el-radio :label="3">专辑</el-radio>
+                <el-radio :label="4">书本</el-radio>
                 <el-radio :label="5">web链</el-radio>
+                <el-radio :label="6">消息</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="跳转ID">

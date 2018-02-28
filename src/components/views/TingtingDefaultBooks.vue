@@ -3,12 +3,12 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/book/default/add">
+        <!--<router-link  class="pageLink" to="/book/default/add">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加</el-button></span>
 
           </a>
-        </router-link>
+        </router-link>-->
 
       </div>
       <table class="table table-bordered table-responsive table-striped">

@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-12">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="标题">
+            <el-form-item label="标题!">
               <el-input v-model="form.title"></el-input>
             </el-form-item>
             <!--<el-form-item label="副标题">
@@ -237,8 +237,6 @@
   }
 </script>
 
-<style>
-  .datetime-picker input {
-    height: 4em !important;
-  }
+<style
+   src="../../../node_modules/element-ui/lib/theme-default/index.css">
 </style>

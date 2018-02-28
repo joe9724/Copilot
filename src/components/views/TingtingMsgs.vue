@@ -50,9 +50,9 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="text" @click="sendPush(item.id,item.title)">推送(已推{{item.times}}次)</el-button>
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button  @click="sendPush(item.id,item.title)" type="success" plain>推送(已推{{item.times}}次)</el-button>
+            <!--<el-button type="text" @click="editUser(item.id)">编辑</el-button>-->
+            <el-button  @click="removeUser(item.id)" type="success" plain>删除</el-button>
           </td>
         </tr>
         </tbody>

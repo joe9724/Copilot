@@ -40,7 +40,7 @@
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
-          <td style='text-align: center'>{{item.type}}</td>
+          <td style='text-align: center'><div v-if="item.type === 1">大类</div><div v-else-if="item.type === 2">子类</div> <div v-else-if="item.type === 3">专辑</div><div v-else-if="item.type === 4">书本</div><div v-else-if="item.type === 5">web链</div><div v-else-if="item.type === 6">消息</div></td>
           <!--<td style='text-align: center'>{{item.playCount}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
