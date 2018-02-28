@@ -126,7 +126,7 @@
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'push/jpush?type=6&id=' + msgId + '&operator_id=' + userid)
+            api.request('get', 'push/jpush?type=6&id=' + msgId + '&operator_id=' + userid + '&title=' + name)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('发送成功!')

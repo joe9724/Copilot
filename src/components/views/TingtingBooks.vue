@@ -3,12 +3,12 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <!--<router-link  class="pageLink" to="/book/add">
+        <router-link  class="pageLink" to="/book/add">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加书本</el-button></span>
 
           </a>
-        </router-link>-->
+        </router-link>
 
       </div>
       <table class="table table-bordered table-responsive table-striped">
@@ -57,6 +57,7 @@
             <el-button type="info" round @click="editBookTag(item.id)">标签管理</el-button>
             <el-button type="primary" @click="editBook(item.id)">编辑</el-button>
             <el-button type="info" @click="addDefaultBook(item.id)">添加到定时播</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)">推送(已推{{item.times}}次)</el-button>
             <el-button type="warning" @click="removeBook(item.id)">删除</el-button>
           </td>
         </tr>
@@ -129,6 +130,42 @@
       },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
+      },
+      sendPush (albumId, name) {
+        this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
+          .then(() => {
+            // 向请求服务端删除
+            var userid = localStorage.getItem('userid')
+            api.request('get', 'push/jpush?title=' + name + '&type=4&id=' + albumId + '&operator_id=' + userid)
+              .then(response => {
+                console.log(response.data)
+                this.$message.info('发送成功!')
+                // reload
+                api.request('get', 'book/list?userid=1&pageSize=20&pageIndex=0')
+                  .then(response => {
+                    this.arrayData = response.data.body.bookList
+                    this.totalCount = response.data.body.status.totalCount
+                    for (var i = 0; i < this.arrayData.length; i++) {
+                      this.arrayData.time = formatDateBtk(this.arrayData.time)
+                      // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+                      console.log()
+                    }
+                  })
+                  .catch(error => {
+                    // this.$store.commit('TOGGLE_LOADING')
+                    console.log(error)
+                    this.response = error
+                  })
+              })
+              .catch(error => {
+                // this.$store.commit('TOGGLE_LOADING')
+                console.log(error)
+                this.response = error
+              })
+          })
+          .catch(() => {
+            this.$message.info('已取消操作!')
+          })
       },
       removeBook (bookId) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})

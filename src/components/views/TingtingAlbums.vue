@@ -3,7 +3,7 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/album/add">
+        <router-link class="pageLink" to="/album/add">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加专辑</el-button></span>
 
@@ -26,18 +26,18 @@
           <th style='text-align: center'>年级</th>
           <th style='text-align: center'>添加时间</th>
           <!--<th>更新提示</th>-->
-         <!-- <th>播放地址</th>
-          <th>顺序</th>
-          <th>状态</th>
-          <th>时间</th>-->
+          <!-- <th>播放地址</th>
+           <th>顺序</th>
+           <th>状态</th>
+           <th>时间</th>-->
           <th style='text-align: center'>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{index + 1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
-          <td style='text-align: center'><img v-bind:src=item.icon style="width: 40px;height:40px"> </td>
+          <td style='text-align: center'><img v-bind:src=item.icon style="width: 40px;height:40px"></td>
           <td style='text-align: center'>{{item.booksNumber}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
@@ -45,7 +45,7 @@
           <td style='text-align: center'>{{item.playCount}}</td>
           <td style='text-align: center'>{{item.value}}</td>
           <td style='text-align: center'>{{item.grade}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.time * 1000 | BTKformatDate}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
           <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
@@ -78,8 +78,8 @@
           </el-pagination>
         </div>
       </div>
-            <!-- /.box-body -->
-          </div>
+      <!-- /.box-body -->
+    </div>
 
   </section>
 </template>
@@ -87,7 +87,8 @@
 <script>
   // import $ from 'jquery'
   import api from '../../api'
-  import {formatDateBtk, formatStatus} from '../../filters/index.js'
+  import { formatDateBtk, formatStatus } from '../../filters/index.js'
+
   export default {
     filters: {
       BTKformatDate (time) {
@@ -164,15 +165,15 @@
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'push/jpush?type=2&id=' + albumId + '&operator_id=' + userid)
+            api.request('get', 'push/jpush?title=' + name + '&type=3&id=' + albumId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('发送成功!')
                 // reload
                 api.request('get', 'album/list?userid=1&pageSize=20&pageIndex=0')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.totalCount = response.data.body.status.totalCount
+                    this.arrayData = response.data.body.albumList
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')

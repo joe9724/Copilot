@@ -17,7 +17,7 @@
                 class="btn btn-primary"
                 :crop="false"
                 @imageuploaded="imageUploaded"
-                :data="data"
+                data="type:m4a"
                 :max-file-size="5242880"
                 inputOfFile="file"
                 text="选择图片"
@@ -26,20 +26,21 @@
 
               </vue-core-image-upload>
             </el-form-item>
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
-                <el-radio label="正常"></el-radio>
-                <el-radio label="锁定"></el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item>
-              <vue-editor id="editor"
-                          useCustomImageHandler
-                          @imageAdded="handleImageAdded" v-model="htmlForEditor">
-              </vue-editor>
-              <el-button type="primary" @click="onSubmit">确定</el-button>
-              <!--<el-button>确定</el-button>-->
-            </el-form-item>
+
+              <el-form-item label="状态">
+                <el-radio-group v-model="form.status">
+                  <el-radio label="正常"></el-radio>
+                  <el-radio label="锁定"></el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item>
+                <vue-editor id="editor"
+                            useCustomImageHandler
+                            @imageAdded="handleImageAdded" v-model="htmlForEditor">
+                </vue-editor>
+                <el-button type="primary" @click="onSubmit">确定</el-button>
+                <!--<el-button>确定</el-button>-->
+              </el-form-item>
           </el-form>
         </div>
       </div>
@@ -59,6 +60,13 @@
     },
     data () {
       return {
+        fileList: [{
+          name: 'food.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }, {
+          name: 'food2.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }],
         src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
         htmlForEditor: '',
         uploadUrl: '',
@@ -92,6 +100,12 @@
         this.imgUrl = response.body.url
         // alert(this.imgUrl)
         // this.imgUrl = 'https://upload.jianshu.io/users/upload_avatars/2204269/54bc6df9d4b6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240'
+      },
+      handleExceed (files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      },
+      beforeRemove (file, fileList) {
+        return this.$confirm(`确定移除？`)
       },
       handleRemove (file, fileList) {
         this.imgUrl = ''

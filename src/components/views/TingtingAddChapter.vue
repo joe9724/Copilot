@@ -26,7 +26,23 @@
 
               </vue-core-image-upload>
             </el-form-item>
-
+            <el-form-item label="音频">
+              <el-upload
+                class="upload-demo"
+                :action="uploadUrl"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+                multiple
+                :limit="0"
+                :data="data"
+                :on-exceed="handleExceed"
+                :on-success="uploadedm4a"
+                :file-list="fileList">
+                <el-button size="small" type="primary">点击上传m4a文件</el-button>
+                <!--<div slot="tip" class="el-upload__tip">只能上传m4a文件，且不超过500kb</div>-->
+              </el-upload>
+            </el-form-item>
             <vue-editor id="editor"
                         useCustomImageHandler
                         @imageAdded="handleImageAdded" v-model="htmlForEditor">
@@ -63,6 +79,7 @@
         htmlForEditor: '',
         uploadUrl: '',
         imgUrl: '',
+        mp4Url: '',
         form: {
           title: '',
           subTitle: '',
@@ -76,8 +93,8 @@
           icon: '',
           price: '',
           fileList2: [{
-            name: 'food.jpeg',
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+            name: '',
+            url: ''
           }]
         },
         num1: 1,
@@ -100,6 +117,19 @@
         console.log('response is ' + JSON.stringify(response))
         this.imgUrl = response.body.url
         console.log(this.imgUrl)
+      },
+      uploadedm4a (response) {
+        console.log('m4aresponse is', response)
+        // this.src = response.body.url
+        this.mp4Url = response.body.url
+        // alert(this.imgUrl)
+        // this.imgUrl = 'https://upload.jianshu.io/users/upload_avatars/2204269/54bc6df9d4b6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240'
+      },
+      handleExceed (files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      },
+      beforeRemove (file, fileList) {
+        return this.$confirm(`确定移除？`)
       },
       handleRemove (file, fileList) {
         this.imgUrl = ''
@@ -135,6 +165,9 @@
         formData.append('authorName', this.form.author)
         formData.append('summary', this.htmlForEditor)
         formData.append('chapterId', Number(-1))
+        formData.append('url', this.mp4Url)
+        formData.append('type', 'm4a')
+
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }
@@ -170,6 +203,7 @@
       }
     },
     created () {
+      // console.log('ref.input' + this.$refs.input.style)
       // alert('created!')
       this.uploadUrl = configParams.uploadURI
       var chapterId = '0'

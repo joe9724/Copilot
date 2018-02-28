@@ -49,6 +49,7 @@
           <td align="center">
             <el-button type="text" @click="editChildren(item.id)">子类</el-button>
             <el-button type="text" @click="editCategory(item.id)">编辑</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)">推送(已推{{item.times}}次)</el-button>
             <el-button type="text" @click="removeCategory(item.id)">删除</el-button>
           </td>
         </tr>
@@ -120,6 +121,37 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
+      sendPush (albumId, name) {
+        this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
+          .then(() => {
+            // 向请求服务端删除
+            var userid = localStorage.getItem('userid')
+            api.request('get', 'push/jpush?title=' + name + '&type=2&id=' + albumId + '&operator_id=' + userid)
+              .then(response => {
+                console.log(response.data)
+                this.$message.info('发送成功!')
+                // reload
+                api.request('get', 'album/list?userid=1&pageSize=20&pageIndex=0')
+                  .then(response => {
+                    this.totalCount = response.data.body.status.totalCount
+                    this.arrayData = response.data.body.subCategoryList
+                  })
+                  .catch(error => {
+                    // this.$store.commit('TOGGLE_LOADING')
+                    console.log(error)
+                    this.response = error
+                  })
+              })
+              .catch(error => {
+                // this.$store.commit('TOGGLE_LOADING')
+                console.log(error)
+                this.response = error
+              })
+          })
+          .catch(() => {
+            this.$message.info('已取消操作!')
+          })
+      },
       removeCategory (id) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
@@ -183,6 +215,7 @@
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.subCategoryList
+          this.totalCount = response.data.body.status.totalCount
           for (var i = 0; i < this.arrayData.length; i++) {
             // this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
