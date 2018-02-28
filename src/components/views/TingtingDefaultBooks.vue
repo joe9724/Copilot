@@ -52,7 +52,7 @@
            <!-- <el-button type="success" @click="editRelation(item.id)">章节管理</el-button>
             <el-button type="info" round @click="editTags(item.id)">标签管理</el-button>
             <el-button type="primary" @click="editUser(item.id)">编辑</el-button>-->
-            <el-button type="warning" @click="removeBook(item.id)">删除</el-button>
+            <el-button type="warning" @click="removeBook(item.id)" plain>删除</el-button>
           </td>
         </tr>
         </tbody>

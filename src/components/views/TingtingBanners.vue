@@ -49,8 +49,8 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="primary" @click="editBanner(item.id)">编辑</el-button>
-            <el-button type="warning" @click="removeBanner(item.id)">删除</el-button>
+            <el-button type="primary" @click="editBanner(item.id)" plain>编辑</el-button>
+            <el-button type="warning" @click="removeBanner(item.id)" plain>删除</el-button>
           </td>
         </tr>
         </tbody>

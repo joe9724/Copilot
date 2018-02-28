@@ -48,8 +48,8 @@
           <td style='text-align: center'>
             <!--<img src="/static/img/play.png" style="width: 20px;height:20px">-->
             <!--<el-button type="primary" @click="editUser(item.id)">播放</el-button>-->
-            <el-button type="success" @click="editChapter(item.id)" style="margin-left: 10px">编辑</el-button>
-            <el-button type="warning" @click="removeChapter(item.id)">删除</el-button>
+            <el-button type="success" @click="editChapter(item.id)" style="margin-left: 10px" plain>编辑</el-button>
+            <el-button type="warning" @click="removeChapter(item.id)" plain>删除</el-button>
           </td>
         </tr>
         </tbody>

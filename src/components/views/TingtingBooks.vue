@@ -53,12 +53,12 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button type="success" @click="editRelation(item.id)">章节管理</el-button>
-            <el-button type="info" round @click="editBookTag(item.id)">标签管理</el-button>
-            <el-button type="primary" @click="editBook(item.id)">编辑</el-button>
-            <el-button type="info" @click="addDefaultBook(item.id)">添加到定时播</el-button>
-            <el-button type="success" round @click="sendPush(item.id,item.name)">推送(已推{{item.times}}次)</el-button>
-            <el-button type="warning" @click="removeBook(item.id)">删除</el-button>
+            <el-button type="success" @click="editRelation(item.id)" plain>章节管理</el-button>
+            <el-button type="info" round @click="editBookTag(item.id)" plain>标签管理</el-button>
+            <el-button type="primary" @click="editBook(item.id)" plain>编辑</el-button>
+            <el-button type="info" @click="addDefaultBook(item.id)" plain>添加到定时播</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送(已推{{item.times}}次)</el-button>
+            <el-button type="warning" @click="removeBook(item.id)" plain>删除</el-button>
           </td>
         </tr>
         </tbody>

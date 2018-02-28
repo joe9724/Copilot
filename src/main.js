@@ -1,7 +1,6 @@
 // Import System requirements
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
 import store from './store'
@@ -111,7 +110,7 @@ Vue.use(VueQuillEditor, /* { default global options } */)
 
 //
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import DataTables from 'vue-data-tables'
 
 Vue.use(ElementUI)

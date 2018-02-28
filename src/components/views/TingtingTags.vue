@@ -52,8 +52,8 @@
             <!--<el-button type="text" @click="editRelation(item.id)">标签管理</el-button>-->
             <!--<el-button type="text" @click="sendPush(item.id,item.name)">推送</el-button>
             <img src="/static/img/send.png" style="width: 20px;height:20px">-->
-            <el-button type="primary" @click="edittag(item.id)" style="margin-left: 10px"> 编辑</el-button>
-            <el-button type="warning" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="primary" @click="edittag(item.id)" style="margin-left: 10px" plain> 编辑</el-button>
+            <el-button type="warning" @click="removeUser(item.id)" plain>删除</el-button>
           </td>
         </tr>
         </tbody>

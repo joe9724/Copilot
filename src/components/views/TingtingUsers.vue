@@ -34,9 +34,9 @@
           <td style='text-align: center'>{{item.status | FormatStatus}}</td>
           <td style='text-align: center'>{{item.time * 1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
-            <el-button type="text" @click="resetPass(item.id)">重置密码</el-button>
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
-            <el-button type="text" @click="removeUser(item.id)">删除</el-button>
+            <el-button type="primary" @click="resetPass(item.id)" plain>重置密码</el-button>
+            <el-button type="success" @click="editUser(item.id)" plain>编辑</el-button>
+            <el-button type="warning" @click="removeUser(item.id)" plain>删除</el-button>
           </td>
         </tr>
         </tbody>

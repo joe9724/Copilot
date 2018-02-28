@@ -45,8 +45,8 @@
           <td style='text-align: center'>{{item.status | FormatStatus}}</td>
           <td style='text-align: center'>{{item.ts*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
-            <el-button type="text" @click="editUser(item.id)">冻结</el-button>
-            <el-button type="text" @click="removeUser(item.id)">启用</el-button>
+            <el-button type="primary" @click="editUser(item.id)" plain>冻结</el-button>
+            <el-button type="warning" @click="removeUser(item.id)" plain>启用</el-button>
           </td>
         </tr>
         </tbody>

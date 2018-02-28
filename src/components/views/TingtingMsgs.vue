@@ -52,7 +52,7 @@
           <td style='text-align: center'>
             <el-button  @click="sendPush(item.id,item.title)" type="success" plain>推送(已推{{item.times}}次)</el-button>
             <!--<el-button type="text" @click="editUser(item.id)">编辑</el-button>-->
-            <el-button  @click="removeUser(item.id)" type="success" plain>删除</el-button>
+            <el-button  @click="removeUser(item.id)" type="warning" plain>删除</el-button>
           </td>
         </tr>
         </tbody>
