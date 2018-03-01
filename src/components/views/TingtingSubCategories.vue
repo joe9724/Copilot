@@ -43,6 +43,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td align="center">
             <el-button type="primary" @click="editChildren(item.id)" plain>子类</el-button>
+            <el-button type="success" round @click="editRelation(item.id)" plain>专辑管理</el-button>
             <el-button type="info" @click="editCategory(item.id)" plain>编辑</el-button>
             <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送(已推{{item.times}}次)</el-button>
             <el-button type="error" @click="removeCategory(item.id)" plain>删除</el-button>
@@ -205,6 +206,10 @@
       },
       editChildren (id) {
         this.$router.push({path: '/subCategory/list?categoryId=' + id})
+      },
+      editRelation (categoryId) {
+        // this.$router.push('/org/edit?orgid=' + agentId)
+        this.$router.push({path: '/category/album/relation?categoryId=' + categoryId})
       }
     },
     created () {

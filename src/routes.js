@@ -62,6 +62,7 @@ import EditIconView from './components/views/TingtingEditIcon.vue'
 import CategoryBannerRelationView from './components/views/TingtingCategoryBannerRelation.vue'
 import CategoryIconRelationView from './components/views/TingtingCategoryIconRelation.vue'
 import AddDefaultBookView from './components/views/TingtingAddDefaultBook.vue'
+import CategoryAlbumRelationView from './components/views/TingtingCategoryAlbumRelation.vue'
 
 // Routes
 const routes = [
@@ -86,6 +87,13 @@ const routes = [
         component: CategoryIconRelationView,
         name: 'categoryicon关联',
         meta: {description: 'CategoryIconRelationView'}
+      },
+      {
+        path: 'category/album/relation',
+        alias: 'CategoryAlbumRelationView',
+        component: CategoryAlbumRelationView,
+        name: 'categoryalbum关联',
+        meta: {description: 'CategoryAlbumRelationView'}
       },
       {
         path: 'category/banner/relation',
