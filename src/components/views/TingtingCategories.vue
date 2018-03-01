@@ -3,7 +3,7 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/category/add">
+        <router-link  class="pageLink" to="/category/add?categoryId=-1">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加类目</el-button></span>
 
@@ -166,8 +166,8 @@
                 // reload
                 api.request('get', 'category/list?userid=1&pageSize=20&pageIndex=0&parentId=-1')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.body.subCategoryList
+                    this.totalCount = response.data.body.status.totalCount
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
@@ -210,7 +210,7 @@
         this.$router.push({path: '/category/edit?categoryId=' + id})
       },
       editChildren (id) {
-        this.$router.push({path: '/subCategory/list?subCategoryId=' + id})
+        this.$router.push({path: '/subCategory/list?categoryId=' + id})
       }
     },
     created () {

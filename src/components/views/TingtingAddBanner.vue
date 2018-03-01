@@ -38,6 +38,7 @@
                 :url="uploadUrl">
 
               </vue-core-image-upload>
+              [图片尺寸宽高比2.15:1]
             </el-form-item>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">

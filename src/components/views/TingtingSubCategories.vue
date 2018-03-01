@@ -3,12 +3,7 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <router-link  class="pageLink" to="/user/add">
-          <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加类目</el-button></span>
-
-          </a>
-        </router-link>
+        <span class="page" style="float:right;margin:5px"><el-button type="success" plain @click="addcate">添加子类</el-button></span>
 
       </div>
       <table class="table table-bordered table-responsive table-striped">
@@ -47,10 +42,10 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td align="center">
-            <el-button type="text" @click="editChildren(item.id)">子类</el-button>
-            <el-button type="text" @click="editCategory(item.id)">编辑</el-button>
-            <el-button type="success" round @click="sendPush(item.id,item.name)">推送(已推{{item.times}}次)</el-button>
-            <el-button type="text" @click="removeCategory(item.id)">删除</el-button>
+            <el-button type="primary" @click="editChildren(item.id)" plain>子类</el-button>
+            <el-button type="info" @click="editCategory(item.id)" plain>编辑</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送(已推{{item.times}}次)</el-button>
+            <el-button type="error" @click="removeCategory(item.id)" plain>删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -197,21 +192,29 @@
             this.response = 'Server appears to be offline'
           })
       },
+      addcate () {
+        var categoryId = '-1'
+        if (this.$route.query.categoryId) {
+          categoryId = this.$route.query.categoryId
+          this.categoryId = this.$route.query.categoryId
+        }
+        this.$router.push({path: '/category/add?categoryId=' + Number(categoryId)})
+      },
       editCategory (id) {
         this.$router.push({path: '/category/edit?categoryId=' + id})
       },
       editChildren (id) {
-        this.$router.push({path: '/subCategory/list?subCategoryId=' + id})
+        this.$router.push({path: '/subCategory/list?categoryId=' + id})
       }
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      var subCategoryId = '0'
-      if (this.$route.query.subCategoryId) {
-        subCategoryId = this.$route.query.subCategoryId
-        this.subCategoryId = this.$route.query.subCategoryId
+      var categoryId = '-1'
+      if (this.$route.query.categoryId) {
+        categoryId = this.$route.query.categoryId
+        this.categoryId = this.$route.query.categoryId
       }
-      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=' + subCategoryId)
+      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=' + categoryId)
         .then(response => {
           console.log(response.data)
           this.arrayData = response.data.body.subCategoryList

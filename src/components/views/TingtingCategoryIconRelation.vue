@@ -132,9 +132,9 @@
         if (keyvalue.length === 0) {
           keyvalue = ' '
         }
-        api.request('get', 'banner/list?type=1&userid=1&pageSize=20&pageIndex=0&keyword=' + keyvalue + '&categoryId=' + categoryId)
+        api.request('get', 'icon/list?type=1&userid=1&pageSize=20&pageIndex=0&keyword=' + keyvalue + '&categoryId=' + categoryId)
           .then(response => {
-            this.searchData = response.data.body.banners
+            this.searchData = response.data.body.icons
           })
           .catch(error => {
             console.log(error)
@@ -221,10 +221,10 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('post', 'banner/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
+        api.request('post', 'icon/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.banners
+            this.arrayData = response.data.body.icons
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -244,9 +244,9 @@
           this.categoryId = this.$route.query.categoryId
         }
         // var userid = localStorage.getItem('userid')
-        api.request('get', 'banner/list?userid=1&pageSize=20&pageIndex=0&categoryId=' + categoryId)
+        api.request('get', 'icon/list?userid=1&pageSize=20&pageIndex=0&categoryId=' + categoryId)
           .then(response => {
-            this.arrayData = response.data.body.banners
+            this.arrayData = response.data.body.icons
             this.totalCount = response.data.body.status.totalCount
           })
           .catch(error => {

@@ -140,6 +140,9 @@
         formData.append('title', this.form.name)
         formData.append('authorName', this.form.author)
         formData.append('summary', this.htmlForEditor)
+        formData.append('action', 'add')
+        formData.append('starttime', '')
+        formData.append('endtime', '')
         formData.append('bookId', Number(-1))
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)

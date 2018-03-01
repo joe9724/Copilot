@@ -152,14 +152,14 @@
         }
         formData.append('subTitle', this.form.name)
         formData.append('title', this.form.name)
-        formData.append('categoryId', Number(-1))
-        formData.append('summary', this.htmlForEditor)
+        formData.append('tagId', Number(-1))
+        formData.append('summary', 'summary')
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }
         // formData.append('file', this.file)
 
-        api.requestForm('post', 'category/upload', formData)
+        api.requestForm('post', 'tag/upload', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))

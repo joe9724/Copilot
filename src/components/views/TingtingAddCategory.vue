@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h5 class="text-center">添加大类</h5>
+    <h5 class="text-center">添加</h5>
     <section class="content">
       <div class="row">
         <div class="col-md-12">
@@ -151,7 +151,13 @@
         }
         formData.append('subTitle', this.form.name)
         formData.append('title', this.form.name)
-        formData.append('categoryId', Number(-1))
+        var categoryId = '-1'
+        if (this.$route.query.categoryId) {
+          categoryId = this.$route.query.categoryId
+          this.categoryId = this.$route.query.categoryId
+        }
+        formData.append('categoryId', Number(categoryId))
+        formData.append('action', 'add')
         formData.append('summary', this.htmlForEditor)
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
