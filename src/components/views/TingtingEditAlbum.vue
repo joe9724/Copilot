@@ -231,6 +231,7 @@
         formData.append('subTitle', this.form.title)
         formData.append('title', this.form.title)
         formData.append('grade', this.form.grade)
+        formData.append('priceValue', this.form.price)
         var albumId = '0'
         if (this.$route.query.albumId) {
           albumId = this.$route.query.albumId

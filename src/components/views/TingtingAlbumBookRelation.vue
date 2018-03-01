@@ -168,7 +168,8 @@
         console.log(albumId)
         var params = {
           'albumId': Number(albumId),
-          'actionCode': 0,
+          'actionCode': Number(0),
+          'action': Number(0),
           'bookIds': booksId
         }
         api.request('post', '/relation/album/booklist/edit', params)
@@ -197,6 +198,7 @@
               'userId': userid,
               'albumId': Number(albumId),
               'actionCode': 1,
+              'action': 1,
               'bookIds': bookId + ''
             }
             api.request('post', '/relation/album/booklist/edit', params)

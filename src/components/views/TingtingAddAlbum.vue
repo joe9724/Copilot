@@ -83,6 +83,7 @@
         htmlForEditor: '',
         uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
         form: {
+          value: '',
           name: '',
           region: '',
           date1: '',
@@ -239,6 +240,7 @@
         formData.append('grade', Number(this.form.grade))
         formData.append('summary', this.htmlForEditor)
         formData.append('gradeRange', this.$refs.tree.getCheckedKeys())
+        formData.append('priceValue', this.form.value)
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }
