@@ -138,7 +138,7 @@
         } else {
           formData.append('status', Number(1))
         }
-        formData.append('type', this.form.type)
+        formData.append('type', this.jumptype)
         formData.append('targetId', this.form.targetId)
         formData.append('webUrl', this.form.webUrl)
         formData.append('iconId', Number(-1))

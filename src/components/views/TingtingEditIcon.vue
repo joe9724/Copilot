@@ -103,7 +103,7 @@
           // this.form.pass = '******'
           this.form.name = data.name
           this.form.type = data.type
-          this.form.targetId = data.targetId
+          this.form.targetId = data.jumpid
           this.form.webUrl = data.webUrl
           this.imgUrl = data.cover
           if (data.status === 0) {
@@ -146,6 +146,11 @@
         // alert(this.content)
         // this.$router.push('/org')
         // console.log('submit!')
+        var iconId = '0'
+        if (this.$route.query.iconId) {
+          iconId = this.$route.query.iconId
+          this.iconId = this.$route.query.iconId
+        }
         var userid = localStorage.getItem('userid')
         console.log(userid)
         let formData = new FormData()
@@ -158,13 +163,13 @@
         formData.append('type', this.form.type)
         formData.append('targetId', this.form.targetId)
         formData.append('webUrl', this.form.webUrl)
-        formData.append('bannerId', Number(-1))
+        formData.append('iconId', Number(iconId))
         if (this.imgUrl !== '') {
           formData.append('coverUrl', this.imgUrl)
         }
         // formData.append('file', this.file)
 
-        api.requestForm('post', 'banner/upload', formData)
+        api.requestForm('post', 'icon/upload', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
