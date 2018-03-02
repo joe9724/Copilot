@@ -232,11 +232,12 @@
         var data = {
           grade: this.form.grade,
           bookId: Number(bookId),
-          gradeRange: this.$refs.tree.getCheckedKeys(),
+          gradeRange: this.$refs.tree.getCheckedKeys().toString(),
           starttime: this.form.startTime,
           status: status,
           actionCode: Number(0),
           albumId: Number(-1),
+          action: Number(0),
           bookIds: ''
         }
 

@@ -103,7 +103,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -222,7 +222,8 @@
         api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
           .then(response => {
             console.log(response.data)
-            this.arrayData = response.data.body.bookList
+            this.arrayData = response.data.body.chapters
+            this.totalCount = response.data.body.status.totalCount
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -245,6 +246,7 @@
         api.request('get', 'chapter/list?userid=1&pageSize=12&pageIndex=1&bookId=' + bookId)
           .then(response => {
             this.arrayData = response.data.body.chapters
+            this.totalCount = response.data.body.status.totalCount
           })
           .catch(error => {
             console.log(error)
