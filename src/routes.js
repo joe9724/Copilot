@@ -63,6 +63,14 @@ import CategoryBannerRelationView from './components/views/TingtingCategoryBanne
 import CategoryIconRelationView from './components/views/TingtingCategoryIconRelation.vue'
 import AddDefaultBookView from './components/views/TingtingAddDefaultBook.vue'
 import CategoryAlbumRelationView from './components/views/TingtingCategoryAlbumRelation.vue'
+import RecordsView from './components/views/TingtingRecords.vue'
+import FeedbackView from './components/views/TingtingFeedback.vue'
+import FavAlbumsView from './components/views/TingtingFavAlbums.vue'
+import FavBooksView from './components/views/TingtingFavBooks.vue'
+import EditWebView from './components/views/TingtingEditWeb.vue'
+// import EditWebSpecialView from './components/views/TingtingEditSpecial.vue'
+// import EditWebAboutView from './components/views/TingtingEditAbout.vue'
+import WebsView from './components/views/TingtingWebs.vue'
 
 // Routes
 const routes = [
@@ -74,6 +82,48 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'web/list',
+        alias: 'WebsView',
+        component: WebsView,
+        name: 'web列表',
+        meta: {description: 'WebsView'}
+      },
+      {
+        path: 'web/edit',
+        alias: 'EditWebView',
+        component: EditWebView,
+        name: '编辑web',
+        meta: {description: 'EditWebView'}
+      },
+      {
+        path: 'book/list/fav',
+        alias: 'FavBooksView',
+        component: FavBooksView,
+        name: '书本收藏列表',
+        meta: {description: 'FavBooksView'}
+      },
+      {
+        path: 'album/list/fav',
+        alias: 'FavAlbumsView',
+        component: FavAlbumsView,
+        name: '专辑收藏列表',
+        meta: {description: 'FavAlbumsView'}
+      },
+      {
+        path: 'feedback/list',
+        alias: 'FeedbackView',
+        component: FeedbackView,
+        name: '反馈列表',
+        meta: {description: 'FeedbackView'}
+      },
+      {
+        path: 'records/list',
+        alias: 'RecordsView',
+        component: RecordsView,
+        name: '录音列表',
+        meta: {description: 'RecordsView'}
+      },
       {
         path: 'book/default/add',
         alias: 'AddDefaultBookView',

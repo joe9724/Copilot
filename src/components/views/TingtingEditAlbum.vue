@@ -18,7 +18,7 @@
               <el-input v-model="form.content"></el-input>
             </el-form-item>-->
             <el-form-item label="定价">
-              <el-input-number v-model="form.price" @change="handleChange" :min="1" :max="10000" label="改变价格"></el-input-number>
+              <el-input-number v-model="form.price" @change="handleChange" :min="0" :max="10000" label="改变价格"></el-input-number>
             </el-form-item>
             <el-form-item label="小图">
            <!-- <el-input v-model="form.name"></el-input>--><img v-bind:src=form.icon style="width: 60px;height:80px">

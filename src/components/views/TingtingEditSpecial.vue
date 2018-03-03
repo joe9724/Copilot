@@ -1,22 +1,16 @@
 <template>
   <div>
-    <h5 class="text-center">添加专辑</h5>
+    <h5 class="text-center">编辑A&Q</h5>
     <section class="content">
       <div class="row">
         <div class="col-md-12">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="标题">
+            <!--<el-form-item label="名称">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <!--<el-form-item label="年级">
-              <el-input v-model="form.grade"></el-input>
-            </el-form-item>-->
-
-            <el-form-item label="定价">
-              <el-input-number v-model="form.value" @change="handleChange" :min="0" :max="10000"
-                               label="改变价格"></el-input-number>
+            <el-form-item label="作者">
+              <el-input v-model="form.author"></el-input>
             </el-form-item>
-
             <el-form-item label="图标">
               <img v-bind:src="imgUrl"/>
               <vue-core-image-upload
@@ -37,23 +31,8 @@
                 <el-radio label="正常"></el-radio>
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
-            </el-form-item>
-            <el-form-item label="年级">
-              <!--<el-input v-model="form.grade"></el-input>-->
-              <el-tree
-                :data="data2"
-                show-checkbox
-                default-expand-all
-                node-key="id"
-                ref="tree"
-                highlight-current
-                :props="defaultProps">
-              </el-tree>
-            </el-form-item>
-            <!-- bidirectional data binding（双向数据绑定） -->
-
-
-            <el-form-item label="简介">
+            </el-form-item>-->
+            <el-form-item>
               <vue-editor id="editor"
                           useCustomImageHandler
                           @imageAdded="handleImageAdded" v-model="htmlForEditor">
@@ -80,10 +59,10 @@
     },
     data () {
       return {
+        src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
         htmlForEditor: '',
-        uploadUrl: 'http://192.168.200.208:81/nanjingyouzi/TingtingBackend/1.0.0/file/upload',
+        uploadUrl: '',
         form: {
-          value: '',
           name: '',
           region: '',
           date1: '',
@@ -92,105 +71,45 @@
           type: [],
           resource: '',
           desc: '',
-          grade: '13',
           status: '',
+          author: '',
           content: '',
           fileList2: [{
             name: 'food.jpeg',
             url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
           }]
-        },
-        data2: [{
-          id: 10,
-          label: '学龄前'
-        }, {
-          id: 20,
-          label: '幼儿园'
-        }, {
-          id: 30,
-          label: '小学',
-          children: [{
-            id: 31,
-            label: '小学一年级'
-          }, {
-            id: 32,
-            label: '小学二年级'
-          }, {
-            id: 33,
-            label: '小学三年级'
-          }, {
-            id: 34,
-            label: '小学四年级'
-          }, {
-            id: 35,
-            label: '小学五年级'
-          }, {
-            id: 36,
-            label: '小学六年级'
-          }]
-        }, {
-          id: 40,
-          label: '初中',
-          children: [{
-            id: 41,
-            label: '初中一年级'
-          }, {
-            id: 42,
-            label: '初中二年级'
-          }, {
-            id: 43,
-            label: '初中三年级'
-          }]
-        }, {
-          id: 50,
-          label: '高中',
-          children: [{
-            id: 51,
-            label: '高中一年级'
-          }, {
-            id: 52,
-            label: '高中二年级'
-          }, {
-            id: 53,
-            label: '高中三年级'
-          }]
-        }, {
-          id: 60,
-          label: '大学',
-          children: [{
-            id: 61,
-            label: '大学一年级'
-          }, {
-            id: 62,
-            label: '大学二年级'
-          }, {
-            id: 63,
-            label: '大学三年级'
-          }, {
-            id: 64,
-            label: '大学四年级'
-          }]
-        }],
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        },
-        name: '01-example',
-        content: '',
-        imgUrl: '',
-        content1: ''
-      }
-    },
-    computed: {
-      editor () {
-        return this.$refs.myTextEditor.quill
-      },
-      contentCode () {
-        // return hljs.highlightAuto(this.content).value
+        }
       }
     },
     created () {
       this.uploadUrl = configParams.uploadURI
+      var bookId = '0'
+      if (this.$route.query.bookId) {
+        bookId = this.$route.query.bookId
+        this.bookId = this.$route.query.bookId
+      }
+      // console.log('currentUserId is' + currentUserId)
+      api.request('get', 'web/detail?userid=1&bookId=' + bookId)
+        .then(response => {
+          var data = response.data.body.data
+          // this.form.pass = '******'
+          this.form.name = data.name
+          this.form.author = data.authorName
+          this.form.subTitle = data.name
+          this.form.price = data.value
+          this.htmlForEditor = data.summary
+          this.form.icon = data.icon
+          if (data.status === 0) {
+            this.form.status = '正常'
+          } else {
+            this.form.status = '锁定'
+          }
+        })
+        .catch(error => {
+          // this.$store.commit('TOGGLE_LOADING')
+          console.log(error)
+          this.response = 'Server appears to be offline'
+        })
     },
     methods: {
       imageUploaded (response) {
@@ -199,11 +118,6 @@
         this.imgUrl = response.body.url
         // alert(this.imgUrl)
         // this.imgUrl = 'https://upload.jianshu.io/users/upload_avatars/2204269/54bc6df9d4b6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240'
-      },
-      successUpload (response, file, fileList) {
-        console.log('response is ' + JSON.stringify(response))
-        this.imgUrl = response.body.url
-        console.log(this.imgUrl)
       },
       handleRemove (file, fileList) {
         this.imgUrl = ''
@@ -227,6 +141,11 @@
         // console.log('submit!')
         var userid = localStorage.getItem('userid')
         console.log(userid)
+        var bookId = '0'
+        if (this.$route.query.bookId) {
+          bookId = this.$route.query.bookId
+          this.bookId = this.$route.query.bookId
+        }
         let formData = new FormData()
         formData.append('name', this.form.name)
         if (this.form.status === '正常') {
@@ -234,19 +153,18 @@
         } else {
           formData.append('status', Number(1))
         }
-        formData.append('subTitle', this.form.name)
+        formData.append('subTitle', 'subTitle')
         formData.append('title', this.form.name)
-        formData.append('albumId', Number(-1))
-        formData.append('grade', Number(this.form.grade))
+        formData.append('authorName', this.form.author)
         formData.append('summary', this.htmlForEditor)
-        formData.append('gradeRange', this.$refs.tree.getCheckedKeys())
-        formData.append('priceValue', this.form.value)
+        formData.append('bookId', Number(bookId))
+        formData.append('action', 'edit')
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
         }
         // formData.append('file', this.file)
 
-        api.requestForm('post', 'album/upload', formData)
+        api.requestForm('post', 'book/upload', formData)
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
@@ -282,22 +200,4 @@
   .datetime-picker input {
     height: 4em !important;
   }
-
-  .quill-code {
-    border: none;
-    height: auto;
-  }
-
-  > code {
-    width: 100%;
-    margin: 0;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-top: none;
-    border-radius: 0;
-    height: 10rem;
-    overflow-y: auto;
-    resize: vertical;
-  }
-
 </style>

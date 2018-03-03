@@ -3,51 +3,64 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <!--
-        <router-link  class="pageLink" to="/user/add">
+        <!--<router-link class="pageLink" to="/album/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加用户</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加专辑</el-button></span>
 
           </a>
-        </router-link>
--->
+        </router-link>-->
+
       </div>
       <table class="table table-bordered table-responsive table-striped">
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
-          <th style='text-align: center'>头像</th>
-          <th style='text-align: center'>性别</th>
-          <th style='text-align: center'>用户名</th>
-          <!--<th style='text-align: center'>角色</th>-->
-          <th style='text-align: center'>状态</th>
-          <th style='text-align: center'>时间</th>
-          <th style='text-align: center'>操作</th>
+          <th style='text-align: center'>书名</th>
+          <th style='text-align: center'>图标</th>
+          <!--<th style='text-align: center'>书本数</th>
+          <th>副标题</th>-->
+          <!--<th>是否显示icon</th>-->
+          <!--<th>大图
+          <th style='text-align: center'>播放数</th>
+          <th style='text-align: center'>价格</th>
+          <th style='text-align: center'>年级</th></th>-->
+          <th style='text-align: center'>收藏时间</th>
+          <!--<th>更新提示</th>-->
+          <!-- <th>播放地址</th>
+           <th>顺序</th>
+           <th>状态</th>
+           <th>时间</th>
+          <th style='text-align: center'>操作</th>-->
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td style='text-align: center'>{{index+1}}</td>
-          <td style='text-align: center'><img v-bind:src=item.avatar style="width: 30px;height:30px"> </td>
-          <td style='text-align: center'><!--{{item.gender}}-->
-            <div v-if="item.gender===0">
-                     保密
-                 </div>
-                 <div v-else-if="message===1">
-                       男
-                   </div>
-                 <div v-else="message===2">
-                       女
-                   </div>
-                </td>
+          <td style='text-align: center'>{{index + 1}}</td>
           <td style='text-align: center'>{{item.name}}</td>
-          <!--<td style='text-align: center'>{{item.role}}</td>-->
-          <td style='text-align: center'>{{item.status | FormatStatus}}</td>
-          <td style='text-align: center'>{{item.ts*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'><img v-bind:src=item.icon style="width: 40px;height:40px"></td>
+          <!--<td style='text-align: center'>{{item.booksNumber}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
+          <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
+          <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>
+          <td style='text-align: center'>{{item.playCount}}</td>
+          <td style='text-align: center'>{{item.value}}</td>
+          <td style='text-align: center'>{{item.grade}}</td>-->
+          <td class="sorting_1" style="vertical-align: middle">{{item.time * 1000 | BTKformatDate}}</td>
+          <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
+          &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
+          <td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
-            <div v-if="item.status==0"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'stop')" plain>停用</el-button></div>
-            <div v-else="item.status==1"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'start')" plain>启用</el-button></div>
-          </td>
+
+            <el-button type="success" round @click="editRelation(item.id)" plain>书本管理</el-button>
+            <el-button type="primary" round @click="editTags(item.id)" plain>标签管理</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送(已推{{item.times}}次)</el-button>
+            <el-button type="info" round @click="editAlbum(item.id)" plain>编辑</el-button>
+            <el-button type="warning" round @click="removeAlbum(item.id)" plain>删除</el-button>
+
+          </td>-->
         </tr>
         </tbody>
       </table>
@@ -65,8 +78,8 @@
           </el-pagination>
         </div>
       </div>
-            <!-- /.box-body -->
-          </div>
+      <!-- /.box-body -->
+    </div>
 
   </section>
 </template>
@@ -74,7 +87,8 @@
 <script>
   // import $ from 'jquery'
   import api from '../../api'
-  import {formatDateBtk, formatStatus} from '../../filters/index.js'
+  import { formatDateBtk, formatStatus } from '../../filters/index.js'
+
   export default {
     filters: {
       BTKformatDate (time) {
@@ -115,32 +129,25 @@
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },
-      resetPass (memberId) {
-        this.$confirm('是否确定重置该用户登录密码 ' + ', 是否继续?', '提示', {type: 'warning'})
+      removeAlbum (albumId) {
+        this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
-            // this.$message.info('操作成功!')
             var userid = localStorage.getItem('userid')
-            api.request('get', 'member/edit?action=reset&memberId=' + memberId + '&operator_id=' + userid)
+            api.request('get', 'album/delete?albumId=' + albumId + '&operator_id=' + userid)
               .then(response => {
-                this.$message.info('操作成功!')
                 console.log(response.data)
+                this.$message.info('删除成功!')
                 // reload
-                api.request('post', 'member/list?userid=1&pageSize=20&pageIndex=0')
+                api.request('get', 'book/list?operator_id=' + userid + '&pageSize=20&pageIndex=0')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.body.orders
                     this.totalCount = response.data.body.status.totalCount
-                    for (var i = 0; i < this.arrayData.length; i++) {
-                      // this.arrayData.time = formatDateBtk(this.arrayData.time)
-                      // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
-                      console.log()
-                    }
+                    this.arrayData = response.data.body.albumList
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
                     console.log(error)
-                    this.response = 'Server appears to be offline'
+                    this.response = error
                   })
               })
               .catch(error => {
@@ -153,31 +160,25 @@
             this.$message.info('已取消操作!')
           })
       },
-      removeUser (memberId, action) {
-        this.$confirm('是否继续?', '提示', {type: 'warning'})
+      sendPush (albumId, name) {
+        this.$confirm('此操作将向客户端发送一条专辑《' + name + '》推送通知 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'member/detail?memberId=' + memberId + '&operator_id=' + userid + '&action=' + action)
+            api.request('get', 'push/jpush?title=' + name + '&type=3&id=' + albumId + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
-                this.$message.info('操作成功!')
+                this.$message.info('发送成功!')
                 // reload
-                api.request('post', 'member/list?userid=1&pageSize=20&pageIndex=0')
+                api.request('get', 'book/list?userid=1&pageSize=20&pageIndex=0')
                   .then(response => {
-                    console.log(response.data)
-                    this.arrayData = response.data.body.orders
                     this.totalCount = response.data.body.status.totalCount
-                    for (var i = 0; i < this.arrayData.length; i++) {
-                      // this.arrayData.time = formatDateBtk(this.arrayData.time)
-                      // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
-                      console.log()
-                    }
+                    this.arrayData = response.data.body.albumList
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
                     console.log(error)
-                    this.response = 'Server appears to be offline'
+                    this.response = error
                   })
               })
               .catch(error => {
@@ -193,40 +194,32 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('post', 'member/list?operator_id=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=20')
+        api.request('get', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
           .then(response => {
-            // console.log(response.data)
-            this.arrayData = response.data.body.orders
+            console.log(response.data)
+            this.arrayData = response.data.body.albumList
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
             console.log(error)
             this.response = 'Server appears to be offline'
           })
-      },
-      editUser (userId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
-      },
-      getFavAlbum (memberId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/album/list/fav?memberId=' + memberId})
-      },
-      getFavBook (memberId) {
-        // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/book/list/fav?memberId=' + memberId})
       }
-
     },
     created () {
+      var memberId = '0'
+      if (this.$route.query.memberId) {
+        memberId = this.$route.query.memberId
+        this.memberId = this.$route.query.memberId
+      }
       // var userid = localStorage.getItem('userid')
-      api.request('post', 'member/list?userid=1&pageSize=20&pageIndex=0')
+      api.request('get', 'book/list?userid=1&pageSize=20&pageIndex=0&memberId=' + memberId)
         .then(response => {
           console.log(response.data)
-          this.arrayData = response.data.body.orders
           this.totalCount = response.data.body.status.totalCount
+          this.arrayData = response.data.body.bookList
           for (var i = 0; i < this.arrayData.length; i++) {
-            // this.arrayData.time = formatDateBtk(this.arrayData.time)
+            this.arrayData.time = formatDateBtk(this.arrayData.time)
             // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
             console.log()
           }
