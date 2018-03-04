@@ -16,6 +16,7 @@
         <tr>
           <th style='text-align: center'>序号</th>
           <th style='text-align: center'>标题</th>
+          <th style='text-align: center'>上传人</th>
           <!--<th>icon</th>
           <!--<th>副标题</th>-->
           <!--<th>是否显示icon</th>-->
@@ -27,7 +28,7 @@
           <th>顺序</th>-->
           <!--<th style='text-align: center'>状态</th>-->
           <th style='text-align: center'>添加时间</th>
-          <!--<th style='text-align: center'>操作</th>-->
+          <th style='text-align: center'>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -44,7 +45,9 @@
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>-->
           <!--<td style='text-align: center'>{{item.status | FormatStatus}}</td>-->
+          <th style='text-align: center'>{{item.name}}</th>
           <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
+          <td style='text-align: center'><el-button type="primary" @click="play(item.url)" plain>播放</el-button></td>
           <!--<td style='text-align: center'>
             &lt;!&ndash;<img src="/static/img/play.png" style="width: 20px;height:20px">&ndash;&gt;
             &lt;!&ndash;<el-button type="primary" @click="editUser(item.id)">播放</el-button>&ndash;&gt;
@@ -115,6 +118,9 @@
       }
     },
     methods: {
+      play (url) {
+        window.open(url, '_blank')
+      },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },

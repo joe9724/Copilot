@@ -47,7 +47,7 @@
           <td style='text-align: center'>{{item.time*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
             <!--<img src="/static/img/play.png" style="width: 20px;height:20px">-->
-            <!--<el-button type="primary" @click="editUser(item.id)">播放</el-button>-->
+            <el-button type="primary" @click="play(item.url)" plain>播放</el-button>
             <el-button type="success" @click="editChapter(item.id)" style="margin-left: 10px" plain>编辑</el-button>
             <el-button type="warning" @click="removeChapter(item.id)" plain>删除</el-button>
           </td>
@@ -115,6 +115,9 @@
       }
     },
     methods: {
+      play (url) {
+        window.open(url, '_blank')
+      },
       handleSizeChange (val) {
         console.log(`每页 ${val} 条`)
       },

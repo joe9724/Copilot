@@ -10,7 +10,7 @@
 
           </a>
         </router-link>
--->
+-->   <el-button type="primary" @click="getTodayMember()" plain>今日注册用户</el-button><el-button type="primary" @click="getAllMember()" plain>所有注册用户</el-button>
       </div>
       <table class="table table-bordered table-responsive table-striped">
         <thead>
@@ -108,7 +108,8 @@
         // 分页数据
         arrayData: [],
         // 删除确认框
-        dialogVisible: false
+        dialogVisible: false,
+        startTime: ''
       }
     },
     methods: {
@@ -121,7 +122,7 @@
             // 向请求服务端删除
             // this.$message.info('操作成功!')
             var userid = localStorage.getItem('userid')
-            api.request('get', 'member/edit?action=reset&memberId=' + memberId + '&operator_id=' + userid)
+            api.request('get', 'member/detail?action=reset&memberId=' + memberId + '&operator_id=' + userid)
               .then(response => {
                 this.$message.info('操作成功!')
                 console.log(response.data)
@@ -193,7 +194,7 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('post', 'member/list?operator_id=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=20')
+        api.request('post', 'member/list?operator_id=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=20' + this.startTime)
           .then(response => {
             // console.log(response.data)
             this.arrayData = response.data.body.orders
@@ -215,8 +216,47 @@
       getFavBook (memberId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
         this.$router.push({path: '/book/list/fav?memberId=' + memberId})
+      },
+      getTodayMember () {
+        this.startTime = '&startTime=1'
+        // var userid = localStorage.getItem('userid')
+        api.request('post', 'member/list?userid=1&pageSize=20&pageIndex=0&startTime=1')
+          .then(response => {
+            console.log(response.data)
+            this.arrayData = response.data.body.orders
+            this.totalCount = response.data.body.status.totalCount
+            for (var i = 0; i < this.arrayData.length; i++) {
+              // this.arrayData.time = formatDateBtk(this.arrayData.time)
+              // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+              console.log()
+            }
+          })
+          .catch(error => {
+            // this.$store.commit('TOGGLE_LOADING')
+            console.log(error)
+            this.response = 'Server appears to be offline'
+          })
+      },
+      getAllMember () {
+        this.startTime = ''
+        // var userid = localStorage.getItem('userid')
+        api.request('post', 'member/list?userid=1&pageSize=20&pageIndex=0')
+          .then(response => {
+            console.log(response.data)
+            this.arrayData = response.data.body.orders
+            this.totalCount = response.data.body.status.totalCount
+            for (var i = 0; i < this.arrayData.length; i++) {
+              // this.arrayData.time = formatDateBtk(this.arrayData.time)
+              // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+              console.log()
+            }
+          })
+          .catch(error => {
+            // this.$store.commit('TOGGLE_LOADING')
+            console.log(error)
+            this.response = 'Server appears to be offline'
+          })
       }
-
     },
     created () {
       // var userid = localStorage.getItem('userid')

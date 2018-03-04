@@ -3,14 +3,12 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <!--
-        <router-link  class="pageLink" to="/user/add">
-          <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加用户</el-button></span>
 
+        <router-link class="pageLink" to="/msg/add">
+          <a>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加消息</el-button></span>
           </a>
         </router-link>
--->
       </div>
       <table class="table table-bordered table-responsive table-striped">
         <thead>
@@ -25,18 +23,18 @@
           <th style='text-align: center'>价格</th>
           <th style='text-align: center'>付款方式</th>
           <!--<th>更新提示</th>-->
-         <!-- <th>播放地址</th>
-          <th>顺序</th>
-          <th>状态</th>
-          <th>时间</th>-->
+          <!-- <th>播放地址</th>
+           <th>顺序</th>
+           <th>状态</th>
+           <th>时间</th>-->
           <th style='text-align: center'>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{index + 1}}</td>
           <td style='text-align: center'>{{item.title}}</td>
-          <td class="sorting_1" style="vertical-align: middle">{{item.createTime*1000 | BTKformatDate}}</td>
+          <td class="sorting_1" style="vertical-align: middle">{{item.createTime * 1000 | BTKformatDate}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>
@@ -50,9 +48,9 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.status | FormatStatus}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
-            <el-button  @click="sendPush(item.id,item.title)" type="success" plain>推送(已推{{item.times}}次)</el-button>
+            <el-button @click="sendPush(item.id,item.title)" type="success" plain>推送(已推{{item.times}}次)</el-button>
             <!--<el-button type="text" @click="editUser(item.id)">编辑</el-button>-->
-            <el-button  @click="removeUser(item.id)" type="warning" plain>删除</el-button>
+            <el-button @click="removeMsg(item.id)" type="warning" plain>删除</el-button>
           </td>
         </tr>
         </tbody>
@@ -71,8 +69,8 @@
           </el-pagination>
         </div>
       </div>
-            <!-- /.box-body -->
-          </div>
+      <!-- /.box-body -->
+    </div>
 
   </section>
 </template>
@@ -80,7 +78,8 @@
 <script>
   // import $ from 'jquery'
   import api from '../../api'
-  import {formatDateBtk, formatStatus} from '../../filters/index.js'
+  import { formatDateBtk, formatStatus } from '../../filters/index.js'
+
   export default {
     filters: {
       BTKformatDate (time) {
@@ -141,20 +140,30 @@
             this.$message.info('已取消操作!')
           })
       },
-      removeUser (userId) {
+      removeMsg (id) {
         this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + userId + '&operator_id=' + userid)
+            let formData = new FormData()
+            formData.append('id', Number(id))
+            formData.append('action', 'delete')
+            // formData.append('title', this.form.title)
+            // formData.append('sub_title', this.htmlForEditor)
+            /* var msgId = '-1'
+            if (this.$route.query.msgId) {
+              msgId = this.$route.query.msgId
+              this.msgId = this.$route.query.msgId
+            } */
+            api.requestForm('post', 'msg/upload', formData)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
                 api.request('get', 'msg/send/list?operator_id=' + userid + '&pageIndex=0&pageSize=20')
                   .then(response => {
-                    console.log(response.data)
                     this.arrayData = response.data.body.msgList
+                    this.totalCount = response.data.body.status.totalCount
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')

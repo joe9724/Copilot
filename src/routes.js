@@ -71,6 +71,8 @@ import EditWebView from './components/views/TingtingEditWeb.vue'
 // import EditWebSpecialView from './components/views/TingtingEditSpecial.vue'
 // import EditWebAboutView from './components/views/TingtingEditAbout.vue'
 import WebsView from './components/views/TingtingWebs.vue'
+import EditVersionView from './components/views/TingtingEditVersion.vue'
+import AddMsgView from './components/views/TingtingAddMsg.vue'
 
 // Routes
 const routes = [
@@ -82,6 +84,20 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'msg/add',
+        alias: 'AddMsgView',
+        component: AddMsgView,
+        name: '添加消息',
+        meta: {description: 'AddMsgView'}
+      },
+      {
+        path: 'version/edit',
+        alias: 'EditVersionView',
+        component: EditVersionView,
+        name: '编辑version',
+        meta: {description: 'EditVersionView'}
+      },
       {
         path: 'web/list',
         alias: 'WebsView',

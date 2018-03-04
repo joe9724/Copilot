@@ -53,7 +53,7 @@
           <td class="sorting_1" style="vertical-align: middle">{{item.time*1000 | BTKformatDate}}</td>-->
           <td style='text-align: center'>
             <!--<el-button type="text" @click="removeUser(item.id)">推送</el-button>-->
-            <el-button type="text" @click="editUser(item.id)">编辑</el-button>
+            <el-button type="text" @click="editVersion(item.id)">编辑</el-button>
             <!--<el-button type="text" @click="removeUser(item.id)">删除</el-button>-->
           </td>
         </tr>
@@ -168,9 +168,9 @@
             this.response = 'Server appears to be offline'
           })
       },
-      editUser (userId) {
+      editVersion (id) {
         // this.$router.push('/org/edit?orgid=' + agentId)
-        this.$router.push({path: '/user/edit?userid=' + userId})
+        this.$router.push({path: '/version/edit?id=' + id})
       }
     },
     created () {
