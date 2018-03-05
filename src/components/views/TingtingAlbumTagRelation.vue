@@ -169,7 +169,8 @@
         var params = {
           'albumId': Number(albumId),
           'actionCode': 0,
-          'bookIds': tagIds
+          'bookIds': tagIds,
+          'action': 0
         }
         api.request('post', 'relation/album/taglist/edit', params)
           .then(response => {
@@ -197,7 +198,8 @@
               'userId': userid,
               'albumId': Number(albumId),
               'actionCode': 1,
-              'bookIds': bookId + ''
+              'bookIds': bookId + '',
+              'action': 1
             }
             api.request('post', '/relation/album/taglist/edit', params)
               .then(response => {

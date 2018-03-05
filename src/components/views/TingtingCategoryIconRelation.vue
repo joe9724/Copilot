@@ -202,7 +202,7 @@
               'albumIds': '',
               'subCategoryId': Number(categoryId)
             }
-            api.request('post', '/relation/album/taglist/edit', params)
+            api.request('post', '/relation/book/taglist/edit', params)
               .then(response => {
                 // var data = response.data
                 // alert(JSON.stringify(data))
