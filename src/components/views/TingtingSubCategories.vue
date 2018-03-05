@@ -3,7 +3,8 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
-        <span class="page" style="float:right;margin:5px"><el-button type="success" plain @click="addcate">添加子类</el-button></span>
+        <span class="page" style="float:right;margin:5px"><el-button type="success" plain
+                                                                     @click="addcate">添加子类</el-button></span>
 
       </div>
       <table class="table table-bordered table-responsive table-striped">
@@ -27,9 +28,9 @@
         </thead>
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
-          <td align="center">{{index+1}}</td>
+          <td align="center">{{index + 1}}</td>
           <td align="center">{{item.name}}</td>
-          <td align="center"><img v-bind:src=item.icon style="width: 20px;height:20px"> </td>
+          <td align="center"><img v-bind:src=item.icon style="width: 20px;height:20px"></td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
@@ -74,7 +75,8 @@
 <script>
   // import $ from 'jquery'
   import api from '../../api'
-  import {formatDateBtk, formatStatus} from '../../filters/index.js'
+  import { formatDateBtk, formatStatus } from '../../filters/index.js'
+
   export default {
     filters: {
       BTKformatDate (time) {
@@ -210,31 +212,39 @@
       editRelation (categoryId) {
         // this.$router.push('/org/edit?orgid=' + agentId)
         this.$router.push({path: '/category/album/relation?categoryId=' + categoryId})
+      },
+      init () {
+        // var userid = localStorage.getItem('userid')
+        var categoryId = '-1'
+        if (this.$route.query.categoryId) {
+          categoryId = this.$route.query.categoryId
+          this.categoryId = this.$route.query.categoryId
+          console.log('categoryId is', categoryId)
+        }
+        api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=' + categoryId)
+          .then(response => {
+            console.log(response.data)
+            this.arrayData = response.data.body.subCategoryList
+            this.totalCount = response.data.body.status.totalCount
+            for (var i = 0; i < this.arrayData.length; i++) {
+              // this.arrayData.time = formatDateBtk(this.arrayData.time)
+              // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+              console.log()
+            }
+          })
+          .catch(error => {
+            // this.$store.commit('TOGGLE_LOADING')
+            console.log(error)
+            this.response = 'Server appears to be offline'
+          })
       }
     },
     created () {
-      // var userid = localStorage.getItem('userid')
-      var categoryId = '-1'
-      if (this.$route.query.categoryId) {
-        categoryId = this.$route.query.categoryId
-        this.categoryId = this.$route.query.categoryId
-      }
-      api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=' + categoryId)
-        .then(response => {
-          console.log(response.data)
-          this.arrayData = response.data.body.subCategoryList
-          this.totalCount = response.data.body.status.totalCount
-          for (var i = 0; i < this.arrayData.length; i++) {
-            // this.arrayData.time = formatDateBtk(this.arrayData.time)
-            // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
-            console.log()
-          }
-        })
-        .catch(error => {
-          // this.$store.commit('TOGGLE_LOADING')
-          console.log(error)
-          this.response = 'Server appears to be offline'
-        })
+      this.init()
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'init'
     },
     mounted () {
       // this.showPage(this.pageCurrent, null, true)
