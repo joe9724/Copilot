@@ -23,7 +23,7 @@
           <!--<th>大图</th>-->
           <th style='text-align: center'>播放数</th>
           <th style='text-align: center'>价格</th>
-          <th style='text-align: center'>年级</th>
+          <!--<th style='text-align: center'>年级</th>-->
           <th style='text-align: center'>添加时间</th>
           <!--<th>更新提示</th>-->
           <!-- <th>播放地址</th>
@@ -44,7 +44,7 @@
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
           <td style='text-align: center'>{{item.playCount}}</td>
           <td style='text-align: center'>{{item.value}}</td>
-          <td style='text-align: center'>{{item.grade}}</td>
+          <!--<td style='text-align: center'>{{item.grade}}</td>-->
           <td class="sorting_1" style="vertical-align: middle">{{item.time * 1000 | BTKformatDate}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.duration}}</td>
           &lt;!&ndash;<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>&ndash;&gt;
