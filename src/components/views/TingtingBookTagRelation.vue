@@ -22,8 +22,8 @@
             <td style='text-align: center'>{{index + 1}}</td>
             <td style='text-align: center'>{{item.name}}</td>
             <td style='text-align: center;height: 50px'>
-              <el-button type="text">上移</el-button>
-              <el-button type="text">下移</el-button>
+              <!--<el-button type="text">上移</el-button>
+              <el-button type="text">下移</el-button>-->
               <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
               <el-button type="text" @click="removeBookFromAlbum(item.id)">移除</el-button>
             </td>

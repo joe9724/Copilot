@@ -22,8 +22,8 @@
             <td style='text-align: center'>{{index + 1}}</td>
             <td style='text-align: center'>{{item.name}}</td>
             <td style='text-align: center;height: 50px'>
-              <el-button type="text">上移</el-button>
-              <el-button type="text">下移</el-button>
+              <!--<el-button type="text">上移</el-button>
+              <el-button type="text">下移</el-button>-->
               <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
               <el-button type="text" @click="removeBookFromAlbum(item.id)">移除</el-button>
             </td>
@@ -38,7 +38,7 @@
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
               :page-sizes="[10, 20, 30, 40]"
-              :page-size="10"
+              :page-size="20"
               layout="prev, pager, next"
               :total="totalCount">
             </el-pagination>
@@ -103,7 +103,7 @@
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 10,
+        pagesize: 20,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -132,9 +132,10 @@
         if (keyvalue.length === 0) {
           keyvalue = ' '
         }
-        api.request('get', 'book/list?type=1&userid=1&pageSize=12&pageIndex=0&keyword=' + keyvalue + '&albumId=' + albumId)
+        api.request('get', 'book/list?type=1&userid=1&pageSize=20&pageIndex=0&keyword=' + keyvalue + '&albumId=' + albumId)
           .then(response => {
             this.searchData = response.data.body.bookList
+            this.totalCount = response.data.body.status.totalCount
           })
           .catch(error => {
             console.log(error)
@@ -220,10 +221,11 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=12')
+        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.bookList
+            this.totalCount = response.data.body.status.totalCount
           })
           .catch(error => {
             // this.$store.commit('TOGGLE_LOADING')
@@ -243,9 +245,10 @@
           this.albumId = this.$route.query.albumId
         }
         // var userid = localStorage.getItem('userid')
-        api.request('get', 'book/list?userid=1&pageSize=12&pageIndex=0&albumId=' + albumId)
+        api.request('get', 'book/list?userid=1&pageSize=20&pageIndex=0&albumId=' + albumId)
           .then(response => {
             this.arrayData = response.data.body.bookList
+            this.totalCount = response.data.body.status.totalCount
           })
           .catch(error => {
             console.log(error)

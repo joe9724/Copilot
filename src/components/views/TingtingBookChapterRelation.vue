@@ -22,8 +22,9 @@
             <td style='text-align: center'>{{index + 1}}</td>
             <td style='text-align: center'>{{item.name}}</td>
             <td style='text-align: center'>
-              <div><span><el-button type="text"> 上移 </el-button></span>
-                <span><el-button type="text"> 下移 </el-button></span>
+              <div><!--<span>
+                <el-button type="text"> 上移 </el-button></span>
+                <span><el-button type="text"> 下移 </el-button></span>-->
                 <span><el-button type="text" @click="removeChapterFromBook(item.id)">移除</el-button></span></div>
             </td>
           </tr>

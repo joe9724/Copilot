@@ -28,7 +28,7 @@
             </el-form-item>
             <el-form-item label="音频">
               <el-upload
-                class="upload-demo"
+                ref="elbutton"
                 :action="uploadUrl"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
@@ -39,20 +39,34 @@
                 :on-exceed="handleExceed"
                 :on-success="uploadedm4a"
                 :file-list="fileList">
-                <el-button size="small" type="primary">点击上传m4a文件</el-button>
+                <el-button size="small" type="primary" >点击上传m4a文件</el-button>
                 <!--<div slot="tip" class="el-upload__tip">只能上传m4a文件，且不超过500kb</div>-->
               </el-upload>
             </el-form-item>
-            <vue-editor id="editor"
-                        useCustomImageHandler
-                        @imageAdded="handleImageAdded" v-model="htmlForEditor">
-            </vue-editor>
+            <el-form-item label="时长">
+              <el-time-picker
+                v-model="timelong"
+                :picker-options="{
+                                        selectableRange: '00:00:01 - 23:59:59'
+                                    }"
+                placeholder="选择时长">
+              </el-time-picker>
+            </el-form-item>
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio label="正常"></el-radio>
                 <el-radio label="锁定"></el-radio>
               </el-radio-group>
             </el-form-item>
+            <el-form-item label="简介">
+              <vue-editor id="editor"
+                          useCustomImageHandler
+                          @imageAdded="handleImageAdded" v-model="htmlForEditor">
+              </vue-editor>
+              <!--<el-button>确定</el-button>-->
+            </el-form-item>
+
+
             <el-form-item>
               <el-button type="primary" @click="onSubmit">确定</el-button>
               <!--<el-button>确定</el-button>-->
@@ -76,6 +90,7 @@
     },
     data () {
       return {
+        timelong: new Date(2016, 9, 0, 10, 0),
         htmlForEditor: '',
         uploadUrl: '',
         imgUrl: '',
@@ -167,9 +182,17 @@
         formData.append('chapterId', Number(-1))
         formData.append('url', this.mp4Url)
         formData.append('type', 'm4a')
+        formData.append('duration', (this.timelong).getHours() + ':' + (this.timelong).getMinutes() + ':' + (this.timelong).getSeconds())
 
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
+        } else {
+          this.$message.info('缺少图标!')
+          return
+        }
+        if (this.mp4Url === '') {
+          this.$message.info('缺少音频文件!')
+          return
         }
         // formData.append('file', this.file)
 
@@ -233,11 +256,18 @@
           console.log(error)
           this.response = 'Server appears to be offline'
         })
+    },
+    mounted () {
+      // const self = this
+      // console.log('elbutton is' + JSON.stringify(this.$refs.elbutton))
+      // this.$refs.elbutton.file.style.visibility = 'hidden'
+      // console.log('file is' + this.$refs.elbutton.el-upload.name)
     }
   }
 </script>
 
 <style>
+
   .datetime-picker input {
     height: 4em !important;
   }
