@@ -9,6 +9,12 @@
 
           </a>
         </router-link>
+        <router-link  class="pageLink" to="/chapters/add">
+          <a>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加多个章节</el-button></span>
+
+          </a>
+        </router-link>
 
       </div>
       <table class="table table-bordered table-responsive table-striped">
@@ -21,7 +27,7 @@
           <!--<th>是否显示icon</th>-->
           <!--<th>大图</th>-->
           <th style='text-align: center'>播放量</th>
-          <th style='text-align: center'>时长</th>
+          <!--<th style='text-align: center'>时长</th>
           <!--<th>更新提示</th>-->
           <!--<th>播放地址</th>
           <th>顺序</th>-->
@@ -39,7 +45,7 @@
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.showIcon}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.bigCover}}</td>-->
           <td style='text-align: center'>{{item.playCount}}</td>
-          <td style='text-align: center'>{{item.duration}}</td>
+          <!--<td style='text-align: center'>{{item.duration}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.updateTips}}</td>-->
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.url}}</td>
           <td class="sorting_1" style="vertical-align: middle">{{item.order}}</td>-->

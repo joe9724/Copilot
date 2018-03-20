@@ -38,6 +38,7 @@
     "vue-quill-editor-upload": "^1.1.0",
     "vue-resource": "^1.4.0",
     "vue-router": "^2.2.0",
+    "vue-simple-uploader": "^0.4.2",
     "vue-upload-component": "^2.8.3",
     "vue2-editor": "^2.4.2",
     "vue2-quill-editor": "^2.0.26",

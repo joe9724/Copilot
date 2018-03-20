@@ -68,6 +68,7 @@ import FeedbackView from './components/views/TingtingFeedback.vue'
 import FavAlbumsView from './components/views/TingtingFavAlbums.vue'
 import FavBooksView from './components/views/TingtingFavBooks.vue'
 import EditWebView from './components/views/TingtingEditWeb.vue'
+import TingtingAddMultiChaptersView from './components/views/TingtingAddMultiChapters.vue'
 // import EditWebSpecialView from './components/views/TingtingEditSpecial.vue'
 // import EditWebAboutView from './components/views/TingtingEditAbout.vue'
 import WebsView from './components/views/TingtingWebs.vue'
@@ -84,6 +85,13 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'chapters/add',
+        alias: 'TingtingAddMultiChaptersView',
+        component: TingtingAddMultiChaptersView,
+        name: '添加多个章节',
+        meta: {description: 'TingtingAddMultiChaptersView'}
+      },
       {
         path: 'msg/add',
         alias: 'AddMsgView',
