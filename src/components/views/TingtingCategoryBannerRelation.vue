@@ -22,8 +22,8 @@
             <td style='text-align: center'>{{index + 1}}</td>
             <td style='text-align: center'>{{item.name}}</td>
             <td style='text-align: center;height: 50px'>
-              <!--<el-button type="text">上移</el-button>
-              <el-button type="text">下移</el-button>-->
+              <el-button type="text" @click="up(item.id,item.order,index)" >上移</el-button>
+              <el-button type="text" @click="down(item.id,item.order,index)" >下移</el-button>
               <el-button type="text" @click="editUser(item.id)" style="visibility: hidden">编辑</el-button>
               <el-button type="text" @click="removeBookFromAlbum(item.id)">移除</el-button>
             </td>
@@ -121,6 +121,58 @@
       }
     },
     methods: {
+      up (id, order, index) {
+        // 上移一位
+        if (index > 0) {
+          var newId = this.arrayData[index - 1].id
+          var newOrder = this.arrayData[index - 1].order
+          var params = {
+            'bookId': Number(-11),
+            'actionCode': 6,
+            'bookIds': '',
+            'albumIds': '',
+            'subCategoryId': Number(-11),
+            'originId': id,
+            'originOrder': order,
+            'newId': newId,
+            'newOrder': newOrder
+          }
+          api.request('post', '/relation/book/taglist/edit', params)
+            .then(response => {
+              this.init()
+            })
+            .catch(error => {
+              console.log(error)
+              this.response = error
+            })
+        }
+      },
+      down (id, order, index) {
+        // 下移一位
+        if (index < 20) {
+          var newId = this.arrayData[index + 1].id
+          var newOrder = this.arrayData[index + 1].order
+          var params = {
+            'bookId': Number(-11),
+            'actionCode': 6,
+            'bookIds': '',
+            'albumIds': '',
+            'subCategoryId': Number(-11),
+            'originId': id,
+            'originOrder': order,
+            'newId': newId,
+            'newOrder': newOrder
+          }
+          api.request('post', '/relation/book/taglist/edit', params)
+            .then(response => {
+              this.init()
+            })
+            .catch(error => {
+              console.log(error)
+              this.response = error
+            })
+        }
+      },
       search () {
         // var userid = localStorage.getItem('userid')
         var categoryId = '0'

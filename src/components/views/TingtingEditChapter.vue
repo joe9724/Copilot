@@ -26,7 +26,23 @@
 
               </vue-core-image-upload>
             </el-form-item>
-
+            <el-form-item label="音频">
+              <el-upload
+                ref="elbutton"
+                :action="uploadUrl"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+                multiple
+                :limit="0"
+                :data="data"
+                :on-exceed="handleExceed"
+                :on-success="uploadedm4a"
+                :file-list="fileList">
+                <el-button size="small" type="primary" >修改m4a文件</el-button>
+                <!--<div slot="tip" class="el-upload__tip">只能上传m4a文件，且不超过500kb</div>-->
+              </el-upload>
+            </el-form-item>
             <vue-editor id="editor"
                         useCustomImageHandler
                         @imageAdded="handleImageAdded" v-model="htmlForEditor">
@@ -86,6 +102,13 @@
       }
     },
     methods: {
+      uploadedm4a (response) {
+        console.log('m4aresponse is', response)
+        // this.src = response.body.url
+        this.mp4Url = response.body.url
+        // alert(this.imgUrl)
+        // this.imgUrl = 'https://upload.jianshu.io/users/upload_avatars/2204269/54bc6df9d4b6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240'
+      },
       imageUploaded (response) {
         console.log('response is', response)
         this.src = response.body.url
@@ -139,6 +162,7 @@
         formData.append('title', this.form.title)
         formData.append('authorName', this.form.author)
         formData.append('summary', this.htmlForEditor)
+        formData.append('url', this.mp4Url)
         formData.append('chapterId', chapterId)
         if (this.imgUrl !== '') {
           formData.append('iconUrl', this.imgUrl)
@@ -149,7 +173,12 @@
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
-            alert('ok')
+            this.$message({
+              message: '操作成功!',
+              type: 'success'
+            })
+            //
+            this.$router.go(-1)
           })
           .catch(error => {
             console.log(error)

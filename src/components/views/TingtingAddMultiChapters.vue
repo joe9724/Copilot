@@ -21,7 +21,7 @@
 </template>
 <script>
   import configParams from '../../config'
-  import api from '../../api'
+  // import api from '../../api'
 
   export default {
     data () {
@@ -47,11 +47,18 @@
     methods: {
       complete () {
         console.log('complete', arguments)
+        this.$message({
+          message: '上传成功!',
+          type: 'success'
+        })
+        //
+        this.$router.go(-1)
       },
       fileComplete () {
         console.log('file complete', arguments)
       },
       onSubmit () {
+        /*
         var userid = localStorage.getItem('userid')
         console.log(userid)
         let formData = new FormData()
@@ -91,7 +98,7 @@
           .catch(error => {
             console.log(error)
             this.response = error
-          })
+          }) */
       }
     },
     created () {

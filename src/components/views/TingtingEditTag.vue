@@ -163,7 +163,12 @@
           .then(response => {
             var data = response.data
             console.log(JSON.stringify(data))
-            alert('ok')
+            this.$message({
+              message: '操作成功!',
+              type: 'success'
+            })
+            //
+            this.$router.go(-1)
           })
           .catch(error => {
             console.log(error)

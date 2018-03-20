@@ -11,7 +11,7 @@
         </router-link>
         <router-link  class="pageLink" to="/chapters/add">
           <a>
-            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加多个章节</el-button></span>
+            <span class="page" style="float:right;margin:5px"><el-button type="success" plain>批量添加</el-button></span>
 
           </a>
         </router-link>
