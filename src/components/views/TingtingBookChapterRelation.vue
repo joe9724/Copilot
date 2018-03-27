@@ -67,6 +67,7 @@
         <el-checkbox-group v-for="item in searchData" v-model="checkList">
           <el-checkbox :label="item.name" :value="item.id"></el-checkbox>
         </el-checkbox-group>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <el-button type="primary" @click="moveLeft">添加选中书本到专辑</el-button>
       </div>
 
@@ -93,6 +94,9 @@
     },
     data () {
       return {
+        checkAll: false,
+        checkedCities: ['上海', '北京'],
+        isIndeterminate: true,
         currentPage: 1,
         // 为第一页或者最后一页时，首页，尾页不能点击
         fDisabled: false,
@@ -123,6 +127,11 @@
       }
     },
     methods: {
+      handleCheckAllChange (val) {
+        console.log('val is', val)
+        // this.checkList = 'm4a音频测试'
+        this.isIndeterminate = false
+      },
       search () {
         // var userid = localStorage.getItem('userid')
         var bookId = '0'
