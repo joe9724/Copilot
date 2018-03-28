@@ -67,7 +67,8 @@
         <el-checkbox-group v-for="item in searchData" v-model="checkList">
           <el-checkbox :label="item.name" :value="item.id"></el-checkbox>
         </el-checkbox-group>
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <el-checkbox  v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <!--{{checkList}}-->
         <el-button type="primary" @click="moveLeft">添加选中书本到专辑</el-button>
       </div>
 
@@ -129,8 +130,13 @@
     methods: {
       handleCheckAllChange (val) {
         console.log('val is', val)
-        // this.checkList = 'm4a音频测试'
-        this.isIndeterminate = false
+        if (val) {
+          for (var k = 0; k < this.searchData.length; k++) {
+            this.checkList.push(this.searchData[k].name)
+          }
+        } else {
+          this.checkList = []
+        }
       },
       search () {
         // var userid = localStorage.getItem('userid')
