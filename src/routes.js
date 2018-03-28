@@ -69,6 +69,7 @@ import FavAlbumsView from './components/views/TingtingFavAlbums.vue'
 import FavBooksView from './components/views/TingtingFavBooks.vue'
 import EditWebView from './components/views/TingtingEditWeb.vue'
 import TingtingAddMultiChaptersView from './components/views/TingtingAddMultiChapters.vue'
+import TingtingHelp from './components/views/TingtingHelp.vue'
 // import EditWebSpecialView from './components/views/TingtingEditSpecial.vue'
 // import EditWebAboutView from './components/views/TingtingEditAbout.vue'
 import WebsView from './components/views/TingtingWebs.vue'
@@ -85,6 +86,13 @@ const routes = [
     path: '/',
     component: DashView,
     children: [
+      {
+        path: 'web/help',
+        alias: 'TingtingHelp',
+        component: TingtingHelp,
+        name: '帮助',
+        meta: {description: 'TingtingHelp'}
+      },
       {
         path: 'chapters/add',
         alias: 'TingtingAddMultiChaptersView',
