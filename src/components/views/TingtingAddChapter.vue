@@ -43,7 +43,7 @@
                 <!--<div slot="tip" class="el-upload__tip">只能上传m4a文件，且不超过500kb</div>-->
               </el-upload>
             </el-form-item>
-            <el-form-item label="时长">
+            <el-form-item label="时长" style="visibility: hidden">
               <el-time-picker
                 v-model="timelong"
                 :picker-options="{
