@@ -25,6 +25,8 @@
               <div><!--<span>
                 <el-button type="text"> 上移 </el-button></span>
                 <span><el-button type="text"> 下移 </el-button></span>-->
+                <el-button type="text" @click="up(item.id,item.order,index)" >上移</el-button>
+                <el-button type="text" @click="down(item.id,item.order,index)" >下移</el-button>
                 <span><el-button type="text" @click="removeChapterFromBook(item.id)">移除</el-button></span></div>
             </td>
           </tr>
@@ -38,7 +40,7 @@
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
               :page-sizes="[10, 20, 30, 40]"
-              :page-size="10"
+              :page-size="12"
               layout="prev, pager, next"
               :total="totalCount">
             </el-pagination>
@@ -107,9 +109,9 @@
         // 分页数
         pageCount: 20,
         // 当前页面
-        pageCurrent: 1,
+        pageCurrent: 0,
         // 分页大小
-        pagesize: 20,
+        pagesize: 12,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -128,6 +130,58 @@
       }
     },
     methods: {
+      up (id, order, index) {
+        // 上移一位
+        if (index > 0) {
+          var newId = this.arrayData[index - 1].id
+          var newOrder = this.arrayData[index - 1].order
+          var params = {
+            'bookId': Number(-11),
+            'actionCode': 7,
+            'bookIds': '',
+            'albumIds': '',
+            'subCategoryId': Number(-11),
+            'originId': id,
+            'originOrder': order,
+            'newId': newId,
+            'newOrder': newOrder
+          }
+          api.request('post', '/relation/book/taglist/edit', params)
+            .then(response => {
+              this.init()
+            })
+            .catch(error => {
+              console.log(error)
+              this.response = error
+            })
+        }
+      },
+      down (id, order, index) {
+        // 下移一位
+        if (index < 20) {
+          var newId = this.arrayData[index + 1].id
+          var newOrder = this.arrayData[index + 1].order
+          var params = {
+            'bookId': Number(-11),
+            'actionCode': 7,
+            'bookIds': '',
+            'albumIds': '',
+            'subCategoryId': Number(-11),
+            'originId': id,
+            'originOrder': order,
+            'newId': newId,
+            'newOrder': newOrder
+          }
+          api.request('post', '/relation/book/taglist/edit', params)
+            .then(response => {
+              this.init()
+            })
+            .catch(error => {
+              console.log(error)
+              this.response = error
+            })
+        }
+      },
       handleCheckAllChange (val) {
         console.log('val is', val)
         if (val) {
@@ -149,7 +203,7 @@
         if (keyvalue.length === 0) {
           keyvalue = ' '
         }
-        api.request('get', 'chapter/list?type=1&userid=1&pageSize=12&pageIndex=1&keyword=' + keyvalue + '&bookId=' + bookId)
+        api.request('get', 'chapter/list?type=1&userid=1&pageSize=12&pageIndex=0&keyword=' + keyvalue + '&bookId=' + bookId)
           .then(response => {
             this.searchData = response.data.body.chapters
           })
@@ -220,7 +274,7 @@
               .then(response => {
                 // var data = response.data
                 // alert(JSON.stringify(data))
-                this.search()
+                // this.search()
                 this.init()
               })
               .catch(error => {
@@ -234,8 +288,13 @@
       },
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
+        var bookId = '0'
+        if (this.$route.query.bookId) {
+          bookId = this.$route.query.bookId
+          this.bookId = this.$route.query.bookId
+        }
         var userid = localStorage.getItem('userid')
-        api.request('post', 'book/list?userid=' + userid + '&pageIndex=' + val + '&pageSize=10')
+        api.request('get', 'chapter/list?userid=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=12&bookId=' + bookId)
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.chapters
@@ -259,7 +318,7 @@
           this.bookId = this.$route.query.bookId
         }
         // var userid = localStorage.getItem('userid')
-        api.request('get', 'chapter/list?userid=1&pageSize=12&pageIndex=1&bookId=' + bookId)
+        api.request('get', 'chapter/list?userid=1&pageSize=12&pageIndex=0&bookId=' + bookId)
           .then(response => {
             this.arrayData = response.data.body.chapters
             this.totalCount = response.data.body.status.totalCount
