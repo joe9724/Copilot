@@ -274,7 +274,7 @@
               .then(response => {
                 // var data = response.data
                 // alert(JSON.stringify(data))
-                // this.search()
+                this.search()
                 this.init()
               })
               .catch(error => {
