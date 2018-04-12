@@ -155,20 +155,32 @@
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'user/delete?user_id=' + id + '&operator_id=' + userid)
+            api.request('get', 'category/delete?categoryId=' + id + '&operator_id=' + userid)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                var categoryId = '-1'
+                if (this.$route.query.categoryId) {
+                  categoryId = this.$route.query.categoryId
+                  this.categoryId = this.$route.query.categoryId
+                  console.log('categoryId is', categoryId)
+                }
+                api.request('get', 'category/list?userid=1&pageSize=12&pageIndex=1&parentId=' + categoryId)
                   .then(response => {
                     console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.body.subCategoryList
+                    this.totalCount = response.data.body.status.totalCount
+                    for (var i = 0; i < this.arrayData.length; i++) {
+                      // this.arrayData.time = formatDateBtk(this.arrayData.time)
+                      // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+                      console.log()
+                    }
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')
                     console.log(error)
-                    this.response = error
+                    this.response = 'Server appears to be offline'
                   })
               })
               .catch(error => {

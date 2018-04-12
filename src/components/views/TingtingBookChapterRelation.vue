@@ -40,7 +40,7 @@
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
               :page-sizes="[10, 20, 30, 40]"
-              :page-size="12"
+              :page-size="999"
               layout="prev, pager, next"
               :total="totalCount">
             </el-pagination>
@@ -111,7 +111,7 @@
         // 当前页面
         pageCurrent: 0,
         // 分页大小
-        pagesize: 12,
+        pagesize: 999,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -294,7 +294,7 @@
           this.bookId = this.$route.query.bookId
         }
         var userid = localStorage.getItem('userid')
-        api.request('get', 'chapter/list?userid=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=12&bookId=' + bookId)
+        api.request('get', 'chapter/list?userid=' + userid + '&pageIndex=' + Number(val - 1) + '&pageSize=999&bookId=' + bookId)
           .then(response => {
             console.log(response.data)
             this.arrayData = response.data.body.chapters
@@ -318,7 +318,7 @@
           this.bookId = this.$route.query.bookId
         }
         // var userid = localStorage.getItem('userid')
-        api.request('get', 'chapter/list?userid=1&pageSize=12&pageIndex=0&bookId=' + bookId)
+        api.request('get', 'chapter/list?userid=1&pageSize=999&pageIndex=0&bookId=' + bookId)
           .then(response => {
             this.arrayData = response.data.body.chapters
             this.totalCount = response.data.body.status.totalCount
