@@ -3,6 +3,9 @@
 
     <div class="row center-block" style="background: #ffffff">
       <div id="example1_length" class="dataTables_length">
+        <span><el-input v-model="keyword" placeholder="关键字" style="width:300px"></el-input></span>
+        <span><el-button type="primary" @click="search">搜索</el-button></span>
+        <!--{{cids}}-->
         <router-link  class="pageLink" to="/chapter/add">
           <a>
             <span class="page" style="float:right;margin:5px"><el-button type="success" plain>添加章节</el-button></span>
@@ -15,12 +18,14 @@
 
           </a>
         </router-link>
-
+        <span class="page" style="float:right;margin:5px"><el-button type="danger" plain @click="batchDel">批量删除</el-button></span>
       </div>
       <table class="table table-bordered table-responsive table-striped">
         <thead>
         <tr>
           <th style='text-align: center'>序号</th>
+          <th style='text-align: center'>书名</th>
+          <th style='text-align: center'>选择</th>
           <th style='text-align: center'>正标题</th>
           <!--<th>icon</th>
           <!--<th>副标题</th>-->
@@ -39,6 +44,8 @@
         <tbody>
         <tr v-for="(item,index) in arrayData" v-bind:key="item.name">
           <td style='text-align: center'>{{index+1}}</td>
+          <td style='text-align: center'>{{item.book_name}}</td>
+          <td style='text-align: center'><el-checkbox  :key="item.id" @change="change($event,item.id)" ></el-checkbox></td>
           <td style='text-align: center'>{{item.name}}</td>
           <!--<td class="sorting_1" style="vertical-align: middle"><img v-bind:src="item.icon" style="width: 80px;height: 50px"/></td>
           <!--<td class="sorting_1" style="vertical-align: middle">{{item.subTitle}}</td>-->
@@ -68,7 +75,7 @@
             @current-change="handleCurrentChange"
             :current-page.sync="currentPage"
             :page-sizes="[10, 20, 30, 40]"
-            :page-size="20"
+            :page-size="100"
             layout="prev, pager, next"
             :total="totalCount">
           </el-pagination>
@@ -96,6 +103,8 @@
     },
     data () {
       return {
+        cids: [],
+        keyword: '',
         currentPage: 1,
         // 为第一页或者最后一页时，首页，尾页不能点击
         fDisabled: false,
@@ -103,11 +112,11 @@
         // 总项目数
         totalCount: 40,
         // 分页数
-        pageCount: 20,
+        pageCount: 100,
         // 当前页面
         pageCurrent: 1,
         // 分页大小
-        pagesize: 20,
+        pagesize: 100,
         // 显示分页按钮数
         showPages: 11,
         // 开始显示的分页按钮
@@ -121,6 +130,83 @@
       }
     },
     methods: {
+      batchDel () {
+        // 批量删除
+        var chapterIds = '0'
+        for (var i = 0; i < this.cids.length; i++) {
+          chapterIds = chapterIds + ',' + this.cids[i]
+        }
+        this.$confirm('此操作将永久删除 ' + ', 是否继续?', '提示', {type: 'warning'})
+          .then(() => {
+            // 向请求服务端删除
+            var userid = localStorage.getItem('userid')
+            var delquery
+            delquery = 'chapter/delete?chapterIds=' + chapterIds + '&operator_id=' + userid
+            api.request('get', delquery)
+              .then(response => {
+                console.log(response.data)
+                this.$message.info('删除成功!')
+                // reload
+                var query
+                if (this.keyword !== '') {
+                  query = 'chapter/list?chapterIds=' + chapterIds + '&operator_id=' + userid + '&key=' + this.keyword + '&pageIndex=0&pageSize=100'
+                } else {
+                  query = 'chapter/list?chapterIds=' + chapterIds + '&operator_id=' + userid + '&pageIndex=0&pageSize=100'
+                }
+                api.request('get', query)
+                  .then(response => {
+                    // console.log(response.data)
+                    this.arrayData = response.data.body.chapters
+                    this.totalCount = response.data.body.status.totalCount
+                    for (var i = 0; i < this.arrayData.length; i++) {
+                      this.arrayData.time = formatDateBtk(this.arrayData.time)
+                      // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+                      console.log()
+                    }
+                  })
+                  .catch(error => {
+                    // this.$store.commit('TOGGLE_LOADING')
+                    console.log(error)
+                    this.response = error
+                  })
+              })
+              .catch(error => {
+                // this.$store.commit('TOGGLE_LOADING')
+                console.log(error)
+                this.response = error
+              })
+          })
+          .catch(() => {
+            this.$message.info('已取消操作!')
+          })
+      },
+      change (state, id) {
+        // alert(state + ',' + id)
+        if (state) {
+          this.cids.push(id)
+        } else {
+          this.cids.pop(id)
+        }
+      },
+      search () {
+        this.arrayData = []
+        api.request('get', 'chapter/list?userid=1&pageSize=100&pageIndex=0&key=' + this.keyword)
+          .then(response => {
+            // console.log(response.data)
+            this.arrayData = response.data.body.chapters
+            this.totalCount = response.data.body.status.totalCount
+            for (var i = 0; i < this.arrayData.length; i++) {
+              this.arrayData.time = formatDateBtk(this.arrayData.time)
+              // this.arrayData.last_time = formatDateBtk(this.arrayData.last_time)
+              console.log()
+            }
+          })
+          .catch(error => {
+            // this.$store.commit('TOGGLE_LOADING')
+            console.log(error)
+            this.response = 'Server appears to be offline'
+          })
+      },
       play (url) {
         window.open(url, '_blank')
       },
@@ -132,12 +218,18 @@
           .then(() => {
             // 向请求服务端删除
             var userid = localStorage.getItem('userid')
-            api.request('get', 'chapter/delete?chapterId=' + chapterId + '&operator_id=' + userid)
+            var query
+            if (this.keyword !== '') {
+              query = 'chapter/delete?chapterId=' + chapterId + '&operator_id=' + userid + '&key=' + this.keyword + '&pageIndex=0&pageSize=100'
+            } else {
+              query = 'chapter/delete?chapterId=' + chapterId + '&operator_id=' + userid + '&pageIndex=0&pageSize=100'
+            }
+            api.request('get', query)
               .then(response => {
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'chapter/list?operator_id=' + userid + '&pageIndex=0&pageSize=20')
+                api.request('get', 'chapter/list?operator_id=' + userid + '&pageIndex=0&pageSize=100')
                   .then(response => {
                     // console.log(response.data)
                     this.arrayData = response.data.body.chapters
@@ -167,7 +259,13 @@
       handleCurrentChange (val) {
         console.log(`当前页: ${val}`)
         var userid = localStorage.getItem('userid')
-        api.request('get', 'chapter/list?operator_id=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=20')
+        var query
+        if (this.keyword !== '') {
+          query = 'chapter/list?operator_id=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=100' + '&key=' + this.keyword
+        } else {
+          query = 'chapter/list?operator_id=' + userid + '&pageIndex=' + (Number(val) - 1) + '&pageSize=100'
+        }
+        api.request('get', query)
           .then(response => {
             // console.log(response.data)
             this.arrayData = response.data.body.chapters
@@ -185,7 +283,7 @@
     },
     created () {
       // var userid = localStorage.getItem('userid')
-      api.request('get', 'chapter/list?userid=1&pageSize=20&pageIndex=0')
+      api.request('get', 'chapter/list?userid=1&pageSize=100&pageIndex=0')
         .then(response => {
           // console.log(response.data)
           this.arrayData = response.data.body.chapters
