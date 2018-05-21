@@ -45,8 +45,34 @@
           <td style='text-align: center'>{{item.status | FormatStatus}}</td>
           <td style='text-align: center'>{{item.ts*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
+            {{item.name}}
             <div v-if="item.status==0"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'stop')" plain>停用</el-button></div>
             <div v-else="item.status==1"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'start')" plain>启用</el-button></div>
+            <el-button type="success" @click="dialogVisible = true">查看数据</el-button><el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="handleClose">
+            <div>用户名:{{item.name}}</div>
+            <div v-if="item.gender===0">
+              性别:保密
+            </div>
+            <div v-else-if="message===1">
+              性别:男
+            </div>
+            <div v-else="message===2">
+              性别:女
+            </div>
+            <div>状态:{{item.status | FormatStatus}}</div>
+            <div>注册日期:{{item.ts*1000 | BTKformatDate}}</div>
+            <div>所在地:{{item.area}}</div>
+            <div>生日:{{item.birth}}</div>
+            <div>年级:{{item.grade}}</div>
+            <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">关 闭</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+          </el-dialog>
           </td>
         </tr>
         </tbody>

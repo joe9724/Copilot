@@ -149,10 +149,11 @@
                 console.log(response.data)
                 this.$message.info('删除成功!')
                 // reload
-                api.request('get', 'user/list?operator_id=' + userid + '&page=1&size=10')
+                api.request('get', 'user/list?operator_id=' + userid + '&pageIndex=0&pageSize=20')
                   .then(response => {
                     console.log(response.data)
-                    this.arrayData = response.data.datas
+                    this.arrayData = response.data.body.users
+                    this.totalCount = response.data.body.status.totalCount
                   })
                   .catch(error => {
                     // this.$store.commit('TOGGLE_LOADING')

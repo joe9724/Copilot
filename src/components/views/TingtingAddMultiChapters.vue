@@ -16,16 +16,34 @@
           </uploader>
         </div>
       </div>
+      xxxxxxxx
+      <!--<el-form-item label="活动区域">-->
+        <!--<el-select v-model="form.region" placeholder="请选择活动区域">-->
+          <!--<el-option label="区域一" value="shanghai"></el-option>-->
+          <!--<el-option label="区域二" value="beijing"></el-option>-->
+        <!--</el-select>-->
+      <!--</el-form-item>-->
+      <!--<el-form-item label="所属组织" style="width: 200px">-->
+      <!--<el-select v-model="value" placeholder="请选择所属组织" value-key="id">-->
+      <!--<el-option v-for="item in arraydata" :label="item.name" :value="item" :key="item.id"/>-->
+      <!--</el-select>-->
+      <!--</el-form-item>-->
+      yyyyyyyyyy
     </section>
   </div>
 </template>
 <script>
   import configParams from '../../config'
+  import api from '../../api'
+  // import ElDropdown from '../../../node_modules/element-ui/packages/dropdown/src/dropdown.vue'
   // import api from '../../api'
 
   export default {
+    // components: {ElDropdown},
     data () {
       return {
+        value: '未选择',
+        arrayData: [],
         options: {
           // https://github.com/simple-uploader/Uploader/tree/develop/samples/Node.js
           target: configParams.uploadURI,
@@ -45,6 +63,9 @@
       }
     },
     methods: {
+      handleCommand (command) {
+        this.$message('click on item ' + command)
+      },
       complete () {
         console.log('complete', arguments)
         this.$message({
@@ -102,6 +123,17 @@
       }
     },
     created () {
+      api.request('get', 'book/list?userid=1&pageSize=2000&pageIndex=0')
+        .then(response => {
+          console.log(response.data)
+          this.arrayData = response.data.body.bookList
+          // this.totalCount = response.data.body.status.totalCount
+        })
+        .catch(error => {
+          // this.$store.commit('TOGGLE_LOADING')
+          console.log(error)
+          this.response = 'Server appears to be offline'
+        })
     },
     mounted () {
     }
@@ -127,5 +159,12 @@
   }
   .datetime-picker input {
     height: 4em !important;
+  }
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
   }
 </style>
