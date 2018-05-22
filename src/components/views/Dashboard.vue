@@ -14,7 +14,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日新注册用户</span>
-            <span class="info-box-number">90<small></small></span>
+            <span class="info-box-number">{{number_newuser}}<small></small></span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -27,7 +27,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日购买专辑</span>
-            <span class="info-box-number">41</span>
+            <span class="info-box-number">{{number_today_buy_albums}}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -44,7 +44,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日成交额</span>
-            <span class="info-box-number">760</span>
+            <span class="info-box-number">{{money_today}}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -57,7 +57,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日上传录音</span>
-            <span class="info-box-number">2,000</span>
+            <span class="info-box-number">{{number_today_record}}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -100,13 +100,13 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日新增分类数</span>
-            <span class="info-box-number">5</span>
+            <span class="info-box-number">{{number_today_add_category}}</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 50%"></div>
             </div>
                 <span class="progress-description">
-                  50% Increase
+                  <!--50% Increase-->
                 </span>
           </div>
           <!-- /.info-box-content -->
@@ -118,13 +118,13 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日新增专辑数</span>
-            <span class="info-box-number">92</span>
+            <span class="info-box-number">{{number_today_add_albums}}</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 20%"></div>
             </div>
                 <span class="progress-description">
-                  20% Increase
+                  <!--20% Increase-->
                 </span>
           </div>
           <!-- /.info-box-content -->
@@ -136,13 +136,13 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日新增书本数</span>
-            <span class="info-box-number">114</span>
+            <span class="info-box-number">{{number_today_add_book}}</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 70%"></div>
             </div>
                 <span class="progress-description">
-                  70% Increase
+                  <!--70% Increase-->
                 </span>
           </div>
           <!-- /.info-box-content -->
@@ -154,13 +154,13 @@
 
           <div class="info-box-content">
             <span class="info-box-text">今日新增章节数</span>
-            <span class="info-box-number">1639</span>
+            <span class="info-box-number">{{number_today_add_chapter}}</span>
 
             <div class="progress">
               <div class="progress-bar" style="width: 40%"></div>
             </div>
                 <span class="progress-description">
-                  40% Increase
+
                 </span>
           </div>
           <!-- /.info-box-content -->
@@ -174,7 +174,7 @@
 
 <script>
 import Chart from 'chart.js'
-
+import api from '../../api'
 export default {
   data () {
     return {
@@ -184,7 +184,18 @@ export default {
           a.push(Math.floor(Math.random() * (max - min + 1)) + max)
         }
         return a
-      }
+      },
+      number_newuser: '',
+      number_today_buy_albums: '',
+      money_today: '',
+      number_today_record: '',
+      number_month_buy_albums: '',
+      money_month_buy_albums: '',
+      number_today_add_category: '',
+      number_today_add_albums: '',
+      number_today_add_book: '',
+      number_today_add_chapter: '',
+      top3book: []
     }
   },
   computed: {
@@ -197,6 +208,54 @@ export default {
     isMobile () {
       return (window.innerWidth <= 800 && window.innerHeight <= 600)
     }
+  },
+  created () {
+    // var userid = localStorage.getItem('userid')
+    api.request('get', '/web/detail?userid=1&webId=1')
+      .then(response => {
+        var ds = response.data.body.dashboard
+        this.number_newuser = ds.number_newuser
+        this.number_today_buy_albums = ds.number_today_buy_albums
+        this.money_today = ds.money_today
+        this.number_today_record = ds.number_today_record
+        this.number_month_buy_albums = ds.number_month_buy_albums
+        this.money_month_buy_albums = ds.money_month_buy_albums
+        this.number_today_add_category = ds.number_today_add_category
+        this.number_today_add_albums = ds.number_today_add_albums
+        this.number_today_add_book = ds.number_today_add_book
+        this.number_today_add_chapter = ds.number_today_add_chapter
+        for (var i = 0; i < ds.hotalbums.length; i++) {
+          this.top3book.push(ds.hotalbums[i].name)
+        }
+        console.log('////top3book is', this.top3book)
+        //
+        var pieChartCanvas = document.getElementById('languagePie').getContext('2d')
+        var pieConfig = {
+          type: 'pie',
+          data: {
+            labels: this.top3book,
+            datasets: [{
+              data: [56.6, 37.7, 4.1],
+              backgroundColor: ['#00a65a', '#f39c12', '#00c0ef'],
+              hoverBackgroundColor: ['#00a65a', '#f39c12', '#00c0ef']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: !this.isMobile,
+            legend: {
+              position: 'bottom',
+              display: true
+            }
+          }
+        }
+
+        new Chart(pieChartCanvas, pieConfig) // eslint-disable-line no-new
+      })
+      .catch(error => {
+        console.log(error)
+        this.response = 'Server appears to be offline'
+      })
   },
   mounted () {
     this.$nextTick(() => {
@@ -237,29 +296,6 @@ export default {
       }
 
       new Chart(ctx, config) // eslint-disable-line no-new
-
-      var pieChartCanvas = document.getElementById('languagePie').getContext('2d')
-      var pieConfig = {
-        type: 'pie',
-        data: {
-          labels: ['红楼梦', '西游记', '围城'],
-          datasets: [{
-            data: [56.6, 37.7, 4.1],
-            backgroundColor: ['#00a65a', '#f39c12', '#00c0ef'],
-            hoverBackgroundColor: ['#00a65a', '#f39c12', '#00c0ef']
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: !this.isMobile,
-          legend: {
-            position: 'bottom',
-            display: true
-          }
-        }
-      }
-
-      new Chart(pieChartCanvas, pieConfig) // eslint-disable-line no-new
     })
   }
 }
