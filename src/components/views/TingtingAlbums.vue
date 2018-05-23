@@ -56,7 +56,7 @@
 
             <el-button type="success" round @click="editRelation(item.id)" plain>书本管理</el-button>
             <el-button type="primary" round @click="editTags(item.id)" plain>标签管理</el-button>
-            <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送(已推{{item.times}}次)</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送<!--(已推{{item.times}}次)--></el-button>
             <el-button type="info" round @click="editAlbum(item.id)" plain>编辑</el-button>
             <el-button type="warning" round @click="removeAlbum(item.id)" plain>删除</el-button>
 

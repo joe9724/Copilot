@@ -57,7 +57,7 @@
             <el-button type="info" round @click="editBookTag(item.id)" plain>标签管理</el-button>
             <el-button type="primary" @click="editBook(item.id)" plain>编辑</el-button>
             <el-button type="info" @click="addDefaultBook(item.id)" plain>添加到定时播</el-button>
-            <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送(已推{{item.times}}次)</el-button>
+            <el-button type="success" round @click="sendPush(item.id,item.name)" plain>推送<!--(已推{{item.times}}次)--></el-button>
             <el-button type="warning" @click="removeBook(item.id)" plain>删除</el-button>
           </td>
         </tr>
