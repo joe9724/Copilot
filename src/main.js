@@ -116,8 +116,8 @@ import DataTables from 'vue-data-tables'
 Vue.use(ElementUI)
 Vue.use(DataTables)
 
-import uploader from 'vue-simple-uploader'
-Vue.use(uploader)
+import uploaders from 'vue-simple-uploader'
+Vue.use(uploaders)
 
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'

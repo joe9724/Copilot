@@ -4,8 +4,7 @@
     <section class="content">
       <div class="row">
         <div class="col-md-12">
-          <uploader :attrs="attrs" :options="options" class="uploader-example" :file-status-text="statusText" style="visibility: hidden"
-                    ref="uploader"
+          <uploader :attrs="attrs" :options="options" class="uploader-example" :file-status-text="statusText" ref="uploader"
                     @file-complete="fileComplete" @complete="complete">
             <uploader-unsupport></uploader-unsupport>
             <uploader-drop>
@@ -18,30 +17,13 @@
           </uploader>
         </div>
       </div>
-
+      xxxxxxxx
       <el-autocomplete
         v-model="state4"
         :fetch-suggestions="querySearchAsync"
         placeholder="请输入书本关键字"
         @select="handleSelect"></el-autocomplete>
-
-      <el-upload
-        class="upload-demo"
-        :data = "extradata"
-        :action="uploadUrl"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        :before-upload="beforeupload"
-        multiple
-        :limit="100"
-        :on-exceed="handleExceed"
-        :file-list="fileList">
-        <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传m4a文件</div>
-      </el-upload>
-
-
+      yyyyyyyyyy{{state4}}
     </section>
   </div>
 </template>
@@ -55,14 +37,8 @@
     // components: {ElDropdown},
     data () {
       return {
-        uploadUrl: '',
-        fileList: [],
         selectedBookId: '',
         books: [],
-        extradata: {
-          filename: 'abcd',
-          bookId: ''
-        },
         restaurants: [],
         state4: '',
         timeout: null,
@@ -87,22 +63,6 @@
       }
     },
     methods: {
-      beforeupload (file) {
-        console.log('beforeupload file is', file)
-        this.extradata.filename = file.name
-      },
-      handleRemove (file, fileList) {
-        console.log(file, fileList)
-      },
-      handlePreview (file) {
-        console.log(file)
-      },
-      handleExceed (files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-      },
-      beforeRemove (file, fileList) {
-        return this.$confirm(`确定移除 $ { file.name }？`)
-      },
       handleCommand (command) {
         this.$message('click on item ' + command)
       },
@@ -186,16 +146,13 @@
         this.selectedBookId = item.address
         console.log('this.selectedBookId is', this.selectedBookId)
         if (this.selectedBookId !== '') {
-          this.extradata.bookId = item.address
-          // this.options.target = configParams.uploadURI + '?bookId=' + this.selectedBookId
-          this.uploadUrl = configParams.uploadURI + '?bookId=' + this.selectedBookId
-          // console.log('this.options.target is', this.options.target)
-          // console.log('this.uploader.optinos.target is', this.uploader.optinos.target)
+          this.options.target = configParams.uploadURI + '?bookId=' + this.selectedBookId
+          console.log('this.options.target is', this.options.target)
+          console.log('this.uploader.optinos.target is', this.uploader.optinos.target)
         }
       }
     },
     created () {
-      this.uploadUrl = configParams.uploadURI
       console.log('this.options.url is', this.options.target)
       api.request('get', 'book/list?userid=1&pageSize=2000&pageIndex=0')
         .then(response => {

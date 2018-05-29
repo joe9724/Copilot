@@ -46,9 +46,9 @@
           <td style='text-align: center'>{{item.ts*1000 | BTKformatDate}}</td>
           <td style='text-align: center'>
             {{item.name}}
-            <div v-if="item.status==0"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'stop')" plain>停用</el-button></div>
-            <div v-else="item.status==1"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'start')" plain>启用</el-button></div>
-            <el-button type="success" @click="dialogVisible = true">查看数据</el-button><el-dialog
+            <div v-if="item.status==0"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'stop')" plain>停用</el-button><el-button type="success" @click="dialogVisible = true" plain>查看数据</el-button></div>
+            <div v-else="item.status==1"><el-button type="primary" @click="getFavAlbum(item.id)" plain>收藏专辑</el-button><el-button type="primary" @click="getFavBook(item.id)" plain>收藏书本</el-button><el-button type="primary" @click="resetPass(item.id)" plain>初始化密码</el-button> <el-button type="warning" @click="removeUser(item.id,'start')" plain>启用</el-button><el-button type="success" @click="dialogVisible = true" plain>查看数据</el-button></div>
+            <el-dialog
             title="提示"
             :visible.sync="dialogVisible"
             width="30%"
