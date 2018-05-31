@@ -3,21 +3,7 @@
     <!--<h5 class="text-center">编辑专辑</h5>-->
     <section class="content">
       <div class="row">
-        <div class="col-md-12">
-          <uploader :attrs="attrs" :options="options" class="uploader-example" :file-status-text="statusText" style="visibility: hidden"
-                    ref="uploader"
-                    @file-complete="fileComplete" @complete="complete">
-            <uploader-unsupport></uploader-unsupport>
-            <uploader-drop>
-              <p>拖拽上传</p>
-              <!--<uploader-btn>选择文件</uploader-btn>-->
-              <uploader-btn :attrs="attrs">选择文件</uploader-btn>
-              <!--<uploader-btn :directory="true">select folder</uploader-btn>-->
-            </uploader-drop>
-            <uploader-list></uploader-list>
-          </uploader>
-        </div>
-      </div>
+
 
       <el-autocomplete
         v-model="state4"
@@ -26,6 +12,7 @@
         @select="handleSelect"></el-autocomplete>
 
       <el-upload
+        ref="upload"
         class="upload-demo"
         :data = "extradata"
         :action="uploadUrl"
@@ -33,15 +20,16 @@
         :on-remove="handleRemove"
         :before-remove="beforeRemove"
         :before-upload="beforeupload"
-        multiple
+        :on-success="uploadok"
+        :multiple="true"
         :limit="100"
         :on-exceed="handleExceed"
-        :file-list="fileList">
+        :file-list="fileLists">
         <el-button size="small" type="primary">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">只能上传m4a文件</div>
       </el-upload>
-
-
+        <el-button size="small" type="warning" @click="clearUploadedImage">清空上传</el-button>
+      </div>
     </section>
   </div>
 </template>
@@ -55,8 +43,10 @@
     // components: {ElDropdown},
     data () {
       return {
+        uploadfilesize: 0,
+        files: [],
         uploadUrl: '',
-        fileList: [],
+        fileLists: [],
         selectedBookId: '',
         books: [],
         extradata: {
@@ -87,6 +77,24 @@
       }
     },
     methods: {
+      clearUploadedImage () {
+        this.$refs.upload.clearFiles()
+      },
+      uploadok (response, file, filelist) {
+        console.log('this.uploadfilesize', this.uploadfilesize, this.fileLists.length)
+        this.uploadfilesize = Number(this.uploadfilesize) + 1
+        console.log('fileList is', this.fileLists)
+        console.log('this.uploadfilesize is', this.uploadfilesize)
+        console.log('length is', this.fileLists.size, Number(this.fileLists.length))
+        if (this.uploadfilesize === this.fileLists.length) {
+          this.$message({
+            message: '上传成功!',
+            type: 'success'
+          })
+          this.$refs.upload.clearFiles()
+          // this.$router.go(-1)
+        }
+      },
       beforeupload (file) {
         console.log('beforeupload file is', file)
         this.extradata.filename = file.name
@@ -223,24 +231,6 @@
 </script>
 
 <style>
-  .uploader-example {
-    width: 880px;
-    padding: 15px;
-    margin: 40px auto 0;
-    font-size: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
-  }
-
-  .uploader-example .uploader-btn {
-    margin-right: 4px;
-  }
-
-  .uploader-example .uploader-list {
-    max-height: 440px;
-    overflow: auto;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
 
   .datetime-picker input {
     height: 4em !important;
