@@ -185,6 +185,8 @@ export default {
         }
         return a
       },
+      month_buyed_albums_count: [],
+      month_buyed_albums_money: [],
       number_newuser: '',
       number_today_buy_albums: '',
       money_today: '',
@@ -228,6 +230,11 @@ export default {
           this.top3book.push(ds.hotalbums[i].name)
         }
         console.log('////top3book is', this.top3book)
+        // 解析月销售专辑
+        for (var k = 0; k < ds.month_buyed_album.length; k++) {
+          this.month_buyed_albums_count.push(ds.month_buyed_album[k].album_count)
+          this.month_buyed_albums_money.push(ds.month_buyed_album[k].money)
+        }
         //
         var pieChartCanvas = document.getElementById('languagePie').getContext('2d')
         var pieConfig = {
@@ -251,6 +258,48 @@ export default {
         }
 
         new Chart(pieChartCanvas, pieConfig) // eslint-disable-line no-new
+        //
+        this.$nextTick(() => {
+          var ctx = document.getElementById('trafficBar').getContext('2d')
+          var config = {
+            type: 'line',
+            data: {
+              labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+              datasets: [{
+                label: '购买专辑数',
+                fill: true,
+                borderColor: '#284184',
+                pointBackgroundColor: '#284184',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                data: this.month_buyed_albums_count // this.coPilotNumbers
+                // data: this.coPilotNumbers
+              }, {
+                label: '成交额',
+                borderColor: '#4BC0C0',
+                pointBackgroundColor: '#4BC0C0',
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                data: this.month_buyed_albums_money // personalNumbers
+                // data: this.personalNumbers
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: !this.isMobile,
+              legend: {
+                position: 'bottom',
+                display: true
+              },
+              tooltips: {
+                mode: 'label',
+                xPadding: 10,
+                yPadding: 10,
+                bodySpacing: 10
+              }
+            }
+          }
+
+          new Chart(ctx, config) // eslint-disable-line no-new
+        })
       })
       .catch(error => {
         console.log(error)
@@ -258,45 +307,6 @@ export default {
       })
   },
   mounted () {
-    this.$nextTick(() => {
-      var ctx = document.getElementById('trafficBar').getContext('2d')
-      var config = {
-        type: 'line',
-        data: {
-          labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
-          datasets: [{
-            label: '购买专辑数',
-            fill: true,
-            borderColor: '#284184',
-            pointBackgroundColor: '#284184',
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            data: this.coPilotNumbers
-          }, {
-            label: '成交额',
-            borderColor: '#4BC0C0',
-            pointBackgroundColor: '#4BC0C0',
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            data: this.personalNumbers
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: !this.isMobile,
-          legend: {
-            position: 'bottom',
-            display: true
-          },
-          tooltips: {
-            mode: 'label',
-            xPadding: 10,
-            yPadding: 10,
-            bodySpacing: 10
-          }
-        }
-      }
-
-      new Chart(ctx, config) // eslint-disable-line no-new
-    })
   }
 }
 </script>
